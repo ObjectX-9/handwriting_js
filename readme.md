@@ -1,4 +1,8 @@
-# JS手写汇总
+# JS手写
+
+
+
+# 汇总
 
 | 名称            | codesandbox                                                  | 状态 |
 | --------------- | ------------------------------------------------------------ | ---- |
@@ -9,6 +13,8 @@
 | 05call          | https://codesandbox.io/s/shou-xie-call-8lz7jc?file=/src/index.js:521-525 | ✅    |
 | 06apply         | https://codesandbox.io/s/shou-xie-apply-kdh535?file=/src/index.js | ✅    |
 | 07bind          | https://codesandbox.io/s/shou-xie-bind-xx65jn?file=/src/index.js | ✅    |
+| 08深、浅拷贝    | https://codesandbox.io/dashboard/sandboxes/JS%E6%89%8B%E5%86%99/%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D?workspace=59b236c3-9f57-4111-9ec5-29a886007fa6 | ✅    |
+| 09类的继承      | https://codesandbox.io/dashboard/sandboxes/JS%E6%89%8B%E5%86%99/es5%E7%BB%A7%E6%89%BF?workspace=59b236c3-9f57-4111-9ec5-29a886007fa6 | ✅    |
 |                 |                                                              |      |
 |                 |                                                              |      |
 |                 |                                                              |      |
@@ -19,6 +25,12 @@
 |                 |                                                              |      |
 |                 |                                                              |      |
 |                 |                                                              |      |
-|                 |                                                              |      |
-|                 |                                                              |      |
+
+
+
+# 需要注意
+
+```
+bind() 完整写一遍，函数的正则识别
+```
 
