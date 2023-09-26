@@ -6,9 +6,9 @@
 | 02节流          | https://codesandbox.io/s/jie-liu-d46s4r?file=/index.html     | ✅    |
 | 03Object.create | https://codesandbox.io/s/object-create-x7d4f3?file=/src/index.js | ✅    |
 | 04new           | https://codesandbox.io/s/new-rn3m57?file=/src/index.js       | ✅    |
-| 05call          | https://codesandbox.io/s/shou-xie-call-8lz7jc?file=/src/index.js:521-525 |      |
-|                 |                                                              |      |
-|                 |                                                              |      |
+| 05call          | https://codesandbox.io/s/shou-xie-call-8lz7jc?file=/src/index.js:521-525 | ✅    |
+| 06apply         | https://codesandbox.io/s/shou-xie-apply-kdh535?file=/src/index.js | ✅    |
+| 07bind          | https://codesandbox.io/s/shou-xie-bind-xx65jn?file=/src/index.js | ✅    |
 |                 |                                                              |      |
 |                 |                                                              |      |
 |                 |                                                              |      |
