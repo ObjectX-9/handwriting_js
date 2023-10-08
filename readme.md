@@ -1,6 +1,8 @@
 # JS手写
 
+https://github.com/sisterAn/JavaScript-Algorithms
 
+https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 
 # 汇总
 
