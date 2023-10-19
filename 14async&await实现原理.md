@@ -1,10 +1,8 @@
 # 14 async&await实现原理
 
-https://juejin.cn/post/7141685685940912136
+本质是希望实现一个co函数
 
-https://juejin.cn/post/7043616565324939300
-
-https://juejin.cn/post/7144308012952322084#heading-35
+https://juejin.cn/post/6844904096525189128?searchId=202310102300416EBE8AE5D31B3011EF95#heading-13
 
 # 一、async和await的基本用法
 
@@ -133,3 +131,10 @@ async function foo() {
 
 
 
+# 二、手写实现
+
+让生成器函数自执行
+
+- `async/await`自带执行器，不需要手动调用next()就能自动执行下一步
+- `async`函数返回值是Promise对象，而Generator返回的是生成器对象
+- `await`能够返回Promise的resolve/reject的值
