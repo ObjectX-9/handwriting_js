@@ -204,6 +204,7 @@ co(gen);
 
 ## 2.详细版
 
-+ 实现执行器自动执行
-+ await对后面表达式的处理
-+ 返回promise
++ 先将执行操作通过promise封装（实现await表达式后面的都是promise）
++ 使用生成器实现停顿（模拟async&await）
++ 使用co原理实现自动执行迭代器函数（递归）（模拟async返回值promise，自动执行）
+

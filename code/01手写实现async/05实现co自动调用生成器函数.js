@@ -36,7 +36,7 @@ function co(it) {
   // it 迭代器
   return new Promise((resolve, reject) => {
     // 异步迭代 需要根据函数来实现
-    function next(data) {
+    function autoNext(data) {
       // 递归得有中止条件
       let { value, done } = it.next(data);
       if (done) {
@@ -47,7 +47,7 @@ function co(it) {
           .then((data) => {
             console.log("✅ ~ data:", data);
             console.log("✅ ~ value:", value);
-            next(data);
+            autoNext(data);
           })
           .catch((err) => {
             reject(err);
@@ -55,7 +55,7 @@ function co(it) {
       }
     }
     // 首次调用
-    next();
+    autoNext();
   });
 }
 
