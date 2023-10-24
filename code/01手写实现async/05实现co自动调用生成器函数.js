@@ -31,12 +31,14 @@ function* read() {
   return content2;
 }
 
-// 实现co原理：自动执行
+// 实现co原理：自动执行，从上往下await依次执行，只有上一个完成，流程才不会阻塞
 function co(it) {
+  console.log("✅ ~ 生成器it:", it);
   // it 迭代器
   return new Promise((resolve, reject) => {
     // 异步迭代 需要根据函数来实现
     function autoNext(data) {
+      console.log("✅ ~ data首次调用传递的data:", data);
       // 递归得有中止条件
       let { value, done } = it.next(data);
       if (done) {
