@@ -1,6 +1,6 @@
 // 块级作用域：用立即执行函数模拟
 // 只能说模拟一下这种效果
-const _let = (() => {
+var _let = (() => {
     var __scope__ = {};
     return function (key, value) {
       Object.defineProperty(__scope__, key, {

@@ -171,28 +171,271 @@ let 和 const 声明的变量具有块级作用域的特点，这个不难实现
 ```js
 // 块级作用域：用立即执行函数模拟
 // 只能说模拟一下这种效果
-var __scope__ = {};
-function __let__(key, value) {
-  return Object.defineProperty(__scope__, key, {
-    configurable: true,
-    enumerable: false,
-    get: function () {
-      return value;
-    },
-    set: function (newValue) {
-      value = newValue;
-    },
-  });
-}
+const _let = (() => {
+  var __scope__ = {};
+  return function (key, value) {
+    Object.defineProperty(__scope__, key, {
+      configurable: true,
+      enumerable: false,
+      get: function () {
+        return value;
+      },
+      set: function (newValue) {
+        value = newValue;
+      },
+    });
+    __scope__[key] = value;
+    return __scope__;
+  }
+})()
 
 {
-  (() => {
-    var obj =  __let__("js", "javascript");
-    console.log("✅ ~ zhuling js:", obj, obj['js'])
-    obj['js'] = 'hello'
-    console.log("✅ ~ zhuling js:", obj, obj['js'])
-  })();
+  const jse = _let('js', '测试测试');
+  console.log("✅ ~ zhuling jse:", jse, jse['js'])
 }
-// console.log("✅ ~ zhuling js2222:", js)
+// console.log("✅ ~ zhuling js2222:", jse['js'])
+
 ```
 
+## 2.实现暂时性死区(模拟效果)
+
+```js
+// 块级作用域：用立即执行函数模拟
+// 只能说模拟一下这种效果
+const _let = (() => {
+    var __scope__ = {};
+    return function (key, value) {
+      Object.defineProperty(__scope__, key, {
+        configurable: true,
+        enumerable: false,
+        get: function () {
+          return value;
+        },
+        set: function (newValue) {
+          value = newValue;
+        },
+      });
+      __scope__[key] = value;
+      return __scope__;
+    }
+  })()
+
+{
+    let key = 'js';
+    (()=>{
+      	//对象不存在的时候访问任何属性都是underfined，但并不是真正意义上的暂时性死区
+        console.log("✅ ~ zhuling js:", obj ? obj[key] : undefined)
+        var obj =  _let(key, "javascript");
+        console.log("✅ ~ zhuling js222:", obj, obj['js'])
+    })()
+}
+```
+
+## 3.模拟变量提升
+
+```js
+// 块级作用域：用立即执行函数模拟
+// 只能说模拟一下这种效果
+const _let = (() => {
+    var __scope__ = {};
+    return function (key, value) {
+      Object.defineProperty(__scope__, key, {
+        configurable: true,
+        enumerable: false,
+        get: function () {
+          return value;
+        },
+        set: function (newValue) {
+          value = newValue;
+        },
+      });
+      __scope__[key] = value;
+      return __scope__;
+    }
+  })()
+
+function fn() {
+    /* 这一步没什么用，只是想先拿到一个obj不然
+    后续无法演示没有变量提升 */
+    var obj = _let("b", 1);
+    console.log("✅ ~ zhuling obj.b:", obj.b)
+    /* 在输出a时，还没有定义a,但是js对于访问对象
+    不存在的属性所做的处理是返回undefined，并不会报错 */
+    console.log("✅ ~ zhuling obj.a:", obj.a)
+    obj = _let("a", 1);
+}
+
+fn();
+```
+
+## 4.判断是否重复声明
+
+```js
+// 块级作用域：用立即执行函数模拟
+// 只能说模拟一下这种效果
+const _let = (() => {
+  var __scope__ = {};
+  return function (key, value) {
+    if (__scope__.hasOwnProperty(key)) {
+      throw new Error("不能重复声明" + key);
+    } else {
+      Object.defineProperty(__scope__, key, {
+          configurable: true,
+          enumerable: false,
+          get: function () {
+            return value;
+          },
+          set: function (newValue) {
+            value = newValue;
+          },
+        });
+        __scope__[key] = value;
+    }
+    return __scope__;
+  }
+})()
+
+{
+  const jse = _let('js', '测试测试');
+  console.log("✅ ~ zhuling jse:", jse, jse['js'])
+  // _let('js', '测试测试')
+}
+// console.log("✅ ~ zhuling js2222:", jse['js'])
+```
+
+# 十一、实现const
+
+## 1.实现块级作用域
+
+```
+var _const = (() => {
+    let __scope__ = {};
+    return function(key, value) {
+        Object.defineProperty(__scope__, key, {
+            configurable: true,
+            enumerable: false,
+            get: () => {
+                return value
+            },
+            set: (newValue) => {
+                value = newValue
+            }
+        })
+        return __scope__;
+    }
+})()
+
+{
+    const jse = _const('js', '测试测试');
+    console.log("✅ ~ zhuling jse111:", jse, jse['js'])
+}
+// console.log("✅ ~ zhuling jse222:", jse)
+```
+
+## 2.实现声明必须初始化
+
+```js
+var _const = (() => {
+    let __scope__ = {};
+    return function(key, value) {
+        if (!value) {
+            throw new Error("声明常量必须赋值");
+        }
+        Object.defineProperty(__scope__, key, {
+            configurable: true,
+            enumerable: false,
+            get: () => {
+                return value
+            },
+            set: (newValue) => {
+                value = newValue
+            }
+        })
+        return __scope__;
+    }
+})()
+
+// _const('js')
+```
+
+## 3.实现不能重复声明
+
+```js
+var _const = (() => {
+    let __scope__ = {};
+    return function(key, value) {
+        if (!value) {
+            throw new Error("声明常量必须赋值");
+        }
+        if (__scope__[key]) {
+            throw new Error("不能重复声明");
+        }
+        Object.defineProperty(__scope__, key, {
+            configurable: true,
+            enumerable: false,
+            get: () => {
+                return value
+            },
+            set: (newValue) => {
+                value = newValue
+            }
+        })
+        return __scope__;
+    }
+})()
+
+_const('js', 'test')
+// _const('js', 'test')
+```
+
+## 4.实现内存地址不能修改
+
+```js
+var _const = (() => {
+    let __scope__ = {};
+    return function(key, value) {
+        if (!value) {
+            throw new Error("声明常量必须赋值");
+        }
+        if (__scope__[key]) {
+            throw new Error("不能重复声明");
+        }
+        Object.defineProperty(__scope__, key, {
+            configurable: true,
+            enumerable: false,
+            get: () => {
+                return value
+            },
+            set: (newValue) => {
+                // 判断地址是否相同，不相同不允许更改
+                if (value === newValue) {
+                    value = newValue;
+                } else {
+                    throw new Error("无法更改");
+                }
+            }
+        })
+        return __scope__;
+    }
+})()
+
+_const('js', 'test')
+// _const('js', 'test')
+```
+
+
+
+在JavaScript中，你可以使用严格相等运算符（===）来判断两个变量的值和数据类型是否完全相等，从而判断它们是否引用了相同的地址。如果两个变量的值和数据类型都相同，那么它们引用的地址也是相同的。下面是一个示例：
+
+```js
+var variable1 = [1, 2, 3];
+var variable2 = [1, 2, 3];
+var variable3 = variable1;
+
+console.log(variable1 === variable2); // false，因为它们引用不同的数组对象
+console.log(variable1 === variable3); // true，因为它们引用相同的数组对象
+```
+
+在上面的示例中，`variable1` 和 `variable2` 引用不同的数组对象，因此 `variable1 === variable2` 返回 `false`。而 `variable1` 和 `variable3` 引用相同的数组对象，因此 `variable1 === variable3` 返回 `true`。
+
+如果你要比较两个对象的内容是否相等，而不仅仅是它们的引用地址，你可能需要编写自定义的函数来进行深度比较，或使用一些库（如Lodash中的`_.isEqual`函数）来执行深度比较。深度比较会递归检查对象的属性，以确保它们的值相等。
