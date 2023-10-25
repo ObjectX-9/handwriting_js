@@ -4,7 +4,7 @@ https://github.com/sisterAn/JavaScript-Algorithms
 
 https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 
-# 汇总
+# 常见手写汇总
 
 - [01 节流防抖](./01防抖节流.md)
 - [02Object.create](./02Object_create.md)
@@ -21,6 +21,18 @@ https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 - [13 迭代器&amp;生成器](./13迭代器&生成器.md)
 - [14async&amp;await 实现原理](./14async&await实现原理.md)
 - [15手写实现let、const](./15手写实现let、const.md)
+
+# 对象方法手写汇总
+
+
+
+# 数组手写汇总
+
+
+
+# 字符串手写汇总
+
+
 
 # 需要注意
 
