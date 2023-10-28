@@ -7,7 +7,7 @@ https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 # 常见手写汇总
 
 - [01 节流防抖](./common/01防抖节流.md)
-- [02Object.create](./02Object_create.md)
+- [02Object.create](./common/02Object_create.md)
 - [03new](./common/03new.md)
 - [04instanceof](./common/04instanceof.md)
 - [05call、apply、bind](./common/05call、apply、bind.md)
@@ -23,6 +23,8 @@ https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 - [15 手写实现 let、const](./common/15手写实现let、const.md)
 
 # 对象方法手写汇总
+
+[01]()
 
 # 数组手写汇总
 
