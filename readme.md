@@ -27,6 +27,7 @@ https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 - [01 Object.create](./common/02Object_create.md)
 - [02 Object.freeze、Object.seal](./object/02Object.freeze.md)
 - [03 Object.is](./object/03Object.is.md)
+- [04Object.assign](./object/04Object.assign.md)
 
 # 数组手写汇总
 
