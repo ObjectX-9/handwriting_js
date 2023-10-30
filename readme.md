@@ -40,7 +40,6 @@ bind() 完整写一遍，函数的正则识别
 
 # 待看文章
 
-[实现一个compose函数](https://segmentfault.com/a/1190000011447164)
+[实现一个 compose 函数](https://segmentfault.com/a/1190000011447164)
 
-+ 涉及函数式编程，看完小册再写
-
+- 涉及函数式编程，看完小册再写
