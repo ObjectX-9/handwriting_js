@@ -2,8 +2,9 @@ function objectCreate(proto) {
   function Func() {
     this.name = "zhuling";
   }
-  Func.prototype = proto;
-  return new Func();
+  const newObject = new Func();
+  newObject.prototype = proto;
+  return newObject;
 }
 
 const obj1 = { age: 25 };

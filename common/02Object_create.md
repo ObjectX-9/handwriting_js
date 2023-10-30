@@ -10,7 +10,7 @@ Object.create()方法创建一个新对象，使用现有的对象来提供新�
 Object.create(proto[, propertiesObject])
 ```
 
-+ proto必填参数，是新对象的原型对象，如上面代码里新对象me的__proto__指向person。注意，如果这个参数是null，那新对象就彻彻底底是个空对象，没有继承Object.prototype上的任何属性和方法，如hasOwnProperty()、toString()等。
++ proto必填参数，是新对象的原型对象，如上面代码里新对象的__proto__指向person。注意，如果这个参数是null，那新对象就彻彻底底是个空对象，没有继承Object.prototype上的任何属性和方法，如hasOwnProperty()、toString()等。
 
 ```js
 var a = Object.create(null);
