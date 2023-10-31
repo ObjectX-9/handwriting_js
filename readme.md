@@ -27,11 +27,20 @@ https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 - [01 Object.create](./common/02Object_create.md)
 - [02 Object.freeze、Object.seal](./object/02Object.freeze.md)
 - [03 Object.is](./object/03Object.is.md)
-- [04Object.assign](./object/04Object.assign.md)
+- [04 Object.assign](./object/04Object.assign.md)
 
 # 数组手写汇总
 
++ [01 集合类：forEach、map、filter、reduce](./array/01集合类.md)
++ [02 检索类：findIndex、find、indexOf、lastIndexOf、every、some、includes](./array/02检索类.md)
++ [03 拼接、附加、翻转数组：concat、join、reverse](./array/03拼接、附加、翻转数组.md)
++ [04 添加、删除、追加值：shift、unShift、slice、splice、pop、push、fill](./array/04添加、删除、追加值.md)
++ [05 扁平类：flat、flatMap](./array/05.扁平类.md)
++ [06 generator类：keys, values, entries](./array/06generator.md)
+
 # 字符串手写汇总
+
+
 
 # 需要注意
 
