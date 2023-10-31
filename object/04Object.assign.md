@@ -2,6 +2,8 @@
 
 # 一、`Object.assign`基本使用
 
+## 1.多个源对象复制到目标对象
+
 `Object.assign()` 方法用于将所有可枚举属性的值从一个或多个源对象`source`复制到目标对象。它将返回目标对象`target`。
 
 ```js
@@ -17,7 +19,7 @@ target === returnedTarget // true
 
 `Object.assign`方法的第一个参数是目标对象，后面的参数都是源对象。
 
-`Object.assign`方法的第一个参数是目标对象，后面的参数都是源对象。
+## 2.同名覆盖
 
 ***注意**：如果目标对象与源对象有同名属性，或多个源对象有同名属性，则后面的属性会覆盖前面的属性。*
 
@@ -31,6 +33,8 @@ Object.assign(target, source1, source2)
 target // {a:1, b:2, c:3}
 ```
 
+## 3.仅一个参数
+
 如果只有一个参数，`Object.assign`会直接返回该参数。
 
 ```js
@@ -39,6 +43,8 @@ const obj = {a: 1}
 Object.assign(obj) // {a: 1}
 Object.assign(obj) === obj // true
 ```
+
+## 4.首参类型
 
 如果该参数不是对象，则会先转成对象，然后返回。
 
@@ -81,6 +87,8 @@ Object.assign('abc') // {0: "a", 1: "b", 2: "c", length: 3, [[PrimitiveValue]]: 
 ```
 
 上面代码中，布尔值、数值、字符串分别转成对应的包装对象，可以看到它们的原始值都在包装对象的内部属性 `[[PrimitiveValue]]`上面，这个属性是不会被`Object.assign`拷贝的。只有字符串的包装对象，会产生可枚举的实义属性，那些属性则会被拷贝。
+
+## 5.拷贝限制
 
 `Object.assign`拷贝的属性是有限制的，只拷贝源对象的自身属性（不拷贝继承属性），也不拷贝不可枚举的属性（`enumerable: false`）。
 
