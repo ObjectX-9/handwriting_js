@@ -266,13 +266,139 @@ processContent({ url: {port: 8000} })
 
 实现一个 `Object.assign` 大致思路如下：
 
-1、判断原生 `Object` 是否支持该函数，如果不存在的话创建一个函数 `assign`，并使用 `Object.defineProperty` 将该函数绑定到 `Object` 上。
+## 1.Object.assign 不可枚举、可配置、可写
 
-2、判断参数是否正确（目标对象不能为空，我们可以直接设置{}传递进去,但必须设置值）。
+判断原生 `Object` 是否支持该函数，如果不存在的话创建一个函数 `assign`，并使用 `Object.defineProperty` 将该函数绑定到 `Object` 上。
 
-3、使用 `Object()` 转成对象，并保存为 to，最后返回这个对象 to。
+```js
+Object.prototype.myAssign  || Object.defineProperty() 定义
+```
 
-4、使用 `for..in` 循环遍历出所有可枚举的自有属性。并复制给新的目标对象（使用 `hasOwnProperty` 获取自有属性，即非原型链上的属性）。
+## 2.判断参数是否正确
 
-实现代码如下，这里为了验证方便，使用 `assign2` 代替 `assign`。注意此模拟实现不支持 `symbol` 属性，因为`ES5` 中根本没有 `symbol` 。
+目标对象不能为空，我们可以直接设置{}传递进去,但必须设置值
+
+```js
+if (target === null || target === undefined) {
+     throw new TypeError('Cannot convert undefined or null to object');
+}
+```
+
+## 3. 使用 `Object()` 转成对象
+
+将target转为对象，非对象转为包装类型，自身没有可枚举属性则不生效
+
+```js
+const to = Object(target);
+```
+
+## 4.遍历自身可枚举属性复制
+
+```js
+for (let key in nextSource) {
+    // 这里使用call，是因为Object.create(null, obj), 这种不会继承Object的方法
+    if (Object.prototype.hasOwnProperty.call(nextSource, key)) {
+        to[key] = nextSource[key];
+    }
+}
+```
+
+使用 `for..in` 循环遍历出所有可枚举的自有属性。并复制给新的目标对象（使用 `hasOwnProperty` 获取自有属性，即非原型链上的属性）。
+
+## 5.遍历symbol属性
+
+```js
+// 获取源对象上的Symbol属性
+const symbols = Object.getOwnPropertySymbols(nextSource);
+for (const symbol of symbols) {
+    to[symbol] = nextSource[symbol];
+}
+```
+
+## 6.完整代码
+
+```js
+Object.prototype.myAssign = function (target) {
+    // 使用严格模式是因为Object('abc')这种默认不可写
+    'use strict';
+    // 1.判断参数是否正确, 一个目标对象用target表示，源对象从arguments中获取
+    // 源对象不能是null | undefined， 由于`undefined`和`null`无法转成对象，所以如果它们作为参数，就会报错。
+    if (target === null || target === undefined) {
+        throw new TypeError('Cannot convert undefined or null to object');
+    }
+
+    // 2.将target转为对象，自身没有可枚举属性需要变为对象
+    const to = Object(target);
+    // console.log("✅ ~ zhuling Object(target):", to)
+    // console.log("✅ ~ zhuling to:", Object.getOwnPropertyDescriptors(to))
+    
+    // 3.循环遍历获取参数arguments
+    for(let i = 1; i < arguments.length; i++) {
+        // 下一个源对象
+        const nextSource = arguments[i];
+        if (nextSource !== null) {
+            for (let key in nextSource) {
+                // 这里使用call，是因为Object.create(null, obj), 这种不会继承Object的方法
+                if (Object.prototype.hasOwnProperty.call(nextSource, key)) {
+                    to[key] = nextSource[key];
+                }
+            }
+
+            // 获取源对象上的Symbol属性
+            const symbols = Object.getOwnPropertySymbols(nextSource);
+            for (const symbol of symbols) {
+                to[symbol] = nextSource[symbol];
+            }
+        }
+    }
+
+
+    return to;
+}
+
+// 测试用例
+let a = {
+    name: "advanced",
+    age: 18
+}
+let b = {
+    name: "muyiy",
+    book: {
+        title: "You Don't Know JS",
+        price: "45"
+    }
+}
+
+let c = Object.myAssign(a, b);
+// Object.assign不可枚举,可写、可配置
+// console.log("✅ ~ zhuling Object.keys(Object):", Object.keys(Object))
+// console.log("✅ ~ zhuling c:", c, c.book)
+// console.log("✅ ~ zhuling a === c:", a === c)
+
+// 测试用例： 测试使用严格模式是因为Object('abc')这种默认不可写
+let test1 = "abc";
+let test2 = "def";
+// Object.myAssign(test1, test2); 
+
+
+let aSymbol = {
+    name: "advanced",
+    age: 18,
+    [Symbol('foo')]: 'bar'
+}
+
+let bSymbol = {
+    name: "muyiy",
+    book: {
+        title: "You Don't Know JS",
+        price: "45"
+    },
+    [Symbol('baz')]: 'qux'
+}
+
+let cSymbol = Object.myAssign(aSymbol, bSymbol);
+console.log("✅ ~ zhuling cSymbol:", cSymbol) // 输出合并后的对象，包括Symbol属性
+console.log("✅ ~ zhuling Object.getOwnPropertySymbols(cSymbol):", Object.getOwnPropertySymbols(cSymbol)) // 输出合并后对象的Symbol属性
+
+```
 
