@@ -26,28 +26,30 @@ function mutatesArray(array1, array2) {
   return false;
 }
 
-Array.prototype.myReduce = function (array, callback, initValue) {
-  let acc = initValue;
-  let start = 0;
-
-  if (initValue === undefined) {
-    acc = array[0];
-    start = 1;
+function myJoin1(array, seperate) {
+  let result = "";
+  seperate = seperate === undefined ? "," : seperate;
+  for (let i = 0; i < array.length; i++) {
+    if (i === 0) {
+      result = `${array[i]}`;
+    }
+    result = `${result}${seperate}${array[i]}`;
   }
+  return result;
+}
 
-  for (let i = start; i < array.length; i++) {
-    console.log("✅ ~ i:", i);
-    acc = callback(acc, array[i], i, array);
-  }
-  return acc;
-};
+function myJoin2(array, seperate) {
+  seperate = seperate === undefined ? "," : seperate;
+  const result = array.reduce((acc, i, index) => {
+    console.log("✅ ~ index:", index);
+    if (index === 0) {
+      return `${i}`;
+    }
+    return `${acc}${seperate}${i}`;
+  });
+  return result;
+}
 
-logHelper("reduce", [1, 2, 3, 4, 5], (array) =>
-  Array.prototype.myReduce(array, (sum, number) => sum * number)
-);
+logHelper("join", [1, 2, 3, 4, 5], (array) => myJoin1(array, ","));
 
-const result = [1, 2, 3, 4, 5].reduce((sum, number, index) => {
-  console.log("✅ ~ index:", number, index);
-  return sum * number;
-});
-console.log("✅ ~ 原生reduce result:", result);
+logHelper("join", [1, 2, 3, 4, 5], (array) => myJoin2(array, ", "));

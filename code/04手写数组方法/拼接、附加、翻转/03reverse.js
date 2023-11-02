@@ -26,28 +26,26 @@ function mutatesArray(array1, array2) {
   return false;
 }
 
-Array.prototype.myReduce = function (array, callback, initValue) {
-  let acc = initValue;
-  let start = 0;
-
-  if (initValue === undefined) {
-    acc = array[0];
-    start = 1;
+function myReverse1(array) {
+  let result = [];
+  for (let i = array.length - 1; i >= 0; i--) {
+    result[array.length - 1 - i] = array[i];
   }
+  return result;
+}
 
-  for (let i = start; i < array.length; i++) {
-    console.log("✅ ~ i:", i);
-    acc = callback(acc, array[i], i, array);
+function myReverse2(array) {
+  let arrayLength = array.length - 1;
+  let mid = Math.floor(arrayLength / 2);
+  console.log("✅ ~ mid:", mid);
+  let temp;
+  for (let i = 0; i <= mid; i++) {
+    temp = array[i];
+    array[i] = array[arrayLength - i];
+    array[arrayLength - i] = temp;
   }
-  return acc;
-};
+  return array;
+}
 
-logHelper("reduce", [1, 2, 3, 4, 5], (array) =>
-  Array.prototype.myReduce(array, (sum, number) => sum * number)
-);
-
-const result = [1, 2, 3, 4, 5].reduce((sum, number, index) => {
-  console.log("✅ ~ index:", number, index);
-  return sum * number;
-});
-console.log("✅ ~ 原生reduce result:", result);
+logHelper("reverse", [1, 2, 3, 4, 5], (array) => myReverse1(array));
+logHelper("reverse", [1, 2, 3, 4, 5], (array) => myReverse2(array));

@@ -26,28 +26,17 @@ function mutatesArray(array1, array2) {
   return false;
 }
 
-Array.prototype.myReduce = function (array, callback, initValue) {
-  let acc = initValue;
-  let start = 0;
+function myConcat(array, ...otherArray) {
+  let result = [...array];
 
-  if (initValue === undefined) {
-    acc = array[0];
-    start = 1;
+  for (let i = 0; i < otherArray.length; i++) {
+    if (Array.isArray(otherArray[i])) {
+      result = [...result, ...otherArray[i]];
+    } else {
+      result.push(otherArray[i]);
+    }
   }
+  return result;
+}
 
-  for (let i = start; i < array.length; i++) {
-    console.log("✅ ~ i:", i);
-    acc = callback(acc, array[i], i, array);
-  }
-  return acc;
-};
-
-logHelper("reduce", [1, 2, 3, 4, 5], (array) =>
-  Array.prototype.myReduce(array, (sum, number) => sum * number)
-);
-
-const result = [1, 2, 3, 4, 5].reduce((sum, number, index) => {
-  console.log("✅ ~ index:", number, index);
-  return sum * number;
-});
-console.log("✅ ~ 原生reduce result:", result);
+logHelper("concat", [1, 2, 3, 4, 5], (array) => myConcat(array, 1, 2, [3, 4]));
