@@ -33,46 +33,32 @@ https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 
 ## 3.数组手写汇总
 
-+ [01 集合类：forEach、map、filter、reduce](./array/01集合类.md)
-+ [02 检索类：findIndex、find、indexOf、lastIndexOf、every、some、includes](./array/02检索类.md)
-+ [03 拼接、附加、翻转数组：concat、join、reverse](./array/03拼接、附加、翻转数组.md)
-+ [04 添加、删除、追加值：shift、unShift、slice、splice、pop、push、fill](./array/04添加、删除、追加值.md)
-+ [05 扁平类：flat、flatMap](./array/05.扁平类.md)
-+ [06 generator类：keys, values, entries](./array/06generator.md)
+- [01 集合类：forEach、map、filter、reduce](./array/01集合类.md)
+- [02 检索类：findIndex、find、indexOf、lastIndexOf、every、some、includes](./array/02检索类.md)
+- [03 拼接、附加、翻转数组：concat、join、reverse](./array/03拼接、附加、翻转数组.md)
+- [04 添加、删除、追加值：shift、unShift、slice、splice、pop、push、fill](./array/04添加、删除、追加值.md)
+- [05 扁平类：flat、flatMap](./array/05.扁平类.md)
+- [06 generator 类：keys, values, entries](./array/06generator.md)
 
 ## 4.字符串手写汇总
-
-
 
 # 二、常见算法题汇总
 
 ## 树
 
-先根据codeWhy的目录和另外两个补充，搞完一个目录结构，最后使用那个课程刷题
+先根据 codeWhy 的目录和另外两个补充，搞完一个目录结构，最后使用那个课程刷题
 
-[01参考文章算法目录](https://www.conardli.top/docs/dataStructure/)
+[01 参考文章算法目录](https://www.conardli.top/docs/dataStructure/)
 
-[02参考文章算法目录](https://www.coding-time.cn/lc/data-structures/linked-list/)
+[02 参考文章算法目录](https://www.coding-time.cn/lc/data-structures/linked-list/)
 
-[03codeWhy算法目录](https://www.jianshu.com/p/38853c044156)
+[03codeWhy 算法目录](https://www.jianshu.com/p/38853c044156)
 
-[04一个课程学技巧：这个最后用](https://labuladong.github.io/algo/)
+[04 一个课程学技巧：这个最后用](https://labuladong.github.io/algo/)
 
-+ [01 树的基本概念](./algorithm/tree/01树的基本概念.md)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- [01 树的基本概念](./algorithm/tree/01树的基本概念.md)
+- [02 二叉树概览&基本操作](./algorithm/tree/02二叉树概览&基本操作.md)
+- [03 二叉树的遍历](./algorithm/tree/03二叉树的遍历.md)
 
 # 三、需要注意
 
