@@ -58,7 +58,8 @@ https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 
 - [01 树的基本概念](./algorithm/tree/01树的基本概念.md)
 - [02 二叉树概览&基本操作](./algorithm/tree/02二叉树概览&基本操作.md)
-- [03 二叉树的遍历](./algorithm/tree/03二叉树的遍历.md)
+- [03 二叉树的封装](./algorithm/tree/03二叉树的封装.md)
+- [04 二叉树的遍历](./algorithm/tree/04二叉树的遍历.md)
 
 # 三、需要注意
 
