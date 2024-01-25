@@ -33,6 +33,7 @@ https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 
 ## 3.数组手写汇总
 
+- [00 实现数组的数据结构&增删改查](./array/00实现数组的数据结构.md)
 - [01 集合类：forEach、map、filter、reduce](./array/01集合类.md)
 - [02 检索类：findIndex、find、indexOf、lastIndexOf、every、some、includes](./array/02检索类.md)
 - [03 拼接、附加、翻转数组：concat、join、reverse](./array/03拼接、附加、翻转数组.md)
