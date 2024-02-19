@@ -90,18 +90,19 @@ class BasicArray {
 
 
 
-// 基本数组使用示例
-const myArray = new BasicArray();
-myArray.insert(0, 'a');
-myArray.insert(1, 'b');
-myArray.insert(2, 'c');
-myArray.print(); // ['a', 'b', 'c']
+// // 基本数组使用示例
+// const myArray = new BasicArray();
+// myArray.insert(0, 'a');
+// myArray.insert(1, 'b');
+// myArray.insert(2, 'c');
+// myArray.print(); // ['a', 'b', 'c']
 
-myArray.update(1, 'x');
-myArray.print(); // ['a', 'x', 'c']
+// myArray.update(1, 'x');
+// myArray.print(); // ['a', 'x', 'c']
 
-myArray.delete(0);
-myArray.print(); // ['x', 'c']
+// myArray.delete(0);
+// myArray.print(); // ['x', 'c']
 
-console.log(myArray.getLength()); // 2
+// console.log(myArray.getLength()); // 2
 
+module.exports = BasicArray;
