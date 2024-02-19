@@ -7,11 +7,20 @@ class BasicArray {
         this.data = {};
     }
 
+    /**
+     * 末尾增加元素
+     * @param {*} item 
+     */
     add(item) {
         this.data[this.length] = item;
         this.length++;
     }
 
+    /**
+     * 任意位置插入元素
+     * @param {*} index 
+     * @param {*} item 
+     */
     insert(index, item) {
         if (index < 0) index = 0;
         if (index > this.length) index = this.length;
@@ -25,6 +34,11 @@ class BasicArray {
         this.length++;
     }
 
+    /**
+     * 删除指定位置元素
+     * @param {*} index 
+     * @returns 
+     */
     delete(index) {
         const deleted = this.data[index];
         // 用i后面的元素覆盖之前的元素
@@ -36,19 +50,35 @@ class BasicArray {
         return deleted;
     }
 
+    /**
+     * 更新元素
+     * @param {*} index 
+     * @param {*} item 
+     */
     update(index, item) {
         this.data[index] = item;
     }
 
+    /**
+     * 获取数组长度
+     * @returns 
+     */
     getLength() {
         return this.length;
     }
 
+    /**
+     * 获取元素
+     * @param {*} index 
+     * @returns 
+     */
     get(index) {
         return this.data[index];
     }
 
-    // 打印数组内容
+    /**
+     * 打印
+     */
     print() {
         const result = [];
         for (let i = 0; i < this.length; i++) {
