@@ -85,7 +85,7 @@ class BasicArray {
   }
 
   /**
-   * 答应帮助
+   * 打印帮助函数
    * @param {*} operateName
    * @param {*} array
    * @param {*} callback
