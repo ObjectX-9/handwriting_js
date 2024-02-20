@@ -61,7 +61,7 @@ array.initArr([1, 2, 3, 4, 5, 6, 7, 8]);
 
 // forEach
 array.logHelper("forEach", array.getArray(), () => {
-  array.myForEach((item, index, array) => {
+  return array.myForEach((item, index, array) => {
     // console.log("✅ ~ item:", item);
   });
 });
