@@ -2,6 +2,7 @@ const BasicArray = require("../00实现数组结构/index");
 class CollectArray extends BasicArray {
   initArr(arr) {
     this.data = arr;
+    this.length === arr.length;
   }
 
   myForEach(callback, thisValue) {
@@ -55,34 +56,36 @@ class CollectArray extends BasicArray {
   }
 }
 
-const array = new CollectArray();
-// 初始化一个数组
-array.initArr([1, 2, 3, 4, 5, 6, 7, 8]);
+// const array = new CollectArray();
+// // 初始化一个数组
+// array.initArr([1, 2, 3, 4, 5, 6, 7, 8]);
 
-// forEach
-array.logHelper("forEach", array.getArray(), () => {
-  return array.myForEach((item, index, array) => {
-    // console.log("✅ ~ item:", item);
-  });
-});
+// // forEach
+// array.logHelper("forEach", array.getArray(), () => {
+//   return array.myForEach((item, index, array) => {
+//     // console.log("✅ ~ item:", item);
+//   });
+// });
 
-// map
-array.logHelper("map", array.getArray(), () => {
-  return array.myMap((item, index, array) => {
-    return item * 2;
-  });
-});
+// // map
+// array.logHelper("map", array.getArray(), () => {
+//   return array.myMap((item, index, array) => {
+//     return item * 2;
+//   });
+// });
 
-// filter
-array.logHelper("filter", array.getArray(), () => {
-  return array.myFilter((item, index, array) => {
-    return item < 4;
-  });
-});
+// // filter
+// array.logHelper("filter", array.getArray(), () => {
+//   return array.myFilter((item, index, array) => {
+//     return item < 4;
+//   });
+// });
 
-// reduce
-array.logHelper("reduce", array.getArray(), () => {
-  return array.myReduce((pre, item, index, array) => {
-    return pre * item;
-  }, 0);
-});
+// // reduce
+// array.logHelper("reduce", array.getArray(), () => {
+//   return array.myReduce((pre, item, index, array) => {
+//     return pre * item;
+//   }, 0);
+// });
+
+module.exports = CollectArray;
