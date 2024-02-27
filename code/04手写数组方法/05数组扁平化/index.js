@@ -79,21 +79,22 @@ class FlatArray extends CurdArray {
   }
 }
 
-const flatArr = new FlatArray();
-flatArr.initArr([1, 2, 3, [4, 5], [6, [7, [8]]]]);
+// const flatArr = new FlatArray();
+// flatArr.initArr([1, 2, 3, [4, 5], [6, [7, [8]]]]);
 
-flatArr.logHelper("flatFor", flatArr.getArray(), () => {
-  return flatArr.myFlatFor();
-});
+// flatArr.logHelper("flatFor", flatArr.getArray(), () => {
+//   return flatArr.myFlatFor();
+// });
 
-flatArr.logHelper("flatWhile", flatArr.getArray(), () => {
-  return flatArr.myFlatWhile();
-});
+// flatArr.logHelper("flatWhile", flatArr.getArray(), () => {
+//   return flatArr.myFlatWhile();
+// });
 
-flatArr.logHelper("flatReduce", flatArr.getArray(), () => {
-  return flatArr.myFlatReduce();
-});
+// flatArr.logHelper("flatReduce", flatArr.getArray(), () => {
+//   return flatArr.myFlatReduce();
+// });
 
-flatArr.logHelper("flatStack", flatArr.getArray(), () => {
-  return flatArr.myFlatStack();
-});
+// flatArr.logHelper("flatStack", flatArr.getArray(), () => {
+//   return flatArr.myFlatStack();
+// });
+module.exports = FlatArray;

@@ -40,6 +40,7 @@ https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 - [04 添加、删除、追加值：shift、unShift、slice、splice、pop、push、fill](./array/04添加、删除、追加值.md)
 - [05 扁平类：flat、flatMap](./array/05.扁平类.md)
 - [06 generator 类：keys, values, entries](./array/06generator.md)
+- [07 数组去重]()
 
 ## 4.字符串手写汇总
 
