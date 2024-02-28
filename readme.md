@@ -44,9 +44,13 @@ https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 
 ## 4.字符串手写汇总
 
+## 5.栈手写
+
+- [00 实现栈的数据结构](./stack/00实现栈结构.md)
+
 # 二、常见算法题汇总
 
-+ [算法总结](https://github.com/zhuling904/algorithm)
+- [算法总结](https://github.com/zhuling904/algorithm)
 
 # 三、需要注意
 
