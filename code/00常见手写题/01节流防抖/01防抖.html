@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="button">点击防抖</button>
+    <script>
+        window.onload = function () {
+            const button = document.querySelector('#button');
+            button.addEventListener('click', debounce((delay) => {
+                console.log("delay是多少", delay);
+            }, 1000))
+        }
+
+        // 设置防抖
+        function debounce(callback, delay) {
+            let timer = null;
+            // debounce返回一个函数，进入先清空定时器，然后重置定时器
+            return function () {
+                // 清除定时器
+                clearTimeout(timer);
+                // 重置定时器
+                timer = setTimeout(() => {
+                    callback(delay);
+                }, delay);
+            };
+        }
+    </script>
+</body>
+
+</html>
