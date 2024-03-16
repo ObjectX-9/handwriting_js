@@ -1,12 +1,10 @@
-# JS 手写
+# JS 手写&算法
 
 https://github.com/sisterAn/JavaScript-Algorithms
 
 https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 
-# 一、常见手写汇总
-
-## 1.高频
+# 1.高频
 
 - [01 节流防抖](./common/01防抖节流.md)
 - [02 Object.create](./common/02Object_create.md)
@@ -24,14 +22,14 @@ https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 - [14 async&amp;await 实现原理](./common/14async&await实现原理.md)
 - [15 手写实现 let、const](./common/15手写实现let、const.md)
 
-## 2.对象方法手写汇总
+# 2.对象
 
 - [01 Object.create](./common/02Object_create.md)
 - [02 Object.freeze、Object.seal](./object/02Object.freeze.md)
 - [03 Object.is](./object/03Object.is.md)
 - [04 Object.assign](./object/04Object.assign.md)
 
-## 3.数组手写汇总
+# 3.数组
 
 - [00 实现数组的数据结构&增删改查](./array/00实现数组的数据结构.md)
 - [01 集合类：forEach、map、filter、reduce](./array/01集合类.md)
@@ -40,21 +38,17 @@ https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 - [04 添加、删除、追加值：shift、unShift、slice、splice、pop、push、fill](./array/04添加、删除、追加值.md)
 - [05 扁平类：flat、flatMap](./array/05.扁平类.md)
 - [06 generator 类：keys, values, entries](./array/06generator.md)
-- [07 数组去重]()
+- [07 数组去重](./array/07数组去重.md)
+- [08二分查找]()
+- 
 
-## 4.字符串手写汇总
+# 4.字符串
 
-## 5.栈手写汇总
+# 5.栈
 
 - [00 实现栈的数据结构](./stack/00实现栈结构.md)
 
-## 6.队列手写汇总
-
-
-
-# 二、常见算法题汇总
-
-- [算法总结](https://github.com/zhuling904/algorithm)
+# 6.队列
 
 # 三、需要注意
 
