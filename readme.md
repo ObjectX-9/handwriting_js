@@ -50,6 +50,10 @@ https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md
 
 # 6.队列
 
+# 7.树
+
+
+
 # 三、需要注意
 
 ```
