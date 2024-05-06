@@ -141,6 +141,32 @@ class DbLinkedList {
     }
     return -1;
   }
+
+  // 根据元素删除
+  remove(element) {
+    const index = this.indexOf(element);
+    return this.removeAt(index);
+  }
+
+  // 判断是否为空
+  isEmpty() {
+    return this.length === 0;
+  }
+
+  // 获取链表长度
+  size() {
+    return this.length;
+  }
+
+  // 获取第一个元素
+  getHead() {
+    return this.head.elem;
+  }
+
+  // 获取最后一个元素
+  getTail() {
+    return this.tail.elem;
+  }
 }
 
 class MyNode {

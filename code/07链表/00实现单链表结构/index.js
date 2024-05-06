@@ -4,10 +4,13 @@ class LinkedList {
 
   // 队尾增加方法
   append(elem) {
+    // 新建节点
     const newNode = new Node(elem);
+    // 判断是否为空链表
     if (this.head === null) {
       this.head = newNode;
     } else {
+      // 找到最后一个节点的位置
       let current = this.head;
       while (current.next) {
         current = current.next;
@@ -29,11 +32,12 @@ class LinkedList {
       newNode.next = current;
       this.head = newNode;
     } else {
+      // 查找节点位置
       while (index++ < position) {
         preview = current;
         current = current.next;
       }
-
+      // 插入节点
       preview.next = newNode;
       newNode.next = current;
     }

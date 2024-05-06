@@ -14,6 +14,10 @@ class BaseQueue {
     return this.queueData[0];
   }
 
+  rear() {
+    return this.queueData[this.queueData.length - 1];
+  }
+
   isEmpty() {
     return this.queueData.length === 0;
   }
