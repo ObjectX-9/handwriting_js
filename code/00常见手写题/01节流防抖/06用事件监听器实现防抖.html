@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debounce with Event Listener Unbinding</title>
+</head>
+
+<body>
+    <input type="text" id="debounce-event-input" placeholder="Type something...">
+    <script>
+        function debounceEvent(func, delay) {
+            let timer;
+            return function (event) {
+                if (timer) {
+                    event.target.removeEventListener(event.type, arguments.callee); // 解绑事件
+                    clearTimeout(timer); // 清除定时器
+                }
+                timer = setTimeout(() => {
+                    func.apply(this, arguments); // 延迟结束后执行函数
+                    event.target.addEventListener(event.type, arguments.callee); // 重新绑定事件
+                }, delay);
+            };
+        }
+
+        const handleInput = debounceEvent((event) => {
+            console.log('Input:', event.target.value);
+        }, 1000);
+
+        document.getElementById('debounce-event-input').addEventListener('input', handleInput);
+    </script>
+</body>
+
+</html>

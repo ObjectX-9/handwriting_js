@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debounce with Promise</title>
+</head>
+
+<body>
+    <input type="text" id="debounce-input-promise" placeholder="Type something...">
+    <script>
+        function debounce(func, delay) {
+            let timer;
+            return function (...args) {
+                return new Promise((resolve) => {
+                    if (timer) clearTimeout(timer); // 清除定时器
+                    timer = setTimeout(() => {
+                        resolve(func.apply(this, args)); // 延迟结束后执行函数
+                    }, delay);
+                });
+            };
+        }
+
+        const handleInput = debounce((event) => {
+            console.log('Input:', event.target.value);
+        }, 1000);
+
+        document.getElementById('debounce-input-promise').addEventListener('input', handleInput);
+    </script>
+</body>
+
+</html>

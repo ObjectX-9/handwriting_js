@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debounce with Immediate Execution and Stop Typing</title>
+</head>
+
+<body>
+    <input type="text" id="debounce-input" placeholder="Type something...">
+    <script>
+        function debounce(func, delay) {
+            let timer; // 定时器变量
+            return function (...args) {
+                const context = this; // 保存函数执行上下文
+                clearTimeout(timer); // 清除定时器
+                const callNow = !timer; // 是否立即执行的标志
+                timer = setTimeout(function () { // 设置延迟定时器
+                    timer = null; // 定时器置空
+                    if (!callNow) { // 如果不是立即执行
+                        func.apply(context, args); // 执行函数
+                    }
+                }, delay);
+                if (callNow) { // 如果是立即执行
+                    func.apply(context, args); // 执行函数
+                }
+            };
+        }
+
+        const handleInput = debounce((event) => { // 创建防抖函数
+            console.log('Input:', event.target.value); // 打印输入内容
+        }, 500); // 设置延迟时间为500毫秒
+
+        document.getElementById('debounce-input').addEventListener('input', handleInput); // 监听输入事件
+    </script>
+</body>
+
+</html>
