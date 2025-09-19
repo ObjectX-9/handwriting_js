@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 是否是类数组
+        function isArrayLike(obj) {
+            return obj
+                && typeof obj === 'object'
+                && typeof obj.length === 'number'
+                && obj.length === Math.floor(obj.length)
+                && obj.length >= 0
+                && obj.length < Math.pow(2, 32)
+                && isFinite(obj.length);
+        }
+
+        Function.prototype.myApply = function (context, ...args) {
+            if (context === null || context === undefined) {
+                context = window;
+            } else if (typeof context !== 'object' && typeof context !== 'function') {
+                context = Object(context);
+            }
+
+            const fn = Symbol('fn');
+            context[fn] = this;
+
+            // 判断是否有参数
+            const hasArgs = args && args.length > 0;
+
+            let result;
+
+            if (hasArgs) {
+                const arrayArgs = args[0];
+                // 参数是否合法
+                if (Array.isArray(arrayArgs) || isArrayLike(arrayArgs)) {
+                    const arrayArgsInput = Array.from(arrayArgs);
+                    result = context[fn](...arrayArgsInput);
+                } else {
+                    throw new Error('args must be an array or arrayLike');
+                }
+            } else {
+                // 无参数直接调用
+                result = context[fn]();
+            }
+
+            delete context[fn];
+            return result;
+        }
+
+        /* 使用示例 */
+        function introduce(name, age) {
+            console.log(`${this.title}: ${name} is ${age} years old.`);
+        }
+
+        const context = { title: 'Person' };
+        introduce.myApply(context, ['Alice', 28]); // 输出: "Person: Alice is 28 years old."
+
+        // 测试类数组
+        const arrayLike = { 0: 'Alice', 1: 28, length: 2 };
+        introduce.myApply(context, arrayLike); // 输出: "Person: Alice is 28 years old."
+
+        // 测试无参数
+        introduce.myApply(context); // 输出: "Person: undefined is undefined years old."
+    </script>
+</body>
+
+</html>

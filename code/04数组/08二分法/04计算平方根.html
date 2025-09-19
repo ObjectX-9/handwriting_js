@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        function mySqrt(x) {
+            let left = 0;
+            // 注意这里是X
+            let right = x;
+            while (left <= right) {
+                let mid = Math.floor((left + right) / 2);
+                let result = mid * mid;
+                if (result === x) return mid;
+                else if (result < x) left = mid + 1;
+                else right = mid - 1;
+            }
+            // 这里为什么返回right？
+            // 因为当left和right相遇时，right是小于x的最大整数，所以返回right
+            return right;
+        }
+
+        console.log('计算平方根, 结果: 参数: 4, 结果: ', mySqrt(4));
+    </script>
+</body>
+
+</html>

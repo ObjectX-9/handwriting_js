@@ -8,28 +8,26 @@
 </head>
 
 <body>
-    <button id="button">点击防抖</button>
+    <button id="button" onclick="debouncedClick()">点击防抖</button>
     <script>
-        window.onload = function () {
-            const button = document.querySelector('#button');
-            button.addEventListener('click', debounce((delay) => {
-                console.log("delay是多少", delay);
-            }, 1000))
+        function handleClick() {
+            console.log("按钮被点击了");
         }
 
-        // 设置防抖
-        function debounce(callback, delay) {
-            let timer = null;
-            // debounce返回一个函数，进入先清空定时器，然后重置定时器
-            return function () {
-                // 清除定时器
-                clearTimeout(timer);
-                // 重置定时器
-                timer = setTimeout(() => {
-                    callback(delay);
+        function debounce(func, delay) {
+            let timerId;
+            return function (...args) {
+                if (timerId) {
+                    clearTimeout(timerId);
+                }
+                timerId = setTimeout(() => {
+                    func.apply(this, args);
                 }, delay);
-            };
+            }
         }
+
+        // 创建一个防抖后的函数
+        const debouncedClick = debounce(handleClick, 1000);
     </script>
 </body>
 

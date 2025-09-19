@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function isPerfectSquare(num) {
+            let left = 0;
+            // 注意这里是num
+            let right = num;
+            while (left <= right) {
+                let mid = Math.floor((left + right) / 2);
+                let result = mid * mid;
+                if (result === num) return true;
+                else if (result < num) left = mid + 1;
+                else right = mid - 1;
+            }
+            return false;
+        }
+
+        console.log('完全平方数, 结果: 参数: 16, 结果: ', isPerfectSquare(16));
+        console.log('完全平方数, 结果: 参数: 1, 结果: ', isPerfectSquare(1));
+        console.log('完全平方数, 结果: 参数: 0, 结果: ', isPerfectSquare(0));
+        console.log('完全平方数, 结果: 参数: 2, 结果: ', isPerfectSquare(2));
+        console.log('完全平方数, 结果: 参数: 3, 结果: ', isPerfectSquare(3));
+        console.log('完全平方数, 结果: 参数: 4, 结果: ', isPerfectSquare(4));
+        console.log('完全平方数, 结果: 参数: 5, 结果: ', isPerfectSquare(5));
+        console.log('完全平方数, 结果: 参数: 6, 结果: ', isPerfectSquare(6));
+        console.log('完全平方数, 结果: 参数: 7, 结果: ', isPerfectSquare(7));
+        console.log('完全平方数, 结果: 参数: 8, 结果: ', isPerfectSquare(8));
+        console.log('完全平方数, 结果: 参数: 9, 结果: ', isPerfectSquare(9));
+        console.log('完全平方数, 结果: 参数: 10, 结果: ', isPerfectSquare(10));
+    </script>
+</body>
+
+</html>

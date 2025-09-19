@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        Function.prototype.myBind = function (context, ...args) {
+            // 保存原函数，调用bind的原函数，因为本来后续就是给他设置上下文
+            const self = this;
+
+            // 返回的绑定函数
+            const boundFunction = function (...newArgs) {
+                // 合并参数
+                const allArgs = args.concat(newArgs);
+                // 判断是否作为构造函数调用
+                if (new.target) {
+                    // 作为构造函数调用时，this指向新创建的实例
+                    return self.apply(this, allArgs);
+                } else {
+                    // 普通函数调用时，this指向绑定的context
+                    return self.apply(context, allArgs);
+                }
+            };
+
+            // 维护原型链 - 让绑定函数的原型指向原函数的原型
+            if (self.prototype) {
+                boundFunction.prototype = Object.create(self.prototype);
+            }
+
+            // 添加解除绑定功能
+            boundFunction.unbind = function () {
+                return self; // 返回原函数
+            };
+
+            // 添加获取绑定信息的方法
+            boundFunction.getBindInfo = function () {
+                return {
+                    originalFunction: self,
+                    boundContext: context,
+                    boundArgs: args
+                };
+            };
+
+            return boundFunction;
+        };
+
+        // 测试对象
+        const person = {
+            name: 'Alice',
+            age: 25
+        };
+
+        // 测试函数
+        function greet(greeting, punctuation) {
+            return `${greeting}, I'm ${this.name}, ${this.age} years old${punctuation}`;
+        }
+
+        // 构造函数测试
+        function Person(name, age) {
+            this.name = name;
+            this.age = age;
+        }
+        Person.prototype.sayHello = function () {
+            return `Hello, I'm ${this.name}`;
+        };
+
+        console.log('=== 详细步骤演示 ===');
+
+        // 演示参数合并过程
+        function demo(a, b, c) {
+            console.log(`参数: a=${a}, b=${b}, c=${c}`);
+            console.log(`this.name: ${this.name}`);
+            return `结果: ${a}-${b}-${c}`;
+        }
+
+        const obj = { name: 'TestObject' };
+
+        // 1. 预设一个参数
+        const boundDemo = demo.myBind(obj, '预设参数1');
+        console.log('调用 boundDemo("新参数2", "新参数3"):');
+        console.log(boundDemo('新参数2', '新参数3'));
+        console.log('');
+
+        // 2. 预设两个参数
+        const boundDemo2 = demo.myBind(obj, '预设参数1', '预设参数2');
+        console.log('调用 boundDemo2("新参数3"):');
+        console.log(boundDemo2('新参数3'));
+        console.log('');
+
+        console.log('=== 基本功能测试 ===');
+
+        // 1. 基本绑定this
+        const boundGreet = greet.myBind(person);
+        console.log('绑定this:', boundGreet('Hello', '!'));
+
+        // 2. 预设参数（柯里化）
+        const boundGreetWithArgs = greet.myBind(person, 'Hi');
+        console.log('预设参数:', boundGreetWithArgs('!'));
+
+        // 3. 混合预设参数和新参数
+        const boundGreetPartial = greet.myBind(person, 'Hey');
+        console.log('混合参数:', boundGreetPartial('?'));
+
+        console.log('=== 构造函数测试详解 ===');
+
+        function TestConstructor(name, age) {
+            console.log('构造函数内部:');
+            console.log(`  new.target: ${new.target ? new.target.name : 'undefined'}`);
+            console.log(`  this: ${this.constructor ? this.constructor.name : 'undefined'}`);
+            this.name = name;
+            this.age = age;
+            return `尝试返回字符串`; // 构造函数调用时会被忽略
+        }
+
+        const BoundConstructor = TestConstructor.myBind(null, 'BindName');
+
+        console.log('普通调用:');
+        const result1 = BoundConstructor(25);
+        console.log(`返回值: ${result1}`);
+        console.log('');
+
+        console.log('构造函数调用:');
+        const result2 = new BoundConstructor(30);
+        console.log(`返回值:`, result2);
+        console.log(`是否为TestConstructor实例: ${result2 instanceof TestConstructor}`);
+        console.log('');
+
+        console.log('=== 构造函数测试 ===');
+
+        // 4. 作为构造函数使用
+        const BoundPerson = Person.myBind(null, 'Bob');
+        const bob = new BoundPerson(30);
+        console.log('构造函数调用:', bob);
+        console.log('实例方法:', bob.sayHello());
+        console.log('原型链检查:', bob instanceof Person);
+
+        // 5. 完全作为构造函数使用
+        const BoundPersonFull = Person.myBind(person);
+        const charlie = new BoundPersonFull('Charlie', 28);
+        console.log('完全构造函数:', charlie);
+        console.log('原型链检查2:', charlie instanceof Person);
+
+        console.log('=== 解除绑定功能测试 ===');
+
+        // 测试解除绑定
+        function testFunction(prefix, name) {
+            return `${prefix}: ${name} (this.value: ${this.value})`;
+        }
+
+        const testContext = { value: 'ContextValue' };
+
+        // 1. 创建绑定函数
+        const boundTest = testFunction.myBind(testContext, 'Bound');
+        console.log('绑定函数调用:', boundTest('Alice'));
+
+        // 2. 获取绑定信息
+        const bindInfo = boundTest.getBindInfo();
+        console.log('绑定信息:', {
+            原函数名: bindInfo.originalFunction.name,
+            绑定上下文: bindInfo.boundContext,
+            预设参数: bindInfo.boundArgs
+        });
+
+        // 3. 解除绑定
+        const unboundTest = boundTest.unbind();
+        console.log('解除绑定后调用 (this=window):', unboundTest('Unbound', 'Bob'));
+
+        // 4. 重新绑定到不同上下文
+        const newContext = { value: 'NewContextValue' };
+        const reboundTest = unboundTest.myBind(newContext, 'Rebound');
+        console.log('重新绑定后调用:', reboundTest('Charlie'));
+
+        // 5. 验证解除绑定返回的是原函数
+        console.log('解除绑定返回原函数:', unboundTest === testFunction);
+
+        console.log('=== 链式解除绑定测试 ===');
+
+        // 多层绑定和解除
+        const multiLayerBound = testFunction
+            .myBind({ value: 'First' }, 'Layer1')
+            .myBind({ value: 'Second' }, 'Layer2'); // 注意：这会创建新的绑定
+
+        console.log('多层绑定调用:', multiLayerBound('Test'));
+        const unbound1 = multiLayerBound.unbind();
+        console.log('解除一层后调用:', unbound1('Layer1', 'Test'));
+        const unbound2 = unbound1.unbind();
+        console.log('解除两层后 (原函数):', unbound2 === testFunction);
+
+        console.log('=== 对比原生bind ===');
+
+        // 6. 与原生bind对比
+        const nativeBound = greet.bind(person, 'Native');
+        const customBound = greet.myBind(person, 'Custom');
+
+        console.log('原生bind:', nativeBound('!'));
+        console.log('自定义bind:', customBound('!'));
+        console.log('自定义bind支持解除绑定:', typeof customBound.unbind === 'function');
+        console.log('原生bind不支持解除绑定:', typeof nativeBound.unbind === 'function');
+    </script>
+</body>
+
+</html>

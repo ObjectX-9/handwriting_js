@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function myInstanceOf(obj, constructor) {
+
+            // instanceof 仅适用于对象，原始类型（如 number、string）会返回 false
+            if (typeof obj !== 'object' || obj === null) {
+                return false;
+            }
+
+            let proto = Object.getPrototypeOf(obj);
+            while (proto) {
+                if (proto === constructor.prototype) {
+                    return true;
+                }
+                proto = Object.getPrototypeOf(proto);
+            }
+            return false;
+        }
+
+        function Person() {
+            this.name = 'John';
+        }
+
+        console.log('myInstanceOf', myInstanceOf(new Person(), Person));
+    </script>
+</body>
+
+</html>

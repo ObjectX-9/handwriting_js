@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function myNew(constructor, ...args) {
+            const instance = Object.create(constructor.prototype);
+            const result = constructor.apply(instance, args);
+            return result !== null && (typeof result === 'object' || typeof result === 'function') ? result : instance;
+        }
+
+        // 定义构造函数
+        function Person(name, age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        // 测试构造函数
+        console.log('myNew', myNew(Person, 'John', 20));
+
+        // 测试 构造函数中返回对象
+        console.log('myNew', myNew(function () {
+            return {
+                name: 'object',
+                age: 12
+            };
+        }));
+
+        // 测试返回null
+        console.log('myNew', myNew(function (name, age) {
+            this.name = name;
+            this.age = age;
+            return null;
+        }));
+
+        // 测试原型链是否正确
+        console.log('myNew', myNew(Person).constructor === Person);
+
+        console.log('myNew', myNew(Person).__proto__ === Person.prototype);
+
+        // 测试返回原始值，应该忽略返回值，返回新创建的对象
+        console.log('myNew', myNew(function (name, age) {
+            this.name = name;
+            this.age = age;
+            return 'hello'; // 返回原始值，应该被忽略
+        }, 'John', 20));
+    </script>
+</body>
+
+</html>

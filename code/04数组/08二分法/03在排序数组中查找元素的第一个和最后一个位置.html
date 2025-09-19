@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function searchRange(arr, target) {
+            function search(arr, target, searchType) {
+                let left = 0;
+                let right = arr.length - 1;
+                let border = -1;
+                while (left <= right) {
+                    let mid = Math.floor((left + right) / 2);
+                    if (arr[mid] < target) left = mid + 1;
+                    else if (arr[mid] > target) right = mid - 1;
+                    else {
+                        // 找到了，但不停止，继续找下一个
+                        border = mid;
+                        if (searchType === 'left') {
+                            right = mid - 1;
+                        } else {
+                            left = mid + 1;
+                        }
+                    }
+                }
+                return border;
+            }
+            const leftBorder = search(arr, target, 'left');
+            const rightBorder = search(arr, target, 'right');
+            return [leftBorder, rightBorder];
+        }
+
+
+        console.log('在排序数组中查找元素的第一个和最后一个位置, 结果: 数组: [5, 7, 7, 8, 8, 10], 参数: 8, 结果: ', searchRange([5, 7, 7, 8, 8, 10], 8));
+
+    </script>
+</body>
+
+</html>

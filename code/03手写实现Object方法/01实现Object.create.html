@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 创建一个新对象，使用现有的对象来提供新创建的对象的__proto__
+        // 第二个参数是可选的，如果提供了，则新创建的对象会继承这些属性，支持配置化
+        function myCreate(obj, properties) {
+            function F() { }
+            F.prototype = obj;
+            const instance = new F();
+
+            if (properties) {
+                Object.defineProperties(instance, properties);
+            }
+            return instance;
+        }
+
+        console.log('myCreate', myCreate(new Person(), {
+            age: {
+                value: '18',
+                writable: true,
+                configurable: true,
+            }
+        }));
+
+        function Person() {
+            this.name = 'John';
+        }
+    </script>
+</body>
+
+</html>

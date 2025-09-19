@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function binarySearch(arr, target) {
+            let left = 0;
+            let right = arr.length - 1;
+            while (left <= right) {
+                let mid = Math.floor((left + right) / 2);
+                if (arr[mid] === target) return mid;
+                else if (arr[mid] < target) left = mid + 1;
+                else right = mid - 1;
+            }
+            return -1;
+        }
+
+        console.log('二分法查找, 结果: 数组: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 参数: 7, 结果: ', binarySearch([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7));
+        console.log('二分法查找, 结果: 数组: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 参数: 11, 结果: ', binarySearch([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 11));
+
+        function binarySearch2(arr, target) {
+            let left = 0;
+            let right = arr.length;
+            while (left < right) {
+                let mid = Math.floor((left + right) / 2);
+                if (arr[mid] === target) return mid;
+                else if (arr[mid] < target) left = mid + 1;
+                else right = mid;
+            }
+            return -1;
+        }
+
+        console.log('二分法查找, 结果: 数组: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 参数: 7, 结果: ', binarySearch2([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 7));
+        console.log('二分法查找, 结果: 数组: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 参数: 11, 结果: ', binarySearch2([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 11));
+    </script>
+</body>
+
+</html>

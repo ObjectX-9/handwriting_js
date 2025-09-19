@@ -8,24 +8,22 @@
 </head>
 
 <body>
-    <button id="throttle-btn">Click me</button>
+    <button id="throttle-btn" onclick="handleThrottleClick()">Click me</button>
     <script>
         function throttle(func, delay) {
-            let lastTime = 0; // 记录上次执行时间
+            let lastExeTime = 0;
             return function (...args) {
-                const now = Date.now(); // 获取当前时间
-                if (now - lastTime >= delay) { // 判断时间间隔是否大于延迟时间
-                    lastTime = now; // 更新上次执行时间
-                    func.apply(this, args); // 执行函数
+                const now = Date.now();
+                if (now - lastExeTime >= delay) {
+                    func.apply(this, args);
+                    lastExeTime = now;
                 }
             };
         }
 
-        const handleClick = throttle(() => {
+        const handleThrottleClick = throttle(() => {
             console.log('Button clicked');
         }, 2000);
-
-        document.getElementById('throttle-btn').addEventListener('click', handleClick);
     </script>
 </body>
 
