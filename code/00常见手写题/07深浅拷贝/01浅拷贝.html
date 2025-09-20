@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function shallowCopy(obj) {
+            if (typeof obj === 'object' && obj !== null) {
+                const target = Array.isArray(obj) ? [] : {};
+
+                for (let property in obj) {
+                    if (Object.prototype.hasOwnProperty.call(obj, property)) {
+                        target[property] = obj[property];
+                    }
+                }
+
+                return target;
+            }
+
+            return obj;
+        }
+
+        const obj = { a: 1, b: 2, c: 3 };
+        console.log(shallowCopy(obj));
+        const cloneObj = shallowCopy(obj);
+        console.log("🚀 ~ cloneObj:", cloneObj)
+        cloneObj.a = 2;
+        console.log("🚀 ~ cloneObj:", cloneObj)
+
+        const obj2 = { a: { b: 1 } };
+        console.log(shallowCopy(obj2));
+        const cloneObj2 = shallowCopy(obj2);
+        console.log("🚀 ~ cloneObj2:", cloneObj2)
+        cloneObj2.a.b = 2;
+        console.log("🚀 ~ cloneObj2:", cloneObj2)
+
+    </script>
+</body>
+
+</html>

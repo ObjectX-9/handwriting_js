@@ -26,7 +26,13 @@
   - [bind](https://object-x.com.cn/articles/67c3efa70d096367e6905c49)
     - 代码位置：code/00常见手写题/06实现bind方法/index.html
 
-- [06 浅拷贝&amp;深拷贝](./common/06浅拷贝&深拷贝.md)
+- [06 浅拷贝&amp;深拷贝](https://object-x.com.cn/articles/67cbda0cc6946830b2060a32)
+  - 浅拷贝
+    - 代码位置：code/00常见手写题/07深浅拷贝/01浅拷贝.html
+
+  - 深拷贝
+    - 代码位置：code/00常见手写题/07深浅拷贝/02深拷贝.html
+
 - [07 实现类的继承](./common/07实现类的继承.md)
 - [08 实现 promise](./common/08实现PromisesA+%20.md)
 - [09 发布订阅&amp;观察者模式](./common/09发布订阅&观察者模式.md)
@@ -74,13 +80,13 @@
 
 + [二分查找](https://object-x.com.cn/articles/67c44e104f9d8d03183a5502)
   + 代码位置：code/04数组/08二分法/01基本原理和实现.html
-+ [数组-二分查找-搜索插入位置](https://object-x.com.cn/articles/67dac91ae5b6ca5561cb63c9)
++ [搜索插入位置](https://object-x.com.cn/articles/67dac91ae5b6ca5561cb63c9)
   + 代码位置：code/04数组/08二分法/02搜索插入位置.html
-+ [数组-二分查找-在排序数组中查找元素的第一个和最后一个位置](https://object-x.com.cn/articles/67dacbdbe5b6ca5561cb63ca)
++ [在排序数组中查找元素的第一个和最后一个位置](https://object-x.com.cn/articles/67dacbdbe5b6ca5561cb63ca)
   + 代码位置：code/04数组/08二分法/03在排序数组中查找元素的第一个和最后一个位置.html
-+ [数组-二分查找-x 的平方根](https://object-x.com.cn/articles/67dad061e5b6ca5561cb63cb)
++ [x 的平方根](https://object-x.com.cn/articles/67dad061e5b6ca5561cb63cb)
   + 代码位置：code/04数组/08二分法/04计算平方根.html
-+ [数组-二分查找-有效的完全平方数](https://object-x.com.cn/articles/67dad2a3e5b6ca5561cb63cc)
++ [有效的完全平方数](https://object-x.com.cn/articles/67dad2a3e5b6ca5561cb63cc)
   + 代码位置：code/04数组/08二分法/05完全平方数.html
 
 ### 双指针

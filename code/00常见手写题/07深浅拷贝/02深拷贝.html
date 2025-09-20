@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深拷贝完整实现</title>
+</head>
+
+<body>
+    <script>
+        /**
+         * 深拷贝实现 - 完整版本
+         * 
+         * 功能特点：
+         * 1. 支持基本数据类型（string, number, boolean, null, undefined, symbol）
+         * 2. 支持对象类型（Object, Array, Date, RegExp, Error, Function）
+         * 3. 支持ES6新增类型（Map, Set）
+         * 4. 处理循环引用问题
+         * 5. 保持对象原型链不丢失
+         * 6. 正确处理各种边缘情况
+         * 
+         * 核心思想：
+         * - 使用WeakMap存储已处理对象，避免循环引用
+         * - 根据不同数据类型采用不同的拷贝策略
+         * - 递归处理嵌套对象和数组
+         */
+
+        // ============== 核心函数定义 ==============
+
+        /**
+         * 获取对象的精确类型
+         * @param {*} obj - 要检测类型的对象
+         * @returns {string} - 返回如 '[object Object]', '[object Array]' 等精确类型字符串
+         */
+        const getType = obj => Object.prototype.toString.call(obj);
+
+        /**
+         * 判断是否为对象类型（包括函数）
+         * @param {*} target - 要判断的目标
+         * @returns {boolean} - 是否为对象类型且不为null
+         */
+        const isObject = (target) => (typeof target === 'object' || typeof target === 'function') && target !== null;
+
+        /**
+         * 定义可以深度遍历的对象类型
+         * 这些类型的对象需要递归处理其内部属性
+         */
+        const canTraverse = {
+            '[object Map]': true,
+            '[object Set]': true,
+            '[object Array]': true,
+            '[object Object]': true,
+            '[object Arguments]': true,
+        };
+
+        // 定义各种对象类型的标识常量
+        const mapTag = '[object Map]';
+        const setTag = '[object Set]';
+        const boolTag = '[object Boolean]';
+        const numberTag = '[object Number]';
+        const stringTag = '[object String]';
+        const symbolTag = '[object Symbol]';
+        const dateTag = '[object Date]';
+        const errorTag = '[object Error]';
+        const regexpTag = '[object RegExp]';
+        const funcTag = '[object Function]';
+
+        /**
+         * 处理正则表达式的深拷贝
+         * @param {RegExp} target - 要拷贝的正则表达式对象
+         * @returns {RegExp} - 新的正则表达式对象
+         */
+        const handleRegExp = (target) => {
+            const { source, flags } = target;
+            return new target.constructor(source, flags);
+        }
+
+        /**
+         * 处理函数的深拷贝
+         * @param {Function} func - 要拷贝的函数
+         * @returns {Function} - 返回原函数（函数基本不变，几乎不用深拷贝，并且闭包无法拷贝）
+         */
+        const handleFunc = (func) => {
+            // 函数基本不变，几乎不用深拷贝的，并且闭包无法拷贝
+            return func;
+        }
+
+        /**
+         * 处理不需要深度遍历的对象类型
+         * @param {*} target - 要处理的目标对象
+         * @param {string} tag - 对象类型标识
+         * @returns {*} - 拷贝后的对象
+         */
+        const handleNotTraverse = (target, tag) => {
+            const Ctor = target.constructor;
+            switch (tag) {
+                case boolTag:
+                    // 处理Boolean包装对象
+                    return new Object(Boolean.prototype.valueOf.call(target));
+                case numberTag:
+                    // 处理Number包装对象
+                    return new Object(Number.prototype.valueOf.call(target));
+                case stringTag:
+                    // 处理String包装对象
+                    return new Object(String.prototype.valueOf.call(target));
+                case symbolTag:
+                    // 处理Symbol包装对象
+                    return new Object(Symbol.prototype.valueOf.call(target));
+                case errorTag:
+                case dateTag:
+                    // 处理Error和Date对象，直接用构造函数创建新实例
+                    return new Ctor(target);
+                case regexpTag:
+                    // 处理正则表达式对象
+                    return handleRegExp(target);
+                case funcTag:
+                    // 处理函数对象
+                    return handleFunc(target);
+                default:
+                    // 其他类型，直接用构造函数创建新实例
+                    return new Ctor(target);
+            }
+        }
+
+        /**
+         * 深拷贝函数 - 完整版本，支持各种复杂数据类型
+         * @param {*} target - 要进行深拷贝的目标对象
+         * @param {WeakMap} map - 用于存储已处理对象，防止循环引用
+         * @returns {*} - 深拷贝后的新对象
+         */
+        const deepClone = (target, map = new WeakMap()) => {
+            // 基本类型直接返回
+            if (!isObject(target))
+                return target;
+
+            // 处理循环引用：如果对象已经被处理过，直接返回已处理的结果
+            if (map.has(target)) {
+                return map.get(target);
+            }
+
+            // 获取对象的精确类型
+            let type = getType(target);
+            let cloneTarget;
+
+            if (!canTraverse[type]) {
+                // 处理不能遍历的对象类型（如Date、RegExp、Function等）
+                return handleNotTraverse(target, type);
+            } else {
+                // 这步操作很关键，可以保证对象的原型不丢失！
+                // 使用原对象的构造函数创建新实例，保持原型链
+                let ctor = target.constructor;
+                cloneTarget = new ctor();
+            }
+
+            // 将当前对象和其拷贝结果存入map，防止循环引用
+            map.set(target, cloneTarget);
+
+            if (type === mapTag) {
+                // 处理Map类型：遍历所有键值对，递归拷贝key和value
+                target.forEach((item, key) => {
+                    cloneTarget.set(deepClone(key, map), deepClone(item, map));
+                })
+            }
+
+            if (type === setTag) {
+                // 处理Set类型：遍历所有值，递归拷贝每个元素
+                target.forEach(item => {
+                    cloneTarget.add(deepClone(item, map));
+                })
+            }
+
+            // 处理普通对象和数组：遍历所有自有属性
+            for (let prop in target) {
+                if (target.hasOwnProperty(prop)) {
+                    // 递归拷贝每个属性值
+                    cloneTarget[prop] = deepClone(target[prop], map);
+                }
+            }
+            return cloneTarget;
+        }
+
+        // ============== 基本功能测试 ==============
+        console.log('========== 深拷贝测试开始 ==========');
+
+        // 1. 测试基本对象
+        const obj1 = {
+            a: 1,
+            b: { c: 2 },
+            d: [1, 2, { e: 3 }]
+        };
+        const clonedObj1 = deepClone(obj1);
+        console.log('原对象:', obj1);
+        console.log('克隆对象:', clonedObj1);
+        console.log('是否为同一对象:', obj1 === clonedObj1); // false
+        console.log('深层对象是否为同一对象:', obj1.b === clonedObj1.b); // false
+
+        // 2. 测试数组
+        const arr = [1, [2, 3], { a: 4 }];
+        const clonedArr = deepClone(arr);
+        console.log('\n原数组:', arr);
+        console.log('克隆数组:', clonedArr);
+
+        // 3. 测试Date对象
+        const date = new Date();
+        const clonedDate = deepClone(date);
+        console.log('\n原Date对象:', date);
+        console.log('克隆Date对象:', clonedDate);
+        console.log('是否为同一Date对象:', date === clonedDate); // false
+
+        // 4. 测试正则表达式
+        const regex = /test/gi;
+        const clonedRegex = deepClone(regex);
+        console.log('\n原正则:', regex);
+        console.log('克隆正则:', clonedRegex);
+        console.log('是否为同一正则对象:', regex === clonedRegex); // false
+
+        // 5. 测试Map
+        const map = new Map();
+        map.set('key1', 'value1');
+        map.set('key2', { nested: 'object' });
+        const clonedMap = deepClone(map);
+        console.log('\n原Map:', map);
+        console.log('克隆Map:', clonedMap);
+
+        // 6. 测试Set
+        const set = new Set([1, 2, { a: 3 }]);
+        const clonedSet = deepClone(set);
+        console.log('\n原Set:', set);
+        console.log('克隆Set:', clonedSet);
+
+        // 7. 测试循环引用
+        const circular = { a: 1 };
+        circular.self = circular; // 创建循环引用
+        const clonedCircular = deepClone(circular);
+        console.log('\n循环引用测试完成，没有栈溢出错误');
+
+        console.log('========== 基本测试结束 ==========');
+
+        // ============== 包装对象处理原理详解 ==============
+        console.log('\n========== 包装对象处理原理详解 ==========');
+
+        // 1. 基本类型 vs 包装对象的区别
+        console.log('\n--- 基本类型 vs 包装对象 ---');
+        const primitiveNum = 123;                    // 基本类型数字
+        const wrappedNum = new Number(123);          // Number包装对象
+        const primitiveStr = 'hello';                // 基本类型字符串  
+        const wrappedStr = new String('hello');      // String包装对象
+        const primitiveBool = true;                  // 基本类型布尔
+        const wrappedBool = new Boolean(true);       // Boolean包装对象
+
+        console.log('基本类型数字:', primitiveNum, typeof primitiveNum);
+        console.log('包装对象数字:', wrappedNum, typeof wrappedNum);
+        console.log('基本类型字符串:', primitiveStr, typeof primitiveStr);
+        console.log('包装对象字符串:', wrappedStr, typeof wrappedStr);
+        console.log('基本类型布尔:', primitiveBool, typeof primitiveBool);
+        console.log('包装对象布尔:', wrappedBool, typeof wrappedBool);
+
+        // 2. 包装对象的特殊性
+        console.log('\n--- 包装对象的特殊性 ---');
+        console.log('包装对象的值相等:', wrappedNum == primitiveNum);        // true (值相等)
+        console.log('包装对象的严格相等:', wrappedNum === primitiveNum);     // false (类型不同)
+        console.log('包装对象的typeof:', typeof wrappedNum);                // "object"
+        console.log('包装对象的构造函数:', wrappedNum.constructor.name);     // "Number"
+
+        // 3. valueOf方法的作用
+        console.log('\n--- valueOf方法的作用 ---');
+        console.log('wrappedNum.valueOf():', wrappedNum.valueOf(), typeof wrappedNum.valueOf());
+        console.log('wrappedStr.valueOf():', wrappedStr.valueOf(), typeof wrappedStr.valueOf());
+        console.log('wrappedBool.valueOf():', wrappedBool.valueOf(), typeof wrappedBool.valueOf());
+
+        // 4. 为什么要用 Boolean.prototype.valueOf.call()
+        console.log('\n--- 为什么要用 prototype.valueOf.call() ---');
+
+        // 模拟一个被修改了valueOf方法的包装对象
+        const customWrapped = new Number(456);
+        customWrapped.valueOf = function () { return 999; }; // 被恶意修改
+
+        console.log('被修改的valueOf:', customWrapped.valueOf());                           // 999 (错误的值)
+        console.log('使用原型的valueOf:', Number.prototype.valueOf.call(customWrapped));   // 456 (正确的值)
+
+        // 5. 为什么用 new Object() 而不是 new Number()
+        console.log('\n--- 为什么用 new Object() 包装 ---');
+        const value = wrappedNum.valueOf(); // 获取原始值 123
+
+        const method1 = new Number(value);           // 直接用构造函数
+        const method2 = new Object(value);           // 用Object包装
+
+        console.log('方法1 - new Number(value):', method1, typeof method1);
+        console.log('方法2 - new Object(value):', method2, typeof method2);
+        console.log('两种方法是否相等:', method1.valueOf() === method2.valueOf());
+        console.log('两种方法的构造函数:', method1.constructor.name, method2.constructor.name);
+
+        // 6. 实际测试包装对象的深拷贝
+        console.log('\n--- 包装对象深拷贝测试 ---');
+        const originalWrapped = new String('test string');
+        originalWrapped.customProperty = 'I am custom';
+
+        console.log('原包装对象:', originalWrapped);
+        console.log('原包装对象类型:', typeof originalWrapped);
+        console.log('原包装对象的值:', originalWrapped.valueOf());
+        console.log('原包装对象的自定义属性:', originalWrapped.customProperty);
+
+        // 使用我们的深拷贝函数
+        const clonedWrapped = deepClone(originalWrapped);
+        console.log('克隆包装对象:', clonedWrapped);
+        console.log('克隆包装对象类型:', typeof clonedWrapped);
+        console.log('克隆包装对象的值:', clonedWrapped.valueOf());
+        console.log('是否为同一对象:', originalWrapped === clonedWrapped);          // false
+        console.log('值是否相等:', originalWrapped.valueOf() === clonedWrapped.valueOf()); // true
+
+        console.log('========== 包装对象处理原理详解结束 ==========');
+
+        // ============== 正则表达式拷贝原理解释 ==============
+        console.log('\n========== 正则表达式拷贝原理解释 ==========');
+        const originalRegex = /hello/gi;
+        console.log('原正则表达式:', originalRegex);
+        console.log('原正则的source属性:', originalRegex.source); // "hello"
+        console.log('原正则的flags属性:', originalRegex.flags);   // "gi"
+
+        // 手动演示解构过程
+        const { source, flags } = originalRegex;
+        console.log('解构出的source:', source);
+        console.log('解构出的flags:', flags);
+
+        // 用解构的值创建新正则
+        const newRegex = new originalRegex.constructor(source, flags);
+        console.log('新创建的正则:', newRegex);
+        console.log('两个正则是否相等:', originalRegex === newRegex); // false
+        console.log('两个正则的source是否相同:', originalRegex.source === newRegex.source); // true
+        console.log('两个正则的flags是否相同:', originalRegex.flags === newRegex.flags); // true
+
+        // 如果不解构，直接复制会怎样？
+        const wrongCopy = originalRegex; // 这只是引用拷贝
+        console.log('引用拷贝是否相等:', originalRegex === wrongCopy); // true（这是错误的拷贝）
+        console.log('========== 正则表达式拷贝原理解释结束 ==========');
+
+        // ============== 函数拷贝方式详解 ==============
+        console.log('\n========== 函数拷贝方式详解 ==========');
+
+        /**
+         * 方式1: 简单策略 - 直接返回原函数（推荐）
+         * 理由：函数通常是不可变的，拷贝意义不大
+         */
+        const handleFunc_Simple = (func) => {
+            return func; // 最简单的方式，直接返回原函数
+        }
+
+        /**
+         * 方式2: 安全策略 - 只拷贝普通函数，其他返回原函数
+         */
+        const handleFunc_Safe = (func) => {
+            // 箭头函数、原生函数、异步函数等直接返回原函数
+            if (!func.prototype || func.toString().includes('[native code]')) {
+                return func;
+            }
+
+            try {
+                // 尝试用eval重新创建函数（更安全的方式）
+                return eval(`(${func.toString()})`);
+            } catch (e) {
+                console.warn('函数拷贝失败:', e.message);
+                return func; // 失败时返回原函数
+            }
+        }
+
+        /**
+         * 方式3: 详细分类处理
+         */
+        const handleFunc_Detailed = (func) => {
+            const funcStr = func.toString();
+
+            // 1. 箭头函数
+            if (!func.prototype) {
+                console.log('检测到箭头函数，直接返回');
+                return func;
+            }
+
+            // 2. 原生函数（如Array.prototype.push）
+            if (funcStr.includes('[native code]')) {
+                console.log('检测到原生函数，直接返回');
+                return func;
+            }
+
+            // 3. 异步函数
+            if (funcStr.startsWith('async')) {
+                console.log('检测到异步函数，使用eval重建');
+                try {
+                    return eval(`(${funcStr})`);
+                } catch (e) {
+                    return func;
+                }
+            }
+
+            // 4. 生成器函数
+            if (funcStr.includes('function*')) {
+                console.log('检测到生成器函数，使用eval重建');
+                try {
+                    return eval(`(${funcStr})`);
+                } catch (e) {
+                    return func;
+                }
+            }
+
+            // 5. 普通函数 - 使用正则方式
+            const bodyReg = /(?<={)(.|\n)+(?=})/m;
+            const paramReg = /(?<=\().+(?=\)\s+{)/;
+            const param = paramReg.exec(funcStr);
+            const body = bodyReg.exec(funcStr);
+
+            if (!body) return func;
+
+            if (param) {
+                const paramArr = param[0].split(',').map(p => p.trim());
+                return new Function(...paramArr, body[0]);
+            } else {
+                return new Function(body[0]);
+            }
+        }
+
+        /**
+         * 方式4: 属性保留策略 - 尝试保留函数的自定义属性
+         */
+        const handleFunc_WithProperties = (func) => {
+            // 箭头函数直接返回
+            if (!func.prototype) return func;
+
+            let newFunc;
+            try {
+                // 使用eval重建函数
+                newFunc = eval(`(${func.toString()})`);
+            } catch (e) {
+                return func;
+            }
+
+            // 拷贝函数的自定义属性
+            for (let prop in func) {
+                if (func.hasOwnProperty(prop)) {
+                    newFunc[prop] = func[prop];
+                }
+            }
+
+            return newFunc;
+        }
+
+        // ============== 函数拷贝方式对比测试 ==============
+        console.log('\n--- 函数拷贝方式对比测试 ---');
+
+        // 测试函数
+        function testFunc(a, b) {
+            return a + b;
+        }
+        testFunc.customProp = 'I am a custom property';
+
+        // 箭头函数
+        const arrowFunc = (x) => x * 2;
+
+        console.log('原函数:', testFunc);
+        console.log('原函数自定义属性:', testFunc.customProp);
+
+        try {
+            const copied1 = handleFunc(testFunc);  // 原方法
+            const copied2 = handleFunc_Simple(testFunc);  // 简单方法
+            const copied3 = handleFunc_Safe(testFunc);    // 安全方法
+            const copied4 = handleFunc_WithProperties(testFunc); // 属性保留方法
+
+            console.log('原方法结果:', copied1);
+            console.log('简单方法结果:', copied2);
+            console.log('安全方法结果:', copied3);
+            console.log('属性保留方法结果:', copied4);
+            console.log('属性保留方法的自定义属性:', copied4.customProp);
+
+            console.log('原函数 === 简单方法:', testFunc === copied2);  // true
+            console.log('原函数 === 安全方法:', testFunc === copied3);  // false
+        } catch (e) {
+            console.error('测试出错:', e.message);
+        }
+
+        console.log('\n--- 测试箭头函数 ---');
+        console.log('原箭头函数:', arrowFunc);
+        const copiedArrow = handleFunc_Detailed(arrowFunc);
+        console.log('拷贝后箭头函数:', copiedArrow);
+        console.log('是否为同一函数:', arrowFunc === copiedArrow);
+
+        console.log('========== 函数拷贝方式详解结束 ==========');
+
+        // ============== 推荐的函数处理策略 ==============
+        /**
+         * 推荐的函数处理策略
+         * 根据实际需求选择：
+         * 
+         * 1. 如果不需要真正拷贝函数 → 使用 handleFunc_Simple（推荐）
+         * 2. 如果需要安全可靠的拷贝 → 使用 handleFunc_Safe  
+         * 3. 如果需要详细处理各种函数类型 → 使用 handleFunc_Detailed
+         * 4. 如果函数有重要属性需要保留 → 使用 handleFunc_WithProperties
+         * 
+         * 大多数情况下，推荐使用 handleFunc_Simple，即直接返回原函数
+         */
+
+        console.log('\n========== 深拷贝完整测试结束 ==========');
+    </script>
+</body>
+
+</html>
