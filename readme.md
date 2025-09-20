@@ -70,6 +70,8 @@
 
 ## 1.数组
 
+### 二分查找
+
 + [二分查找](https://object-x.com.cn/articles/67c44e104f9d8d03183a5502)
   + 代码位置：code/04数组/08二分法/01基本原理和实现.html
 + [数组-二分查找-搜索插入位置](https://object-x.com.cn/articles/67dac91ae5b6ca5561cb63c9)
@@ -80,4 +82,34 @@
   + 代码位置：code/04数组/08二分法/04计算平方根.html
 + [数组-二分查找-有效的完全平方数](https://object-x.com.cn/articles/67dad2a3e5b6ca5561cb63cc)
   + 代码位置：code/04数组/08二分法/05完全平方数.html
+
+### 双指针
+
++ [移除元素](https://object-x.com.cn/articles/67dc247fe5b6ca5561cb63ce)
+
+  + 代码位置：code/04数组/09双指针/01移除元素.html
+
++ [删除有序数组中的重复项](https://object-x.com.cn/articles/67dc326ae5b6ca5561cb63cf)
+
+  + 代码位置：code/04数组/09双指针/02删除有序数组中的重复项.html
+
++ [双指针-移动零](https://object-x.com.cn/articles/67dc38a8e5b6ca5561cb63d0)
+
+  + 代码位置：code/04数组/09双指针/03移动零.html
+
++ [比较含退格的字符串](https://object-x.com.cn/articles/67dd7cc7e5b6ca5561cb63d1)
+
+  + 代码位置：code/04数组/09双指针/04比较含退格的字符串.html
+
++ [有序数组的平方](https://object-x.com.cn/articles/67de511ce5b6ca5561cb63d2)
+  
+  + 代码位置：code/04数组/09双指针/05有序数组的平方.html
+  
+  
+  
+  
+  
+  
+  
+  
 

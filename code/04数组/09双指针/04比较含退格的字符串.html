@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /**
+         * 比较含退格字符的字符串
+         * 算法思路：使用双指针从后往前遍历，这样可以正确处理退格操作
+         * 时间复杂度：O(m + n)，空间复杂度：O(1)
+         * 
+         * @param {string} s - 第一个字符串
+         * @param {string} t - 第二个字符串  
+         * @returns {boolean} - 两字符串经过退格处理后是否相等
+         */
+        function backspaceCompare(s, t) {
+            // 双指针：从字符串末尾开始向前遍历
+            let i = s.length - 1;  // 字符串s的指针
+            let j = t.length - 1;  // 字符串t的指针
+
+            // 记录需要跳过的字符数量（因为退格操作）
+            let skipS = 0;  // 字符串s需要跳过的字符数
+            let skipT = 0;  // 字符串t需要跳过的字符数
+
+            // 当至少有一个字符串还没遍历完时继续
+            while (i >= 0 || j >= 0) {
+
+                // 处理字符串s：找到下一个有效字符（不被退格删除的字符）
+                while (i >= 0) {
+                    if (s[i] === '#') {
+                        // 遇到退格符，增加跳过计数
+                        skipS++;
+                        i--;
+                    } else if (skipS > 0) {
+                        // 有待跳过的字符，跳过当前字符
+                        skipS--;
+                        i--;
+                    } else {
+                        // 找到有效字符，跳出循环
+                        break;
+                    }
+                }
+
+                // 处理字符串t：找到下一个有效字符（逻辑同上）
+                while (j >= 0) {
+                    if (t[j] === '#') {
+                        // 遇到退格符，增加跳过计数
+                        skipT++;
+                        j--;
+                    } else if (skipT > 0) {
+                        // 有待跳过的字符，跳过当前字符
+                        skipT--;
+                        j--;
+                    } else {
+                        // 找到有效字符，跳出循环
+                        break;
+                    }
+                }
+
+                // 比较当前找到的有效字符
+                if (i >= 0 && j >= 0 && s[i] !== t[j]) {
+                    // 两个字符都存在但不相等
+                    return false;
+                }
+
+                // 检查是否一个字符串已经处理完而另一个还有字符
+                if ((i >= 0) !== (j >= 0)) {
+                    // 一个字符串还有字符，另一个已经处理完 → 不相等
+                    return false;
+                }
+
+                // 移动到下一个字符
+                i--;
+                j--;
+            }
+
+            // 所有字符都比较完且相等
+            return true;
+        };
+
+
+        // ===================已下都是测试用例===================
+
+        /**
+         * 构建经过退格处理后的最终字符串
+         * @param {string} str - 输入字符串
+         * @returns {string} - 处理后的最终字符串
+         */
+        function buildFinalString(str) {
+            let result = [];
+
+            for (let i = 0; i < str.length; i++) {
+                if (str[i] === '#') {
+                    // 退格操作：删除最后一个字符（如果存在）
+                    if (result.length > 0) {
+                        result.pop();
+                    }
+                } else {
+                    // 普通字符：添加到结果
+                    result.push(str[i]);
+                }
+            }
+
+            return result.join('');
+        }
+
+        /**
+         * 带结果展示的比较函数
+         * @param {string} s - 第一个字符串
+         * @param {string} t - 第二个字符串
+         * @returns {object} - 包含比较结果和最终字符串的对象
+         */
+        function backspaceCompareWithResult(s, t) {
+            const finalS = buildFinalString(s);
+            const finalT = buildFinalString(t);
+            const isEqual = backspaceCompare(s, t);
+
+            return {
+                original: { s, t },
+                final: { s: finalS, t: finalT },
+                isEqual
+            };
+        }
+
+        // 美化输出函数
+        function displayComparison(s, t, testName) {
+            const result = backspaceCompareWithResult(s, t);
+            console.log(`\n${testName}:`);
+            console.log(`  原始: "${result.original.s}" vs "${result.original.t}"`);
+            console.log(`  最终: "${result.final.s}" vs "${result.final.t}"`);
+            console.log(`  结果: ${result.isEqual ? '✅ 相等' : '❌ 不相等'}`);
+        }
+
+        // 测试用例演示
+        console.log('=== 退格字符串比较测试（含最终结果）===');
+
+        displayComparison("ab#c", "ad#c", "测试1");
+        displayComparison("ab##", "c#d#", "测试2");
+        displayComparison("a##c", "#a#c", "测试3");
+        displayComparison("a#c", "b", "测试4");
+
+        console.log('\n--- 额外测试 ---');
+        displayComparison("bxj##tw", "bxj###tw", "测试5 - 复杂退格");
+        displayComparison("###", "", "测试6 - 空字符串");
+        displayComparison("abc", "abc", "测试7 - 无退格");
+        displayComparison("a#b#c#", "###", "测试8 - 全部删除");
+        displayComparison("ab###c", "c", "测试9 - 过度退格");
+
+        // 详细步骤演示函数
+        function backspaceCompareWithDemo(s, t, showSteps = false) {
+            if (showSteps) {
+                console.log(`\n=== 详细步骤演示: "${s}" vs "${t}" ===`);
+            }
+
+            let i = s.length - 1;
+            let j = t.length - 1;
+            let skipS = 0, skipT = 0;
+            let step = 1;
+
+            while (i >= 0 || j >= 0) {
+                if (showSteps) {
+                    console.log(`步骤${step++}: i=${i}, j=${j}, skipS=${skipS}, skipT=${skipT}`);
+                }
+
+                // 处理字符串s
+                while (i >= 0) {
+                    if (s[i] === '#') {
+                        skipS++;
+                        i--;
+                    } else if (skipS > 0) {
+                        if (showSteps) console.log(`  跳过s[${i}]="${s[i]}"`);
+                        skipS--;
+                        i--;
+                    } else {
+                        break;
+                    }
+                }
+
+                // 处理字符串t
+                while (j >= 0) {
+                    if (t[j] === '#') {
+                        skipT++;
+                        j--;
+                    } else if (skipT > 0) {
+                        if (showSteps) console.log(`  跳过t[${j}]="${t[j]}"`);
+                        skipT--;
+                        j--;
+                    } else {
+                        break;
+                    }
+                }
+
+                if (showSteps) {
+                    const charS = i >= 0 ? `"${s[i]}"` : 'null';
+                    const charT = j >= 0 ? `"${t[j]}"` : 'null';
+                    console.log(`  比较: s[${i}]=${charS} vs t[${j}]=${charT}`);
+                }
+
+                if (i >= 0 && j >= 0 && s[i] !== t[j]) {
+                    if (showSteps) console.log(`  → 不相等，返回false`);
+                    return false;
+                }
+
+                if ((i >= 0) !== (j >= 0)) {
+                    if (showSteps) console.log(`  → 长度不匹配，返回false`);
+                    return false;
+                }
+
+                i--;
+                j--;
+            }
+
+            if (showSteps) console.log(`  → 所有字符匹配，返回true`);
+            return true;
+        }
+
+        // 演示复杂案例的详细步骤
+        backspaceCompareWithDemo("ab#c", "ad#c", true);
+
+        console.log('\n=== 解答疑问：有效字符后还会有新的#吗？ ===');
+
+        // 用一个特殊例子来说明
+        function explainBackspaceLogic() {
+            console.log('例子: "a#b#c" 的处理过程');
+            console.log('从后往前遍历，每轮重新开始：');
+
+            let s = "a#b#c";
+            let i = s.length - 1;
+            let skipS = 0;
+            let round = 1;
+
+            console.log(`初始: i=${i}, 字符串="${s}"`);
+
+            while (i >= 0) {
+                console.log(`\n--- 第${round}轮 ---`);
+                console.log(`开始: i=${i}, skipS=${skipS}`);
+
+                // 这就是内层while循环的逻辑
+                while (i >= 0) {
+                    console.log(`检查: s[${i}] = "${s[i]}"`);
+
+                    if (s[i] === '#') {
+                        console.log(`  → 遇到#，skipS++`);
+                        skipS++;
+                        i--;
+                    } else if (skipS > 0) {
+                        console.log(`  → 有待跳过字符，跳过"${s[i]}"，skipS--`);
+                        skipS--;
+                        i--;
+                    } else {
+                        console.log(`  → 找到有效字符"${s[i]}"，break！`);
+                        break;
+                    }
+                }
+
+                if (i >= 0) {
+                    console.log(`结果: 有效字符是"${s[i]}"，位置${i}`);
+                    console.log(`继续处理: i--，准备下一轮`);
+                    i--; // 模拟外层循环的i--
+                    round++;
+                } else {
+                    console.log(`结果: 没有更多有效字符`);
+                    break;
+                }
+            }
+
+            console.log(`\n最终结论: "a#b#c" 只有一个有效字符 "c"`);
+        }
+
+        explainBackspaceLogic();
+
+        console.log('\n=== 关键理解点 ===');
+        console.log('1. 每轮都重新开始扫描，会正确处理新遇到的#');
+        console.log('2. #只能删除它后面的字符，不能删除前面的字符');
+        console.log('3. 从后往前遍历确保了正确的删除顺序');
+
+        /**
+         * 详细展示退格处理步骤
+         * @param {string} str - 输入字符串
+         * @returns {string} - 最终结果
+         */
+        function buildStringWithSteps(str, showSteps = false) {
+            if (showSteps) {
+                console.log(`\n--- 处理 "${str}" 的详细步骤 ---`);
+            }
+
+            let result = [];
+
+            for (let i = 0; i < str.length; i++) {
+                if (str[i] === '#') {
+                    if (result.length > 0) {
+                        const deleted = result.pop();
+                        if (showSteps) {
+                            console.log(`步骤${i + 1}: 遇到'#'，删除'${deleted}' → [${result.join('')}]`);
+                        }
+                    } else {
+                        if (showSteps) {
+                            console.log(`步骤${i + 1}: 遇到'#'，但没有字符可删除 → [${result.join('')}]`);
+                        }
+                    }
+                } else {
+                    result.push(str[i]);
+                    if (showSteps) {
+                        console.log(`步骤${i + 1}: 添加'${str[i]}' → [${result.join('')}]`);
+                    }
+                }
+            }
+
+            const final = result.join('');
+            if (showSteps) {
+                console.log(`最终结果: "${final}"`);
+            }
+            return final;
+        }
+
+        // 交互式演示
+        console.log('\n=== 交互式退格处理演示 ===');
+
+        const demoStrings = ["ab#c", "a##c", "ab##", "###", "a#b#c#", "ab###c"];
+
+        demoStrings.forEach(str => {
+            buildStringWithSteps(str, true);
+        });
+
+        console.log('\n=== 对比验证 ===');
+        console.log('验证我们的构建函数与双指针算法结果一致：');
+
+        const testPairs = [
+            ["ab#c", "ad#c"],
+            ["ab##", "c#d#"],
+            ["a##c", "#a#c"],
+            ["bxj##tw", "bxj###tw"]
+        ];
+
+        testPairs.forEach(([s, t], index) => {
+            const finalS = buildFinalString(s);
+            const finalT = buildFinalString(t);
+            const doublePointerResult = backspaceCompare(s, t);
+            const stringCompareResult = finalS === finalT;
+
+            console.log(`\n验证${index + 1}: "${s}" vs "${t}"`);
+            console.log(`  构建结果: "${finalS}" vs "${finalT}"`);
+            console.log(`  字符串比较: ${stringCompareResult}`);
+            console.log(`  双指针算法: ${doublePointerResult}`);
+            console.log(`  结果一致: ${stringCompareResult === doublePointerResult ? '✅' : '❌'}`);
+        });
+
+        // 更复杂的例子
+        console.log('\n=== 复杂例子验证 ===');
+
+        // 展示复杂例子的处理步骤
+        console.log('复杂例子: "a##b#c#d" 的处理过程');
+        buildStringWithSteps("a##b#c#d", true);
+
+        backspaceCompareWithDemo("a##b#c#d", "d", true);
+    </script>
+</body>
+
+</html>

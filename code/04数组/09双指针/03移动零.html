@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 更简单的暴力解法（避免复杂逻辑）
+        function moveZeroesSimple(nums) {
+            console.log('简单暴力法 - 输入:', [...nums]);
+
+            let writeIndex = 0;
+
+            // 第一遍：收集所有非零元素
+            for (let i = 0; i < nums.length; i++) {
+                if (nums[i] !== 0) {
+                    nums[writeIndex++] = nums[i];
+                }
+            }
+
+            // 第二遍：填充零
+            while (writeIndex < nums.length) {
+                nums[writeIndex++] = 0;
+            }
+
+            console.log('简单暴力法 - 结果:', [...nums]);
+            return nums;
+        }
+
+        // 双指针解法（两次遍历）
+        function moveZeroesOptimal(nums) {
+            console.log('双指针两遍 - 输入:', [...nums]);
+
+            let slowIndex = 0;
+
+            // 第一遍：将所有非零元素移到前面
+            for (let fastIndex = 0; fastIndex < nums.length; fastIndex++) {
+                if (nums[fastIndex] !== 0) {
+                    nums[slowIndex++] = nums[fastIndex];
+                }
+            }
+
+            // 第二遍：剩余位置填0
+            for (let i = slowIndex; i < nums.length; i++) {
+                nums[i] = 0;
+            }
+
+            console.log('双指针两遍 - 结果:', [...nums]);
+            return nums;
+        }
+
+        // 双指针优化版（一次遍历 - 推荐）
+        function moveZeroesOptimalV2(nums) {
+            console.log('双指针一遍 - 输入:', [...nums]);
+
+            let slowIndex = 0;
+
+            for (let fastIndex = 0; fastIndex < nums.length; fastIndex++) {
+                if (nums[fastIndex] !== 0) {
+                    if (slowIndex !== fastIndex) {
+                        // 交换非零元素到前面
+                        [nums[slowIndex], nums[fastIndex]] = [nums[fastIndex], nums[slowIndex]];
+                    }
+                    slowIndex++;
+                }
+            }
+
+            console.log('双指针一遍 - 结果:', [...nums]);
+            return nums;
+        }
+
+        // 测试选择 - 安全的测试方法
+        console.log('=== 移动零算法测试 ===');
+
+        // ✅ 推荐：双指针一次遍历（最优解）
+        moveZeroesOptimalV2([0, 1, 0, 3, 12]);
+
+        // ✅ 双指针两次遍历
+        moveZeroesOptimal([0, 1, 0, 3, 12]);
+
+        // ✅ 简单暴力法（安全版本）
+        moveZeroesSimple([0, 1, 0, 3, 12]);
+
+        console.log('\n--- 边界测试 ---');
+        moveZeroesOptimalV2([0, 0, 1]);    // 连续零
+        moveZeroesOptimalV2([1, 0, 0]);    // 尾部零  
+        moveZeroesOptimalV2([0]);          // 单个零
+        moveZeroesOptimalV2([1]);          // 无零
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 暴力解法
+        function removeElement(nums, val) {
+            for (let i = 0; i < nums.length; i++) {
+                if (nums[i] === val) {
+                    for (let j = i + 1; j < nums.length; j++) {
+                        nums[j - 1] = nums[j];
+                    }
+                    // 因为i后面的元素都向前移动了一位，所以i也要向前移动一位
+                    i--;
+                    // 因为i后面的元素都向前移动了一位，所以数组长度也要减一
+                    nums.length--;
+                }
+            }
+            return nums.length;
+        }
+
+        console.log(removeElement([3, 2, 2, 3], 3));
+
+        // 双指针
+        function removeElementV2(nums, val) {
+            let slowIndex = 0;
+            for (let fastIndex = 0; fastIndex < nums.length; fastIndex++) {
+                if (val !== nums[fastIndex]) {
+                    nums[slowIndex++] = nums[fastIndex];
+                }
+            }
+            return slowIndex;
+        }
+
+        console.log(removeElementV2([3, 2, 2, 3], 3));
+
+        // 详细步骤演示
+        function removeElementV3(nums, val) {
+            console.log('=== 移除元素详细步骤演示 ===');
+            console.log('输入数组:', [...nums], '移除值:', val);
+
+            let slowIndex = 0;  // 指向下一个要填入的位置
+            for (let fastIndex = 0; fastIndex < nums.length; fastIndex++) {
+                console.log(`步骤${fastIndex + 1}: 检查 nums[${fastIndex}] = ${nums[fastIndex]}`);
+
+                if (val !== nums[fastIndex]) {
+                    console.log(`  → 保留！放到位置${slowIndex}，slowIndex变为${slowIndex + 1}`);
+                    nums[slowIndex++] = nums[fastIndex];  // 先赋值，后递增
+                    console.log(`  → 当前数组有效部分: [${nums.slice(0, slowIndex).join(', ')}]`);
+                } else {
+                    console.log(`  → 跳过（要移除的值）`);
+                }
+            }
+
+            console.log('最终结果数组:', nums.slice(0, slowIndex));
+            console.log('新长度:', slowIndex);
+            return slowIndex;
+        }
+
+        console.log('\n=== 对比演示 ===');
+        removeElementV3([3, 2, 2, 3], 3);
+
+        // 对比删除重复项的逻辑
+        function removeDuplicatesDemo(nums) {
+            console.log('\n=== 删除重复项对比演示 ===');
+            console.log('输入数组:', [...nums]);
+
+            let slowIndex = 0;  // 指向去重数组的最后一个元素
+            for (let fastIndex = 1; fastIndex < nums.length; fastIndex++) {
+                console.log(`步骤${fastIndex}: 比较 nums[${fastIndex}]=${nums[fastIndex]} 与 nums[${slowIndex}]=${nums[slowIndex]}`);
+
+                if (nums[fastIndex] !== nums[slowIndex]) {
+                    console.log(`  → 不同！先移动slowIndex到${slowIndex + 1}，再赋值`);
+                    nums[++slowIndex] = nums[fastIndex];  // 先递增，后赋值
+                    console.log(`  → 当前去重数组: [${nums.slice(0, slowIndex + 1).join(', ')}]`);
+                } else {
+                    console.log(`  → 相同，跳过`);
+                }
+            }
+
+            console.log('最终去重数组:', nums.slice(0, slowIndex + 1));
+            console.log('新长度:', slowIndex + 1);
+            return slowIndex + 1;
+        }
+
+        removeDuplicatesDemo([1, 1, 2, 2, 3]);
+    </script>
+</body>
+
+</html>
