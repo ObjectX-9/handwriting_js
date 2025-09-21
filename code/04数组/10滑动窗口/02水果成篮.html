@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function totalFruit(fruits) {
+            let left = 0;
+            let maxFruit = 0;
+            let fruitMap = new Map();
+            for (let right = 0; right < fruits.length; right++) {
+                fruitMap.set(fruits[right], (fruitMap.get(fruits[right]) || 0) + 1);
+                while (fruitMap.size > 2) {
+                    fruitMap.set(fruits[left], fruitMap.get(fruits[left]) - 1);
+                    if (fruitMap.get(fruits[left]) === 0) {
+                        fruitMap.delete(fruits[left]);
+                    }
+                    left++;
+                }
+                maxFruit = Math.max(maxFruit, right - left + 1);
+            }
+            return maxFruit;
+        }
+
+        console.log(totalFruit([3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4]));
+    </script>
+</body>
+
+</html>

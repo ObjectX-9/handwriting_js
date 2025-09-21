@@ -96,9 +96,8 @@
   + 代码位置：code/04数组/09双指针/01移除元素.html
 
 + [删除有序数组中的重复项](https://object-x.com.cn/articles/67dc326ae5b6ca5561cb63cf)
-
   + 代码位置：code/04数组/09双指针/02删除有序数组中的重复项.html
-
+  
 + [双指针-移动零](https://object-x.com.cn/articles/67dc38a8e5b6ca5561cb63d0)
 
   + 代码位置：code/04数组/09双指针/03移动零.html
@@ -111,11 +110,16 @@
   
   + 代码位置：code/04数组/09双指针/05有序数组的平方.html
   
+### 滑动窗口
+
++ [长度最小的子数组](https://object-x.com.cn/articles/67de569ee5b6ca5561cb63d3)
+  + 代码位置：code/04数组/10滑动窗口/01长度最小的子数组.html
++ [水果成篮](https://object-x.com.cn/articles/67de8ee7e5b6ca5561cb63d4)
+  + 代码位置：code/04数组/10滑动窗口/02水果成篮.html
++ [最小覆盖子串](https://object-x.com.cn/articles/67e180139c00fa5ed4c1af20)
+  + 代码位置：code/04数组/10滑动窗口/03最小覆盖子串.html
+
   
-  
-  
-  
-  
-  
+
   
 

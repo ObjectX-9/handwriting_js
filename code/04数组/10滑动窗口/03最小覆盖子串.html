@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function minWindow(s, t) {
+            let left = 0;
+            let right = 0;
+            let minLength = Infinity;
+            let varifyChar = 0;
+            let tMap = new Map();
+            let start = 0;
+            // 放置t中字符到tMap中
+            for (let i = 0; i < t.length; i++) {
+                tMap.set(t[i], (tMap.get(t[i]) || 0) + 1);
+            }
+
+            for (right = 0; right < s.length; right++) {
+                // 扩大窗口
+                const rightChar = s[right];
+                if (tMap.has(rightChar)) {
+                    // 表示匹配上了一个字符
+                    tMap.set(rightChar, tMap.get(rightChar) - 1);
+                    if (tMap.get(rightChar) === 0) {
+                        // 表示匹配上了一个字符
+                        varifyChar++;
+                    }
+                }
+
+                // 缩小窗口
+                while (varifyChar === tMap.size) {
+                    // 更新最小长度
+                    if (right - left + 1 < minLength) {
+                        minLength = right - left + 1;
+                        start = left;
+                    }
+
+                    // 缩小窗口
+                    const leftChar = s[left];
+                    if (tMap.has(leftChar)) {
+                        // 移除一个字符，如果移除后，tMap.get(leftChar) !== 0，则varifyChar--
+                        tMap.set(leftChar, tMap.get(leftChar) + 1);
+                        if (tMap.get(leftChar) !== 0) {
+                            // 缩小窗口后，有的字符没匹配上了
+                            varifyChar--;
+                        }
+                    }
+                    left++;
+                }
+            }
+
+            return minLength === Infinity ? "" : s.substring(start, start + minLength);
+        }
+
+        console.log(minWindow("ADOBECODEBANC", "ABC"));
+    </script>
+</body>
+
+</html>

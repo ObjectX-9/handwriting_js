@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 暴力解法
+        function minSubArrayLen(target, nums) {
+            let result = Infinity;
+            let sum = 0;
+            for (let i = 0; i < nums.length; i++) {
+                for (let j = i; j < nums.length; j++) {
+                    sum += nums[j];
+                    if (sum >= target) {
+                        console.log("🚀 ~ j:", j)
+                        console.log("🚀 ~ i:", i)
+                        console.log("🚀 ~ j - i + 1:", j - i + 1)
+                        // j - i + 1 是子数组的长度
+                        result = Math.min(result, j - i + 1);
+                    }
+                }
+            }
+            return result === Infinity ? 0 : result;
+        }
+
+        console.log(minSubArrayLen(7, [2, 3, 1, 2, 4, 3]));
+
+        // 滑动窗口解法
+        function minSubArrayLenV2(target, nums) {
+            let result = Infinity;
+            let sum = 0;
+            let i = 0;
+            for (let j = 0; j < nums.length; j++) {
+                sum += nums[j];
+                while (sum >= target) {
+                    console.log("🚀 滑动窗口 ~ j:", j)
+                    console.log("🚀 滑动窗口 ~ i:", i)
+                    console.log("🚀 滑动窗口 ~ j - i + 1:", j - i + 1)
+                    result = Math.min(result, j - i + 1);
+                    sum -= nums[i++];
+                }
+            }
+            return result === Infinity ? 0 : result;
+        }
+
+
+        console.log(minSubArrayLenV2(7, [2, 3, 1, 2, 4, 3]));
+
+    </script>
+</body>
+
+</html>
