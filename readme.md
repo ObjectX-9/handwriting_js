@@ -113,13 +113,25 @@
 ### 滑动窗口
 
 + [长度最小的子数组](https://object-x.com.cn/articles/67de569ee5b6ca5561cb63d3)
+  
   + 代码位置：code/04数组/10滑动窗口/01长度最小的子数组.html
 + [水果成篮](https://object-x.com.cn/articles/67de8ee7e5b6ca5561cb63d4)
+  
   + 代码位置：code/04数组/10滑动窗口/02水果成篮.html
 + [最小覆盖子串](https://object-x.com.cn/articles/67e180139c00fa5ed4c1af20)
   + 代码位置：code/04数组/10滑动窗口/03最小覆盖子串.html
 
-  
+### 前缀和
 
-  
++ [区间和](https://object-x.com.cn/articles/67eaa7f89c00fa5ed4c1af25) 
+  + 代码位置：code/04数组/12前缀和/01区间和.html
++ 开发商购买土地
+  + 代码位置：code/04数组/12前缀和/02开发商购买土地.html
+
+### 其他
+
++ [螺旋矩阵](https://object-x.com.cn/articles/67e411529c00fa5ed4c1af22)
+  + 代码位置：code/04数组/11螺旋矩阵/index.html
+
+
 

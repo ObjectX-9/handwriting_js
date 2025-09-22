@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function prefixSum(nums, queries) {
+            let prefix = new Array(nums.length).fill(0);
+            prefix[0] = nums[0];
+            for (let i = 1; i < nums.length; i++) {
+                prefix[i] = prefix[i - 1] + nums[i];
+            }
+
+            let result = [];
+            for (let i = 0; i < queries.length; i++) {
+                if (queries[i][0] === 0) {
+                    result.push(prefix[queries[i][1]]);
+                } else {
+                    result.push(prefix[queries[i][1]] - prefix[queries[i][0] - 1]);
+                }
+            }
+            return result;
+        }
+
+
+        console.log(prefixSum([1, 2, 3, 4, 5], 1, 3));
+        console.log(prefixSum([1, 2, 3, 4, 5], 0, 4));
+        console.log(prefixSum([1, 2, 3, 4, 5], [[1, 3], [0, 4]]));
+    </script>
+</body>
+
+</html>

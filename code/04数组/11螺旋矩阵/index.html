@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 思路
+        // 绘制圈数：n / 2
+        // 每圈起始位置：startX, startY
+        // 边界：每增加一圈，边界增加1
+        // 如果是奇数，中间剩一个位置，mid = n / 2
+        // 填充：从左到右，从上到下，从右到左，从下到上
+
+        function generateMatrix(n) {
+            let startX = 0, startY = 0, loop = Math.floor(n / 2), mid = Math.floor(n / 2), count = 1;
+            let result = new Array(n).fill(0).map(() => new Array(n).fill(0));
+            let offset = 1;
+            while (loop--) {
+                let row = startX, col = startY;
+                const curLength = n - offset;
+
+                // 从左到右，行不变列变
+                for (col = startY; col < curLength; col++) {
+                    result[row][col] = count++;
+                }
+
+                // 从上到下，列不变行变
+                for (row = startX; row < curLength; row++) {
+                    result[row][col] = count++;
+                }
+
+                // 从右到左，行不变列变
+                for (; col > startY; col--) {
+                    result[row][col] = count++;
+                }
+
+                // 从下到上，列不变行变
+                for (; row > startX; row--) {
+                    result[row][col] = count++;
+                }
+
+                // 下一圈
+                startX++;
+                startY++;
+                // 边界增加1
+                offset++;
+            }
+
+            // 如果是奇数，中间剩一个位置，填充中间位置
+            if (n % 2 !== 0) {
+                result[mid][mid] = count;
+            }
+            return result;
+        }
+
+
+        function generateMatrix2(n) {
+            let left = 0, right = n - 1, top = 0, bottom = n - 1, count = 1;
+            let result = new Array(n).fill(0).map(() => new Array(n).fill(0));
+            while (count <= n * n) {
+                // 从左到右, 行不变列变
+                for (let col = left; col <= right; col++) {
+                    result[top][col] = count++;
+                }
+                // 移动上边界
+                top++;
+                // 从上到下, 列不变行变
+                for (let row = top; row <= bottom; row++) {
+                    result[row][right] = count++;
+                }
+                // 移动右边界
+                right--;
+                // 从右到左, 行不变列变
+                for (let col = right; col >= left; col--) {
+                    result[bottom][col] = count++;
+                }
+                // 移动下边界
+                bottom--;
+                // 从下到上, 列不变行变
+                for (let row = bottom; row >= top; row--) {
+                    result[row][left] = count++;
+                }
+                // 移动左边界
+                left++;
+            }
+            return result;
+        }
+
+
+        console.log(generateMatrix(3));
+        console.log(generateMatrix2(3));
+    </script>
+</body>
+
+</html>

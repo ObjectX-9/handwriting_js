@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function purchaseLand(grid) {
+            let result = [];
+            let totalLand = 0;
+            // 计算土地总数
+            for (let i = 0; i < grid.length; i++) {
+                for (let j = 0; j < grid[i].length; j++) {
+                    totalLand += grid[i][j];
+                }
+            }
+
+            let rowTotal = new Array(grid.length).fill(0);
+            // 计算每行的总数
+            for (let i = 0; i < grid.length; i++) {
+                for (let j = 0; j < grid[i].length; j++) {
+                    rowTotal[i] += grid[i][j];
+                }
+            }
+
+            let colTotal = new Array(grid[0].length).fill(0);
+            // 计算每列的总数
+            for (let j = 0; j < grid[0].length; j++) {
+                for (let i = 0; i < grid.length; i++) {
+                    colTotal[j] += grid[i][j];
+                }
+            }
+
+            let minDiff = Infinity;
+
+            // 计算按行分割的差值
+            let rowPreFix = 0;
+            for (let i = 0; i < grid.length; i++) {
+                // 计算按行分割的差值
+                rowPreFix += rowTotal[i];
+                let diff = Math.abs(totalLand - 2 * rowPreFix);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                }
+            }
+
+            // 计算按列分割的差值
+            let colPreFix = 0;
+            for (let j = 0; j < grid[0].length; j++) {
+                colPreFix += colTotal[j];
+                let diff = Math.abs(totalLand - 2 * colPreFix);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                }
+            }
+
+            return minDiff;
+        }
+        // 测试用例
+        const matrix = [
+            [1, 2, 3],
+            [2, 1, 3],
+            [1, 2, 3]
+        ];
+
+        console.log(purchaseLand(matrix)); // 输出: 0
+
+    </script>
+</body>
+
+</html>
