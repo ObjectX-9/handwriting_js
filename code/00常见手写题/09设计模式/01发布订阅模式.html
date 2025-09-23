@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class EventEmitter {
+            constructor(maxListeners = 10) {
+                this.events = Object.create(null); // 无原型对象，避免冲突
+                this.onceWrappers = new WeakMap(); // 记录 once 原始回调和包装回调的映射
+                this.maxListeners = maxListeners;
+            }
+
+            on(eventName, callback) {
+                if (!this.events[eventName]) {
+                    this.events[eventName] = [];
+                }
+                if (this.events[eventName].length >= this.maxListeners) {
+                    console.warn(`Warning: Event "${eventName}" has more than ${this.maxListeners} listeners`);
+                }
+                this.events[eventName].push(callback);
+            }
+
+            once(eventName, callback) {
+                const wrapper = (...args) => {
+                    callback(...args);
+                    this.off(eventName, wrapper);
+                    // 删除 once 原始回调和包装回调的映射
+                    this.onceWrappers.delete(callback);
+                };
+                // 记录 once 原始回调和包装回调的映射，
+                // 因为你注入的 callback被包装后存储的不再是原来的callback，而是包装后的callback
+                this.onceWrappers.set(callback, wrapper);
+                this.on(eventName, wrapper);
+            }
+
+            off(eventName, callback) {
+                if (!this.events[eventName]) return;
+                const target = this.onceWrappers.get(callback) || callback;
+                // 删除事件池中的回调函数
+                this.events[eventName] = this.events[eventName].filter(fn => fn !== target);
+            }
+
+            // 同步事件
+            emit(eventName, ...args) {
+                if (!this.events[eventName]) return;
+                // 避免在遍历过程中修改数组，使用展开运算符创建新的数组，浅拷贝，因为函数一般定义了是不变的
+                const listeners = [...this.events[eventName]];
+                listeners.forEach(cb => cb(...args));
+            }
+
+            // 异步事件
+            emitAsync(eventName, ...args) {
+                if (!this.events[eventName]) return;
+                const listeners = [...this.events[eventName]];
+                listeners.forEach(cb => Promise.resolve().then(() => cb(...args)));
+            }
+        }
+
+        const eventEmitter = new EventEmitter();
+        eventEmitter.on('testClick', () => {
+            console.log('click1');
+        });
+        eventEmitter.on('testClick', () => {
+            console.log('click2');
+        });
+        eventEmitter.emit('testClick');
+        eventEmitter.emit('testClick');
+
+
+        // 异步事件
+        eventEmitter.on('testClickAsync', () => {
+            setTimeout(() => {
+                console.log('click1');
+            }, 1000);
+        });
+        eventEmitter.on('testClickAsync', () => {
+            setTimeout(() => {
+                console.log('click2');
+            }, 1000);
+        });
+        eventEmitter.emitAsync('testClickAsync', 'async');
+        eventEmitter.emitAsync('testClickAsync', 'async');
+
+    </script>
+</body>
+
+</html>

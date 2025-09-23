@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Subject {
+            constructor() {
+                this.observers = new Set(); // 避免重复
+            }
+
+            addObserver(observer) {
+                this.observers.add(observer);
+                return () => this.removeObserver(observer); // 返回解绑函数
+            }
+
+            removeObserver(observer) {
+                this.observers.delete(observer);
+            }
+
+            notify(message) {
+                [...this.observers].forEach(observer => {
+                    try {
+                        observer.update?.(message);
+                    } catch (err) {
+                        console.error(`Observer ${observer.name} failed:`, err);
+                    }
+                });
+            }
+        }
+
+        class Observer {
+            constructor(name) {
+                this.name = name;
+            }
+            update(message) {
+                console.log(`${this.name} received: ${message}`);
+            }
+        }
+
+        // 使用示例
+        const subject = new Subject();
+        const observer1 = new Observer('observer1');
+        const observer2 = new Observer('observer2');
+
+        const unsubscribe1 = subject.addObserver(observer1);
+        subject.addObserver(observer2);
+
+        subject.notify('hello');
+        unsubscribe1(); // 自动解绑
+        subject.notify('world');
+
+    </script>
+</body>
+
+</html>

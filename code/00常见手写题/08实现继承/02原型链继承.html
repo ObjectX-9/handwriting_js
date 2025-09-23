@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Parent(name) {
+            this.name = name;
+        }
+
+        function Child(name, age) {
+            this.age = age;
+        }
+
+        Child.prototype = new Parent();
+
+        const child = new Child('John', 20);
+        console.log('=== 原型链继承测试 ===');
+        console.log('child:', child);
+        console.log('child.name:', child.name);  // ✅ 能访问，来自构造函数
+        console.log('child.age:', child.age);    // ✅ 能访问，子类自己的属性
+        console.log('child.hobbies:', child.hobbies); // ✅ 能访问，来自构造函数
+        console.log('child.species:', child.species); // ✅ 能访问，来自Parent.prototype
+        console.log('child.sayHello:', child.sayHello); // ✅ 能访问，来自Parent.prototype方法
+
+        // 验证原型链
+        console.log('\n=== 原型链检查 ===');
+        console.log('child.__proto__ === Child.prototype:', child.__proto__ === Child.prototype); // true
+        console.log('Child.prototype.__proto__ === Parent.prototype:', Child.prototype.__proto__ === Parent.prototype); // true
+        console.log('Child.prototype.__proto__ === Object.prototype:', Child.prototype.__proto__ === Object.prototype); // true
+
+    </script>
+</body>
+
+</html>

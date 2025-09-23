@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function Parent(name) {
+            this.name = name;
+        }
+
+        function Child(name, age) {
+            // 继承父类构造函数的属性
+            Parent.call(this, name);
+            this.age = age;
+        }
+        // 优化原型链继承：创建一个新对象，继承父类原型对象的属性和方法
+        Child.prototype = Object.create(Parent.prototype);
+        // 优化constructor
+        Child.prototype.constructor = Child;
+
+        const child = new Child('John', 20);
+        console.log('=== 组合继承优化测试 ===');
+        console.log('child:', child);
+        console.log('child.name:', child.name);  // ✅ 能访问，来自构造函数
+        console.log('child.age:', child.age);    // ✅ 能访问，子类自己的属性
+        console.log('child.hobbies:', child.hobbies); // ✅ 能访问，来自构造函数
+        console.log('child.species:', child.species); // ✅ 能访问，来自Parent.prototype
+        console.log('child.sayHello:', child.sayHello); // ✅ 能访问，来自Parent.prototype方法
+
+        // 验证原型链
+        console.log('\n=== 原型链检查 ===');
+        console.log('child.__proto__ === Child.prototype:', child.__proto__ === Child.prototype); // true
+        console.log('Child.prototype.__proto__ === Parent.prototype:', Child.prototype.__proto__ === Parent.prototype); // true
+        console.log('Child.prototype.__proto__ === Object.prototype:', Child.prototype.__proto__ === Object.prototype); // true
+
+        // instanceof 检查
+        console.log('\n=== instanceof 检查 ===');
+        console.log('child instanceof Child:', child instanceof Child);   // ✅ true
+        console.log('child instanceof Parent:', child instanceof Parent); // ✅ true
+
+        // constructor 检查
+        console.log('\n=== constructor 检查 ===');
+        console.log('child.constructor:', child.constructor); // ✅ Child
+        console.log('Child.prototype.constructor:', Child.prototype.constructor); // ✅ Child
+        console.log('Parent.prototype.constructor:', Parent.prototype.constructor); // ✅ Parent
+    </script>
+</body>
+
+</html>

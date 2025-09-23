@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>构造函数继承 - 不会继承prototype属性</title>
+</head>
+
+<body>
+    <script>
+        function Parent(name) {
+            this.name = name;
+            this.hobbies = ['reading', 'music']; // 实例属性
+        }
+
+        // 在父类原型上添加属性和方法
+        Parent.prototype.species = 'human';
+        Parent.prototype.sayHello = function () {
+            return `Hello, I'm ${this.name}`;
+        };
+        Parent.prototype.getSpecies = function () {
+            return this.species;
+        };
+
+        function Child(name, age) {
+            // 只是借用父类构造函数，没有建立原型链连接
+            Parent.call(this, name);
+            this.age = age;
+        }
+
+        const child = new Child('John', 20);
+        console.log('=== 构造函数继承测试 ===');
+        console.log('child:', child);
+        console.log('child.name:', child.name);  // ✅ 能访问，来自构造函数
+        console.log('child.age:', child.age);    // ✅ 能访问，子类自己的属性
+        console.log('child.hobbies:', child.hobbies); // ✅ 能访问，来自构造函数
+
+        // 测试prototype上的属性和方法
+        console.log('\n=== 测试prototype属性 ===');
+        console.log('child.species:', child.species); // ❌ undefined，无法访问父类prototype
+        console.log('child.sayHello:', child.sayHello); // ❌ undefined，无法访问父类prototype方法
+
+        // 验证原型链
+        console.log('\n=== 原型链检查 ===');
+        console.log('child.__proto__ === Child.prototype:', child.__proto__ === Child.prototype); // true
+        console.log('Child.prototype.__proto__ === Parent.prototype:', Child.prototype.__proto__ === Parent.prototype); // false!
+        console.log('Child.prototype.__proto__ === Object.prototype:', Child.prototype.__proto__ === Object.prototype); // true
+
+        // instanceof 检查
+        console.log('\n=== instanceof 检查 ===');
+        console.log('child instanceof Child:', child instanceof Child);   // ✅ true
+        console.log('child instanceof Parent:', child instanceof Parent); // ❌ false!
+
+        console.log('\n=== 为什么不能继承prototype? ===');
+        console.log('原因: Parent.call(this, name) 只是借用了父类构造函数');
+        console.log('      没有建立 Child.prototype 和 Parent.prototype 之间的连接');
+        console.log('      所以无法通过原型链访问父类prototype上的属性和方法');
+    </script>
+</body>
+
+</html>

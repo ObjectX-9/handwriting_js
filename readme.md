@@ -6,16 +6,12 @@
 
 - [01 节流防抖](https://object-x.com.cn/articles/67c2c4d92996ce1301b67a6a)
   - 代码位置：code/00常见手写题/01节流防抖
-
 - [02 Object.create](https://object-x.com.cn/articles/67c317ff11bab22d3f677e2c)
   - 代码位置：code/03手写实现Object方法/01实现Object.create.html
-
 - [03 new](https://object-x.com.cn/articles/67c31bcb348fa0e58fbb55f6)
   - 代码位置：code/00常见手写题/03new/new.html
-
 - [04 instanceof](https://object-x.com.cn/articles/67c2fec2b49401eb66aec62f)
   - 代码位置：code/00 常见手写题/02instanceof/instanceof.html
-
 - [05 call、apply、bind](https://object-x.com.cn/articles/67c3dd80859e2373884551e1)
   - [call](https://object-x.com.cn/articles/67c3dd80859e2373884551e1)
     - 代码位置：code/00常见手写题/04call方法/index.html
@@ -25,17 +21,20 @@
 
   - [bind](https://object-x.com.cn/articles/67c3efa70d096367e6905c49)
     - 代码位置：code/00常见手写题/06实现bind方法/index.html
-
 - [06 浅拷贝&amp;深拷贝](https://object-x.com.cn/articles/67cbda0cc6946830b2060a32)
   - 浅拷贝
     - 代码位置：code/00常见手写题/07深浅拷贝/01浅拷贝.html
 
   - 深拷贝
     - 代码位置：code/00常见手写题/07深浅拷贝/02深拷贝.html
+- [07 实现类的继承](https://object-x.com.cn/articles/67cc0965cc1c958306f2824e)
+  - 代码位置：code/00常见手写题/08实现继承
 
-- [07 实现类的继承](./common/07实现类的继承.md)
 - [08 实现 promise](./common/08实现PromisesA+%20.md)
 - [09 发布订阅&amp;观察者模式](./common/09发布订阅&观察者模式.md)
+  - 发布订阅：code/00常见手写题/09设计模式/01发布订阅模式.html
+  - 观察者模式：
+
 - [10 单例模式](./common/10单例模式.md)
 - [11 Ajax 封装](./common/11Ajax封装.md)
 - [12 实现 JSONP 方法](./common/12实现JSONP方法.md)
