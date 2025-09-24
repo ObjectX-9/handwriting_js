@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../00实现普通二叉树/index.js"></script>
+    <script>
+        const tree = new BinaryTree([1, null, 2, 3]);
+        console.log("✅ ~ tree:", tree)
+
+        BinaryTree.prototype.preOrderTraversal = function (root) {
+            const result = [];
+            if (root === null) return result;
+            const preOrderTraversalNode = function (node) {
+                if (node === null) return;
+                result.push(node.val);
+                preOrderTraversalNode(node.left);
+                preOrderTraversalNode(node.right);
+            }
+            preOrderTraversalNode(root);
+            return result;
+        }
+
+        console.log("✅ ~ tree.preOrderTraversal(tree.root):", tree.preOrderTraversal(tree.root))
+
+
+        BinaryTree.prototype.inOrderTraversal = function (root) {
+            const result = [];
+            if (root === null) return result;
+            const inOrderTraversalNode = function (node) {
+                if (node === null) return;
+                inOrderTraversalNode(node.left);
+                result.push(node.val);
+                inOrderTraversalNode(node.right);
+            }
+            inOrderTraversalNode(root);
+            return result;
+        }
+
+        console.log("✅ ~ tree.inOrderTraversal(tree.root):", tree.inOrderTraversal(tree.root))
+
+        BinaryTree.prototype.postOrderTraversal = function (root) {
+            const result = [];
+            if (root === null) return result;
+            const postOrderTraversalNode = function (node) {
+                if (node === null) return;
+                postOrderTraversalNode(node.left);
+                postOrderTraversalNode(node.right);
+                result.push(node.val);
+            }
+            postOrderTraversalNode(root);
+            return result;
+        }
+
+        console.log("✅ ~ tree.postOrderTraversal(tree.root):", tree.postOrderTraversal(tree.root))
+    </script>
+</body>
+
+</html>

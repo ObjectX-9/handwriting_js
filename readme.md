@@ -33,7 +33,7 @@
 - [08 实现 promise](./common/08实现PromisesA+%20.md)
 - [09 发布订阅&amp;观察者模式](./common/09发布订阅&观察者模式.md)
   - 发布订阅：code/00常见手写题/09设计模式/01发布订阅模式.html
-  - 观察者模式：
+  - 观察者模式：code/00常见手写题/09设计模式/02观察者模式.html
 
 - [10 单例模式](./common/10单例模式.md)
 - [11 Ajax 封装](./common/11Ajax封装.md)
@@ -71,9 +71,12 @@
 
 ## 7.树
 
++ [00实现树的数据结构](https://object-x.com.cn/articles/68d365712edabd1a8dd8ce75)
+  + 代码位置：code/11二叉树/00实现普通二叉树/index.html
+
 # 算法
 
-## 1.数组
+## 数组
 
 ### 二分查找
 
@@ -112,7 +115,6 @@
 ### 滑动窗口
 
 + [长度最小的子数组](https://object-x.com.cn/articles/67de569ee5b6ca5561cb63d3)
-  
   + 代码位置：code/04数组/10滑动窗口/01长度最小的子数组.html
 + [水果成篮](https://object-x.com.cn/articles/67de8ee7e5b6ca5561cb63d4)
   
@@ -133,4 +135,16 @@
   + 代码位置：code/04数组/11螺旋矩阵/index.html
 
 
+
+## 树
+
+### 遍历
+
++ [二叉树的递归遍历](https://object-x.com.cn/articles/67ffc057e11c35ba68352d00)
+  + 代码位置：code/11二叉树/02二叉树的递归遍历/index.html
++ [二叉树的迭代遍历-非统一](https://object-x.com.cn/articles/6807b586e11c35ba68352d02)
+  + 代码位置：code/11二叉树/03迭代遍历-非统一/index.html
++ [二叉树的迭代遍历-统一](https://object-x.com.cn/articles/6807b586e11c35ba68352d02)
+  + 这种更简单一些，自己写的时候用这种就行
+  + 代码位置：code/11二叉树/03迭代遍历-非统一/index.html
 
