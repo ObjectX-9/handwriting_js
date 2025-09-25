@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const ajax = (method, url, callback, data) => {
+            const xhr = new XMLHttpRequest()
+            xhr.open(method, url, true)
+
+            if (method === 'GET') {
+                xhr.send()
+            } else {
+                xhr.send(data)
+            }
+
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        callback(xhr.responseText)
+                    } else {
+                        callback(null)
+                    }
+                }
+            }
+
+            xhr.onload = () => {
+                callback(xhr.response)
+            }
+
+            xhr.onerror = () => {
+                callback(null)
+            }
+        }
+
+        ajax('GET', 'https://api.github.com', (response) => {
+            console.log('GET', response)
+        })
+
+        ajax('POST', 'https://api.github.com', (response) => {
+            console.log('POST', response)
+        }, {
+            name: 'John',
+            age: 20
+        })
+    </script>
+</body>
+
+</html>

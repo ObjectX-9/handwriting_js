@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 实现四：Proxy
+        const Singleton = (function () {
+            let instance = null
+
+            class SingletonClass {
+                constructor(name, age) {
+                    this.name = name
+                    this.age = age
+                }
+                say() {
+                    console.log(`My name is ${this.name}, I am ${this.age} years old`)
+                }
+
+                static getInstance() {
+                    if (!instance) {
+                        instance = new SingletonClass()
+                    }
+                    return instance
+                }
+            }
+
+            return new Proxy(SingletonClass, {
+                construct(target, args) {
+                    if (!instance) {
+                        instance = Reflect.construct(target, args)
+                    }
+                    return instance
+                }
+            })
+        })()
+
+        const s1 = new Singleton('s1', 18)
+        const s2 = new Singleton('s2', 20)
+        console.log(s1 === s2)
+
+        const s3 = Singleton.getInstance('s3', 22)
+        const s4 = Singleton.getInstance('s4', 24)
+        console.log(s3 === s4)
+    </script>
+</body>
+
+</html>

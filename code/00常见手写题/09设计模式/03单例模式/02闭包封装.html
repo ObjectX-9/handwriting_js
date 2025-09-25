@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 实现二：闭包封装
+        const Singleton = (function () {
+            let instance = null
+            return class {
+                constructor(name, age) {
+                    if (instance) {
+                        return instance
+                    }
+                    this.name = name
+                    this.age = age
+                    instance = this
+                }
+
+                static getInstance() {
+                    if (!instance) {
+                        instance = new Singleton()
+                    }
+                    return instance
+                }
+            }
+        })()
+        const s1 = new Singleton('s1', 18)
+        const s2 = new Singleton('s2', 20)
+        console.log(s1 === s2)
+
+        const s3 = Singleton.getInstance('s3', 22)
+        const s4 = Singleton.getInstance('s4', 24)
+        console.log(s3 === s4)
+        console.log("✅ ~ Singleton.instance: Before", Singleton.instance)
+        Singleton.instance = null;
+        console.log("✅ ~ Singleton.instance: After", Singleton.instance)
+
+        // 我还能构造
+        const s5 = Reflect.construct(Singleton, ['s5', 26])
+        const s6 = Reflect.construct(Singleton, ['s6', 28])
+        console.log(s5 === s6)
+
+
+
+    </script>
+</body>
+
+</html>

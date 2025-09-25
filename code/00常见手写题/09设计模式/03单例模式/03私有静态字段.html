@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 实现三：私有静态字段
+        class Singleton {
+            static #instance = null
+            constructor(name, age) {
+                if (Singleton.#instance) {
+                    return Singleton.#instance
+                }
+                this.name = name
+                this.age = age
+                Singleton.#instance = this
+            }
+
+            static getInstance() {
+                if (!Singleton.#instance) {
+                    Singleton.#instance = new Singleton()
+                }
+                return Singleton.#instance
+            }
+        }
+
+        const s1 = new Singleton('s1', 18)
+        const s2 = new Singleton('s2', 20)
+        console.log(s1 === s2)
+
+        const s3 = Singleton.getInstance('s3', 22)
+        const s4 = Singleton.getInstance('s4', 24)
+        console.log(s3 === s4)
+
+        // 会报错的
+        // Singleton.#instance = null;
+        // console.log("✅ ~ Singleton.instance: After", Singleton.#instance)
+
+        // 我还能构造，但是这里返回的还是#instance，没问题
+        const s5 = Reflect.construct(Singleton, ['s5', 26])
+        const s6 = Reflect.construct(Singleton, ['s6', 28])
+        console.log("✅ ~ s5 === s6", s5 === s6)
+    </script>
+</body>
+
+</html>

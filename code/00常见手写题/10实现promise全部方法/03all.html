@@ -25,7 +25,7 @@
                 promises.forEach((item, index) => {
                     Promise.resolve(item).then(
                         value => {
-                            result[index] = value;
+                            result.push(value)
                             count++;
                             if (count === promises.length) {
                                 resolve(result);
