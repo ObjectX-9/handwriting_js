@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        Promise.reject = function (param) {
+            return new Promise((resolve, reject) => {
+                reject(param)
+            })
+        }
+
+        // 帮我写一些测试用例，测试Promise.reject
+        console.log(Promise.reject(new Promise((resolve, reject) => {
+            resolve('success')
+        })))
+        console.log(Promise.reject(new Promise((resolve, reject) => {
+            reject('error')
+        })))
+        console.log(Promise.reject('success'))
+        console.log(Promise.reject('error'))
+        console.log(Promise.reject(123))
+        console.log(Promise.reject(null))
+        console.log(Promise.reject(undefined))
+        console.log(Promise.reject(false))
+        console.log(Promise.reject(true))
+    </script>
+</body>
+
+</html>

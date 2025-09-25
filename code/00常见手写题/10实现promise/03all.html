@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        Promise.all = function (promises) {
+            if (!Array.isArray(promises)) {
+                throw new TypeError('promises must be an array');
+            }
+
+            return new Promise((resolve, reject) => {
+                const result = [];
+                let count = 0;
+
+                if (promises.length === 0) {
+                    return resolve(result);
+                }
+
+                promises.forEach((item, index) => {
+                    Promise.resolve(item).then(
+                        value => {
+                            result[index] = value;
+                            count++;
+                            if (count === promises.length) {
+                                resolve(result);
+                            }
+                        },
+                        reason => reject(reason) // 直接 reject
+                    );
+                });
+            });
+        };
+
+        // 帮我写一些测试用例，测试Promise.all
+        console.log(Promise.all([new Promise((resolve, reject) => {
+            resolve('success1')
+        })]))
+        console.log(Promise.all([new Promise((resolve, reject) => {
+            reject('error1')
+        })]))
+        console.log(Promise.all([new Promise((resolve, reject) => {
+            resolve('success2')
+        }), new Promise((resolve, reject) => {
+            reject('error2')
+        })]))
+
+
+        Promise.all([1, 2, 3]).then(console.log);
+        // [1, 2, 3]
+
+        Promise.all([Promise.resolve(1), 2, Promise.resolve(3)])
+            .then(console.log);
+        // [1, 2, 3]
+
+        Promise.all([Promise.resolve(1), Promise.reject('error'), Promise.resolve(3)])
+            .then(console.log)
+            .catch(console.error);
+        // error
+
+        const thenable = {
+            then(resolve) {
+                setTimeout(() => resolve(42), 1000);
+            }
+        };
+        Promise.all([thenable]).then(console.log);
+        // [42]
+
+
+    </script>
+</body>
+
+</html>

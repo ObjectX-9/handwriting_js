@@ -30,7 +30,13 @@
 - [07 实现类的继承](https://object-x.com.cn/articles/67cc0965cc1c958306f2824e)
   - 代码位置：code/00常见手写题/08实现继承
 
-- [08 实现 promise](./common/08实现PromisesA+%20.md)
+- [08 实现 promise全部方法](https://object-x.com.cn/articles/67cef02f9ec1272b4675b260)
+  - 实现resolve
+    - 代码位置：code/00常见手写题/10实现promise/01resolve.html
+
+  - 实现reject
+    - 代码位置：code/00常见手写题/10实现promise/02reject.html
+
 - [09 发布订阅&amp;观察者模式](./common/09发布订阅&观察者模式.md)
   - 发布订阅：code/00常见手写题/09设计模式/01发布订阅模式.html
   - 观察者模式：code/00常见手写题/09设计模式/02观察者模式.html
