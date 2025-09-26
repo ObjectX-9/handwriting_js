@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../00实现普通二叉树/index.js"></script>
+    <script>
+        const tree = new BinaryTree([3, 9, 20, null, null, 15, 7]);
+        console.log("✅ ~ tree:", tree)
+
+        BinaryTree.prototype.levelReverseOrderTraversal = function (root) {
+            const result = [];
+            // 边界判断
+            if (root === null) return result;
+            const queue = [root];
+
+            while (queue.length) {
+                const tempArr = [];
+                const size = queue.length;
+                for (let i = 0; i < size; i++) {
+                    const cur = queue.shift();
+                    tempArr.push(cur.val);
+                    if (cur.left) queue.push(cur.left);
+                    if (cur.right) queue.push(cur.right);
+                }
+
+                result.push(tempArr);
+            }
+
+            return result.reverse();
+        }
+
+        console.log("✅ ~ tree.levelReverseOrderTraversal(tree.root):", tree.levelReverseOrderTraversal(tree.root))
+    </script>
+</body>
+
+</html>

@@ -77,6 +77,9 @@
 
 + [00实现树的数据结构](https://object-x.com.cn/articles/68d365712edabd1a8dd8ce75)
   + 代码位置：code/11二叉树/00实现普通二叉树/index.html
++ 实现N叉树结构
+  + 代码位置：code/11二叉树/00实现N叉树/N叉树结构.js
+  
 
 # 算法
 
@@ -151,4 +154,29 @@
 + [二叉树的迭代遍历-统一](https://object-x.com.cn/articles/6807b586e11c35ba68352d02)
   + 这种更简单一些，自己写的时候用这种就行
   + 代码位置：code/11二叉树/03迭代遍历-非统一/index.html
++ [层序遍历](https://object-x.com.cn/articles/681a1c78e11c35ba68352d03)
+  + 代码位置：code/11二叉树/05层序遍历/01基本层序遍历.html
+
++ [逆序层序遍历](https://object-x.com.cn/articles/681b61fbe11c35ba68352d04)
+  + 代码位置：code/11二叉树/05层序遍历/02自底向上的层序遍历.html
+
++ [二叉树的右视图](https://object-x.com.cn/articles/681b64a6e11c35ba68352d05)
+  + 代码位置：code/11二叉树/05层序遍历/03二叉树的右视图.html
+
++ [二叉树的每层的平均值](https://object-x.com.cn/articles/681b65dbe11c35ba68352d06)
+  + 代码位置：code/11二叉树/05层序遍历/04二叉树的层平均值.html
+
++ [N叉树的层序遍历](https://object-x.com.cn/articles/681b6670e11c35ba68352d07)
+  + 代码位置：code/11二叉树/05层序遍历/05N叉树的层序遍历.html
+
++ [二叉树每层的最大值](https://object-x.com.cn/articles/681b6779e11c35ba68352d08)
+  + 代码位置：code/11二叉树/05层序遍历/06二叉树取每一层的最大值.html
+
+
++ [填充每个节点的下一个右侧节点指针](https://object-x.com.cn/articles/681b6ab9e11c35ba68352d09)
+  + 代码位置：code/11二叉树/05层序遍历/07【完全二叉树】填充每个节点的下一个右侧节点指针.html
++ [填充每个节点的下一个右侧节点指针II](https://object-x.com.cn/articles/681b6ba9e11c35ba68352d0a)
+  + 代码位置：code/11二叉树/05层序遍历/08【普通二叉树】填充每个节点的下一个右侧节点指针II.html
++ [翻转二叉树](https://object-x.com.cn/articles/681cca0de11c35ba68352d0b)
+  + 
 

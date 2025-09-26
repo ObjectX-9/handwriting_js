@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../00实现N叉树/N叉树结构.js"></script>
+    <script>
+        const tree = new NaryTree([1, null, 3, 2, 4, null, 5, 6]);
+        console.log("✅ ~ tree:", tree)
+
+        NaryTree.prototype.levelOrderTraversal = function (root) {
+            const result = [];
+            if (root === null) return result;
+
+            const queue = [root];
+
+            while (queue.length) {
+                const tempArr = [];
+
+                const size = queue.length;
+                for (let i = 0; i < size; i++) {
+                    const cur = queue.shift();
+                    tempArr.push(cur.val);
+                    if (cur.children.length) queue.push(...cur.children);
+                }
+                result.push(tempArr);
+            }
+
+            return result;
+        }
+
+        console.log("✅ ~ tree.levelOrderTraversal(tree.root):", tree.levelOrderTraversal(tree.root))
+    </script>
+
+</body>
+
+</html>
