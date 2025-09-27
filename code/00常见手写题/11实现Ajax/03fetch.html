@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class HttpClient {
+            constructor() {
+                this.headers = {
+                    "Content-Type": "application/json"
+                };
+                this.baseUrl = ""; // 设置你的API基本URL
+            }
+
+            sendRequest(url, method, data = null) {
+                const config = {
+                    method,
+                    headers: this.headers,
+                    mode: "cors", // 可选：处理跨域请求
+                    cache: "no-cache" // 可选：不缓存请求
+                };
+
+                if (data !== null) {
+                    config.body = JSON.stringify(data);
+                }
+
+                return fetch(this.baseUrl + url, config)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                        return response.json(); // 解析响应为JSON格式
+                    })
+                    .catch((error) => {
+                        console.error("Fetch error:", error);
+                        throw error; // 重新抛出错误以便上游处理
+                    });
+            }
+
+            get(url) {
+                return this.sendRequest(url, "GET");
+            }
+
+            post(url, data) {
+                return this.sendRequest(url, "POST", data);
+            }
+
+            put(url, data) {
+                return this.sendRequest(url, "PUT", data);
+            }
+
+            patch(url, data) {
+                return this.sendRequest(url, "PATCH", data);
+            }
+        }
+
+        // 创建HttpClient实例
+        const httpClient = new HttpClient();
+
+        // 例子：GET请求
+        httpClient
+            .get("/data")
+            .then((data) => {
+                console.log(data);
+                // 处理获取的数据
+            })
+            .catch((error) => {
+                // 处理错误
+            });
+
+        // 例子：POST请求
+        const postData = { key: "value" };
+        httpClient
+            .post("/data", postData)
+            .then((data) => {
+                console.log(data);
+                // 处理响应
+            })
+            .catch((error) => {
+                // 处理错误
+            });
+
+        // 例子：PUT请求
+        const putData = { updatedKey: "updatedValue" };
+        httpClient
+            .put("/data/1", putData)
+            .then((data) => {
+                console.log(data);
+                // 处理PUT请求的响应
+            })
+            .catch((error) => {
+                // 处理PUT请求的错误
+            });
+
+        // 例子：PATCH请求
+        const patchData = { partialUpdate: "newValue" };
+        httpClient
+            .patch("/data/1", patchData)
+            .then((data) => {
+                console.log(data);
+                // 处理PATCH请求的响应
+            })
+            .catch((error) => {
+                // 处理PATCH请求的错误
+            });
+    </script>
+</body>
+
+</html>

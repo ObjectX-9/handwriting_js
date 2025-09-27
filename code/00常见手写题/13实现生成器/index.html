@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // Context 类，用于保存每个迭代器独立的上下文
+        class Context {
+            constructor() {
+                this.next = 0;      // 下一个执行步骤
+                this.prev = 0;      // 上一个执行步骤
+                this.done = false;  // 是否执行结束
+                this._send = undefined; // next() 传入的值
+            }
+            stop() {
+                this.done = true;
+            }
+        }
+
+        // gen$ 模拟 Generator 函数体
+        function gen$(context) {
+            let a; // 模拟 foo 中的局部变量提升
+            while (1) {
+                switch (context.prev = context.next) {
+                    case 0:
+                        context.next = 2;
+                        return 'result1';  // 第一次 yield
+
+                    case 2:
+                        a = context._send; // 接收 next(参数) 传入的值
+                        console.log('a =', a);
+                        context.next = 4;
+                        return 'result2';  // 第二次 yield
+
+                    case 4:
+                        context.next = 6;
+                        return 'result3';  // 第三次 yield
+
+                    case 6:
+                        context.stop();     // 执行结束
+                        return undefined;
+                }
+            }
+        }
+
+        // 手写的 Generator 函数
+        function foo() {
+            const context = new Context(); // 每个迭代器独立上下文
+            return {
+                next: function (value) {
+                    context._send = value;          // 保存 next 的参数
+                    const result = gen$(context);   // 执行 gen$
+                    return { value: result, done: context.done }; // 返回 {value, done}
+                }
+            }
+        }
+
+        // 使用示例
+        const gen = foo();
+
+        console.log(gen.next());       // { value: 'result1', done: false }
+        console.log(gen.next(111));   // a = 111  输出：{ value: 'result2', done: false }
+        console.log(gen.next(222));   // { value: 'result3', done: false }
+        console.log(gen.next());       // { value: undefined, done: true }
+        console.log(gen.next());       // { value: undefined, done: true }
+    </script>
+</body>
+
+</html>

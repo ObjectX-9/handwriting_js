@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class HttpRequest {
+            constructor() {
+                this.xhr = new XMLHttpRequest();
+            }
+
+            sendRequest(method, url, data, callback) {
+                this.xhr.open(method, url, true);
+                // 默认我们用json了，如果是表单数据啥的，data需要处理编码，比如urlencode
+                this.xhr.setRequestHeader("Content-Type", "application/json");
+
+                this.xhr.onreadystatechange = () => {
+                    if (this.xhr.readyState === 4) {
+                        if (this.xhr.status === 200) {
+                            callback(null, this.xhr.responseText);
+                        } else {
+                            callback(this.xhr.status, null);
+                        }
+                    }
+                };
+
+                if (method === "GET" || method === "DELETE") {
+                    this.xhr.send();
+                } else {
+                    this.xhr.send(data);
+                }
+            }
+
+            get(url, callback) {
+                this.sendRequest("GET", url, null, callback);
+            }
+
+            post(url, data, callback) {
+                this.sendRequest("POST", url, data, callback);
+            }
+
+            put(url, data, callback) {
+                this.sendRequest("PUT", url, data, callback);
+            }
+
+            patch(url, data, callback) {
+                this.sendRequest("PATCH", url, data, callback);
+            }
+
+            delete(url, callback) {
+                this.sendRequest("DELETE", url, null, callback);
+            }
+        }
+
+        const http = new HttpRequest();
+
+        http.get("https://www.baidu.com", function (err, response) {
+            if (err) {
+                console.error("Error:", err);
+            } else {
+                console.log("Response from Baidu:", response);
+            }
+        });
+
+        // 定义你的查询数据
+        const queryData = {
+            prompt:
+                "Translate the following English text to French: 'Hello, how are you?'",
+            max_tokens: 50
+        };
+
+        // 将数据转换为 JSON 字符串
+        const jsonData = JSON.stringify(queryData);
+
+        // 设置请求头为 application/json
+        http.post("https://www.baidu.com", jsonData, function (err, response) {
+            if (err) {
+                console.error("Error:", err);
+            } else {
+                console.log("Response from baidu:", response);
+            }
+        });
+    </script>
+</body>
+
+</html>

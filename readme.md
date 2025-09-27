@@ -40,10 +40,19 @@
 - [10 单例模式](./common/10单例模式.md)
   - 代码位置：code/00常见手写题/09设计模式/03单例模式
 
-- [11 Ajax 封装](./common/11Ajax封装.md)
-- [12 实现 JSONP 方法](./common/12实现JSONP方法.md)
-- [13 迭代器&amp;生成器](./common/13迭代器&生成器.md)
-- [14 async&amp;await 实现原理](./common/14async&await实现原理.md)
+- [11 Ajax 封装](https://object-x.com.cn/articles/68d50f592edabd1a8dd8ce79)
+  - 代码位置：code/00常见手写题/11实现Ajax
+
+- [12 实现 JSONP 方法](https://object-x.com.cn/articles/68d7b464b92776b5f4ec6ae9)
+  - 无
+
+- [13 迭代器&amp;生成器](https://object-x.com.cn/articles/68d7b88bb92776b5f4ec6aeb)
+  - 迭代器：code/00常见手写题/12实现迭代器/index.html
+  - 生成器：code/00常见手写题/13实现生成器/index.html
+
+- [14 async&amp;await 实现原理](https://object-x.com.cn/articles/68d7b88bb92776b5f4ec6aeb)
+  - code/00常见手写题/14实现async & await
+
 - [15 手写实现 let、const](./common/15手写实现let、const.md)
 
 ## 2.对象

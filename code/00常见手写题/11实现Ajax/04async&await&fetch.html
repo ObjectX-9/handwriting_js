@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class AjaxClient {
+            constructor() {
+                this.baseUrl = ''; // 设置你的API基本URL
+                this.headers = {
+                    'Content-Type': 'application/json',
+                };
+            }
+
+            async get(url) {
+                const response = await fetch(this.baseUrl + url, {
+                    method: 'GET',
+                    headers: this.headers,
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                return response.json();
+            }
+
+            async post(url, data) {
+                const response = await fetch(this.baseUrl + url, {
+                    method: 'POST',
+                    headers: this.headers,
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                return response.json();
+            }
+
+            async put(url, data) {
+                const response = await fetch(this.baseUrl + url, {
+                    method: 'PUT',
+                    headers: this.headers,
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                return response.json();
+            }
+
+            async patch(url, data) {
+                const response = await fetch(this.baseUrl + url, {
+                    method: 'PATCH',
+                    headers: this.headers,
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                return response.json();
+            }
+        }
+
+        // 创建AjaxClient实例
+        const ajaxClient = new AjaxClient();
+
+        // 例子：GET请求
+        (async () => {
+            try {
+                const data = await ajaxClient.get('/data');
+                console.log(data);
+                // 处理获取的数据
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        })();
+
+        // 例子：POST请求
+        const postData = { key: 'value' };
+        (async () => {
+            try {
+                const data = await ajaxClient.post('/data', postData);
+                console.log(data);
+                // 处理POST请求的响应
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        })();
+
+        // 例子：PUT请求
+        const putData = { updatedKey: 'updatedValue' };
+        (async () => {
+            try {
+                const data = await ajaxClient.put('/data/1', putData);
+                console.log(data);
+                // 处理PUT请求的响应
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        })();
+
+        // 例子：PATCH请求
+        const patchData = { partialUpdate: 'newValue' };
+        (async () => {
+            try {
+                const data = await ajaxClient.patch('/data/1', patchData);
+                console.log(data);
+                // 处理PATCH请求的响应
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        })();
+    </script>
+</body>
+
+</html>
