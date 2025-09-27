@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../00实现普通二叉树/index.js"></script>
+
+    <script>
+        const tree = new BinaryTree([1, 2, 3, 4, 5, 6]);
+        console.log("✅ ~ tree:", tree)
+
+        BinaryTree.prototype.countNodes = function (root) {
+            if (root === null) return 0;
+
+            const queue = [root];
+            let count = 0;
+            while (queue.length) {
+                const size = queue.length;
+                for (let i = 0; i < size; i++) {
+                    const node = queue.shift();
+                    if (node.left) queue.push(node.left);
+                    if (node.right) queue.push(node.right);
+                    count++;
+                }
+            }
+
+            return count;
+        }
+        console.log("✅ ~ tree.countNodes(tree.root):", tree.countNodes(tree.root))
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../00实现普通二叉树/index.js"></script>
+    <script>
+        const tree = new BinaryTree([1, 2, 2, 3, 4, 4, 3]);
+        const tree2 = new BinaryTree([1, 2, 2, null, 3, null, 3]);
+        console.log("✅ ~ tree:", tree)
+
+        BinaryTree.prototype.isSymmetric = function (root) {
+            if (root === null) return true;
+
+            const queue = [root.left, root.right];
+            while (queue.length) {
+                const left = queue.shift();
+                const right = queue.shift();
+
+                // 左右子树都为空，则继续
+                if (left === null && right === null) continue;
+                // 有一个空
+                if (left === null && right !== null) return false;
+                if (left !== null && right === null) return false;
+                // 值不相等
+                if (left.val !== right.val) return false;
+                // 值相等，则继续比较左右子树
+                queue.push(left.left, right.right, left.right, right.left);
+            }
+
+            return true;
+        }
+        console.log("✅ ~ tree.isSymmetric(tree.root):", tree.isSymmetric(tree.root))
+
+        console.log("✅ ~ tree2.isSymmetric(tree2.root):", tree2.isSymmetric(tree2.root))
+
+    </script>
+
+</body>
+
+</html>

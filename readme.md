@@ -145,15 +145,21 @@
 
 ## 树
 
-### 遍历
+### 递归遍历
 
 + [二叉树的递归遍历](https://object-x.com.cn/articles/67ffc057e11c35ba68352d00)
   + 代码位置：code/11二叉树/02二叉树的递归遍历/index.html
+
+### 迭代遍历
+
 + [二叉树的迭代遍历-非统一](https://object-x.com.cn/articles/6807b586e11c35ba68352d02)
   + 代码位置：code/11二叉树/03迭代遍历-非统一/index.html
 + [二叉树的迭代遍历-统一](https://object-x.com.cn/articles/6807b586e11c35ba68352d02)
   + 这种更简单一些，自己写的时候用这种就行
   + 代码位置：code/11二叉树/03迭代遍历-非统一/index.html
+
+### 层序遍历
+
 + [层序遍历](https://object-x.com.cn/articles/681a1c78e11c35ba68352d03)
   + 代码位置：code/11二叉树/05层序遍历/01基本层序遍历.html
 
@@ -177,6 +183,25 @@
   + 代码位置：code/11二叉树/05层序遍历/07【完全二叉树】填充每个节点的下一个右侧节点指针.html
 + [填充每个节点的下一个右侧节点指针II](https://object-x.com.cn/articles/681b6ba9e11c35ba68352d0a)
   + 代码位置：code/11二叉树/05层序遍历/08【普通二叉树】填充每个节点的下一个右侧节点指针II.html
++ [二叉树的最大深度](https://object-x.com.cn/articles/68d752402edabd1a8dd8ce82)
+
+  + 代码位置：code/11二叉树/05层序遍历/10二叉树的深度.html
+
++ [二叉树的最小深度](https://object-x.com.cn/articles/68d753452edabd1a8dd8ce83)
+
+  + 代码位置：code/11二叉树/05层序遍历/11二叉树的最小深度.html
+
+
+### 翻转二叉树
+
+
 + [翻转二叉树](https://object-x.com.cn/articles/681cca0de11c35ba68352d0b)
-  + 
+  + 代码位置：code/11二叉树/05层序遍历/09翻转二叉树/04层序遍历实现.html
+
+### 对称二叉树
+
++ [对称二叉树](https://object-x.com.cn/articles/68d761c62edabd1a8dd8ce84)
+  + 代码位置：code/11二叉树/06对称二叉树
+
+### 完全二叉树的节点个数
 
