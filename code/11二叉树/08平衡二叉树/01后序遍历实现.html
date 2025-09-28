@@ -23,10 +23,8 @@
                 const rightDepth = getDepth(node.right);
                 // 如果右子树不平衡，则返回-1
                 if (rightDepth === -1) return -1;
-                // 中: 如果左右子树高度差大于1，则返回-1
-                if (Math.abs(leftDepth - rightDepth) > 1) return -1;
-                // 返回当前节点的高度
-                return Math.max(leftDepth, rightDepth) + 1;
+                // 中
+                return Math.abs(leftDepth - rightDepth) > 1 ? -1 : Math.max(leftDepth, rightDepth) + 1;
             }
             return getDepth(root) !== -1;
         }

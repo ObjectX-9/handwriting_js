@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../00实现普通二叉树/index.js"></script>
+    <script>
+        const tree = new BinaryTree([1, 2, 3, null, 5]);
+        console.log("✅ ~ tree:", tree)
+        BinaryTree.prototype.binaryTreePaths = function (root) {
+            const result = [];
+            const getPaths = function (node, path) {
+                if (!node) return;
+                path.push(node.val); // 中
+                // 如果当前节点是叶子节点，则将路径加入结果数组
+                if (!node.left && !node.right) {
+                    result.push(path.join("->"));
+                    return;
+                }
+                if (node.left) {
+                    getPaths(node.left, path); // 左
+                    path.pop(); // 回溯
+                }
+                if (node.right) {
+                    getPaths(node.right, path); // 右
+                    path.pop(); // 回溯
+                }
+            }
+            getPaths(root, []);
+            return result;
+        }
+
+        console.log("✅ ~ tree.binaryTreePaths(tree.root):", tree.binaryTreePaths(tree.root))
+    </script>
+</body>
+
+</html>

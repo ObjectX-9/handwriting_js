@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../00实现普通二叉树/index.js"></script>
+    <script>
+        const tree = new BinaryTree([3, 9, 20, null, null, 15, 7]);
+        BinaryTree.prototype.sumOfLeftLeaves = function (root) {
+            const getSum = function (node) {
+                // 如果节点为空，则返回0
+                if (!node) return 0;
+                // 如果节点为叶子节点，则返回0
+                if (!node.left && !node.right) return 0;
+
+                let leftSum = getSum(node.left); // 左
+
+                // 如果左子树为叶子节点，则将左子树的值加入结果
+                if (node.left && !node.left.left && !node.left.right) {
+                    leftSum = node.left.val;
+                }
+
+                let rightSum = getSum(node.right); // 右
+
+                return leftSum + rightSum; // 中
+            }
+            return getSum(root);
+        }
+        console.log("✅ ~ tree.sumOfLeftLeaves(tree.root):", tree.sumOfLeftLeaves(tree.root))
+    </script>
+</body>
+
+</html>
