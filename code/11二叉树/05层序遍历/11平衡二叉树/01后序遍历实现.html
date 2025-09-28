@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../../00实现普通二叉树/index.js"></script>
+    <script>
+        const tree = new BinaryTree([3, 9, 20, null, null, 15, 7]);
+        console.log("✅ ~ tree:", tree)
+        BinaryTree.prototype.isBalanced = function (root) {
+            const getDepth = function (node) {
+                if (!node) return 0;
+                // 左
+                const leftDepth = getDepth(node.left);
+                // 如果左子树不平衡，则返回-1
+                if (leftDepth === -1) return -1;
+                // 右
+                const rightDepth = getDepth(node.right);
+                // 如果右子树不平衡，则返回-1
+                if (rightDepth === -1) return -1;
+                // 中: 如果左右子树高度差大于1，则返回-1
+                if (Math.abs(leftDepth - rightDepth) > 1) return -1;
+                // 返回当前节点的高度
+                return Math.max(leftDepth, rightDepth) + 1;
+            }
+            return getDepth(root) !== -1;
+        }
+        console.log("✅ ~ tree.isBalanced(tree.root):", tree.isBalanced(tree.root))
+    </script>
+</body>
+
+</html>

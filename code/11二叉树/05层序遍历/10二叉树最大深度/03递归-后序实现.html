@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../../00实现普通二叉树/index.js"></script>
+    <script>
+        const tree = new BinaryTree([3, 9, 20, null, null, 15, 7]);
+        console.log("✅ ~ tree:", tree)
+        BinaryTree.prototype.maxDepth = function (root) {
+            if (root === null) return 0;
+            const leftDepth = this.maxDepth(root.left);
+            const rightDepth = this.maxDepth(root.right);
+            return Math.max(leftDepth, rightDepth) + 1;
+        }
+        console.log("✅ ~ tree.maxDepth(tree.root):", tree.maxDepth(tree.root))
+    </script>
+</body>
+
+</html>
