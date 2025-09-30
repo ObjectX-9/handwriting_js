@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input id="input" />
+    <span id="span"></span>
+    <script>
+        // 数据
+        const data = {
+            text: 'default'
+        };
+        const input = document.getElementById('input');
+        const span = document.getElementById('span');
+
+        input.value = data.text;
+        span.innerHTML = data.text;
+
+        // 内部变量存储真实数据
+        let _text = data.text;
+
+        // 数据劫持
+        Object.defineProperty(data, 'text', {
+            // 获取数据
+            get() {
+                return _text;
+            },
+            // 数据变化 --> 修改视图
+            set(newVal) {
+                // 避免重复设置
+                if (_text === newVal) return;
+
+                // 更新内部存储的数据
+                _text = newVal;
+
+                // 更新视图
+                input.value = newVal;
+                span.innerHTML = newVal;
+
+                console.log('📝 数据已更新:', newVal);
+            }
+        });
+        // 视图更改 --> 数据变化
+        input.addEventListener('keyup', function (e) {
+            data.text = e.target.value;
+
+            console.log('_text', _text)
+        });
+
+        setTimeout(() => {
+            data.text = 'hello world'
+
+            console.log(_text)
+        }, 1000)
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const mySetTimeout = (fn, t) => {
+            const timer = setInterval(() => {
+                clearInterval(timer);
+                fn()
+            }, t)
+        };
+        let startTime = new Date().toLocaleTimeString()
+        console.log("✅ ~ startTime:", startTime)
+        // 测试
+        mySetTimeout(() => {
+            const endTime = new Date().toLocaleTimeString()
+            console.log("✅ ~ endTime:", endTime)
+            console.log(endTime - startTime)
+        }, 5000)
+
+    </script>
+</body>
+
+</html>

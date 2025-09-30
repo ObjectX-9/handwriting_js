@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        function _extend(Child, Parent) {
+            Child.prototype = Object.create(Parent.prototype);
+            Child.prototype.constructor = Child;
+            Object.setPrototypeOf ? Object.setPrototypeOf(Child, Parent) : Child.__proto__ = Parent;
+        }
+
+        function Parent() {
+            this.parentName = 'parent';
+        }
+
+        Parent.testStatic = () => {
+            console.log('parent static');
+        }
+
+        function Child() {
+            Parent.call(this);
+            this.name = 'child';
+        }
+
+        _extend(Child, Parent);
+
+        console.log(Child.prototype.constructor);
+        console.log(Child.prototype.__proto__ === Parent.prototype);
+        console.log(Child.__proto__ === Parent);
+
+        const child = new Child();
+        console.log(child.name);
+        console.log(child.parentName);
+        console.log(child instanceof Parent);
+        console.log(child instanceof Child);
+        console.log(Child.testStatic());
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function f(x) {
+            console.log("f received:", x);
+            return x + 1;
+        }
+
+        function g(x) {
+            console.log("g received:", x);
+            return x + 2;
+        }
+
+        function h(x) {
+            console.log("h received:", x);
+            return x + 3;
+        }
+
+        function compose(...funcs) {
+            if (!funcs.length) return v => v;
+            if (funcs.length === 1) return funcs[0];
+
+            return funcs.reduce((a, b) => {
+                return (...args) => a(b(...args));
+            });
+        }
+
+        const composed = compose(f, g, h);
+        console.log("✅ ~ composed:", composed)
+
+        console.log("Result:", composed(1));
+
+        function pipe(...funcs) {
+            if (!funcs.length) return v => v;
+            if (funcs.length === 1) return funcs[0];
+
+            return funcs.reduce((a, b) => {
+                return (...args) => b(a(...args));
+            });
+        }
+
+        const piped = pipe(f, g, h);
+        console.log("✅ ~ piped:", piped)
+
+        console.log("Result:", piped(1));
+
+
+        function pipe2(...funcs) {
+            if (!funcs.length) return v => v;
+            if (funcs.length === 1) return funcs[0];
+
+            return funcs.reduceRight((a, b) => {
+                return (...args) => a(b(...args));
+            });
+        }
+
+        const composedRight = pipe2(f, g, h);
+        console.log("✅ ~ composedRight:", composedRight)
+
+        console.log("Result:", composedRight(1));
+
+    </script>
+</body>
+
+</html>

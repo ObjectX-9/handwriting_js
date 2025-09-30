@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class LRUCache {
+            constructor(length) {
+                this.length = length
+                this.data = new Map()
+            }
+            get(key) {
+                // 如果数据不存在，返回 null
+                if (!this.data.has(key)) {
+                    return null
+                }
+                const value = this.data.get(key)
+                // 删除后重新插入
+                this.data.delete(key)
+                // 重新插入，保证最近使用的在前面
+                this.data.set(key, value)
+                return value
+            }
+            set(key, value) {
+                // 如果数据存在，删除后重新插入
+                if (this.data.has(key)) {
+                    this.data.delete(key)
+                }
+                // 重新插入
+                this.data.set(key, value)
+
+                if (this.data.size > this.length) {
+                    // 获取第一个数据，删除最久远的数据
+                    const firstKey = this.data.keys().next().value
+                    this.data.delete(firstKey)
+                }
+            }
+        }
+
+        const lru = new LRUCache(3)
+        lru.set('a', 1)
+        lru.set('b', 2)
+        lru.set('c', 3)
+        console.log(lru.get('a')) // 1
+        lru.set('d', 4)
+        console.log(lru.get('b')) // null
+        console.log(lru.get('c')) // 3
+        console.log(lru.get('d')) // 4 
+        console.log(lru.data) // Map(3) { 'a' => 1, 'c' => 3, 'd' => 4 }
+
+    </script>
+</body>
+
+</html>

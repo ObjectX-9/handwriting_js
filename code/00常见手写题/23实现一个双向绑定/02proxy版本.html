@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input id="input" />
+    <span id="span"></span>
+    <script>
+        // 数据
+        const data = {
+            text: 'default'
+        };
+        const input = document.getElementById('input');
+        const span = document.getElementById('span');
+
+        input.value = data.text;
+        span.innerHTML = data.text;
+
+        // 数据劫持
+        const handler = {
+            set(target, key, value) {
+                target[key] = value;
+                // 数据变化 --> 修改视图
+                input.value = value;
+                span.innerHTML = value;
+                return value;
+            }
+        };
+        const proxy = new Proxy(data, handler);
+
+        // 视图更改 --> 数据变化
+        input.addEventListener('keyup', function (e) {
+            proxy.text = e.target.value;
+
+            console.log('📝 数据已更新:', data.text)
+        });
+    </script>
+</body>
+
+</html>

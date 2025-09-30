@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function mySetInterval(fn, t) {
+            let timerId = null;
+
+            function interval() {
+                fn();
+                timerId = setTimeout(interval, t); // 递归调用
+            }
+
+            // 首次调用，先执行一次，然后递归调用
+            timerId = setTimeout(interval, 0);
+            return {
+                cancel: () => {
+                    if (timerId) {
+                        clearTimeout(timerId);
+                        timerId = null;
+                    }
+                }
+            };
+        }
+
+        // 测试
+        console.log('🕐 开始时间:', new Date().toLocaleTimeString());
+
+        const a = mySetInterval(() => {
+            console.log('🕐', new Date().toLocaleTimeString(), '111')
+        }, 1000);
+        const b = mySetInterval(() => {
+            console.log('🕐', new Date().toLocaleTimeString(), '222')
+        }, 1000);
+
+        setTimeout(() => {
+            console.log('🛑 取消时间:', new Date().toLocaleTimeString());
+            a.cancel();
+            b.cancel();
+            console.log('✅ 定时器已取消');
+        }, 5000)
+
+    </script>
+</body>
+
+</html>

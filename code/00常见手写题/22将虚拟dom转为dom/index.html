@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const vnode = {
+            tag: 'DIV',
+            attrs: { id: 'app' },
+            children: [
+                {
+                    tag: 'SPAN',
+                    children: [
+                        "这是第一个SPAN的文本", // 文本节点
+                        { tag: 'A', children: [] }
+                    ]
+                },
+                {
+                    tag: 'SPAN',
+                    children: [
+                        "这是第二个SPAN的文本", // 文本节点
+                        { tag: 'A', children: [] },
+                        { tag: 'A', children: [] }
+                    ]
+                }
+            ]
+        }
+
+
+        function render(vnode) {
+            // 如果是数字，则转换为字符串
+            if (typeof vnode === 'number') {
+                vnode = String(vnode)
+            }
+            // 如果是字符串，则创建一个文本节点
+            if (typeof vnode === 'string') {
+                return document.createTextNode(vnode)
+            }
+            // 如果是对象，则创建一个元素节点
+            const dom = document.createElement(vnode.tag)
+            if (vnode.attrs) {
+                Object.keys(vnode.attrs).forEach(key => {
+                    dom.setAttribute(key, vnode.attrs[key])
+                })
+            }
+            vnode.children.forEach(child => {
+                dom.appendChild(render(child))
+            })
+            return dom
+        }
+
+        const dom = render(vnode)
+        document.body.appendChild(dom)
+    </script>
+</body>
+
+</html>

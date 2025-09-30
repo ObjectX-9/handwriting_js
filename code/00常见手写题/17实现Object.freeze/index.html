@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function myFreeze(obj) {
+            if (typeof obj !== 'object' || obj === null) return obj;
+
+            Object.keys(obj).forEach(key => {
+                const value = obj[key];
+
+                // 如果属性是对象，递归冻结（深冻结）
+                if (typeof value === 'object' && value !== null) {
+                    myFreeze(value);
+                }
+
+                Object.defineProperty(obj, key, {
+                    writable: false,
+                    configurable: false,
+                });
+            });
+
+            // 阻止添加新属性（浅冻结）
+            return Object.seal(obj);
+        }
+
+        // 测试
+        const obj = { a: 1, b: { c: 2 } };
+        myFreeze(obj);
+
+        obj.a = 10;       // 无效，不会报错
+        obj.b.c = 20;     // 可修改，如果要深冻结，需要递归冻结 b
+        obj.d = 30;       // 添加失败
+
+        console.log(obj); // { a: 1, b: { c: 20 } }
+
+    </script>
+</body>
+
+</html>

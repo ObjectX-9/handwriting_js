@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 创建新的块级作用域
+        function createScope(parent) {
+            const scope = Object.create(parent || null);
+            return scope;
+        }
+
+        // 判断是否是合法的标识符
+        function isValidIdentifier(name) {
+            return /^[a-zA-Z_$][a-zA-Z0-9_$]*/.test(name);
+        }
+
+        // 模拟 let
+        function __let__(scope, name, value) {
+            // 判断是否是合法的标识符
+            if (!isValidIdentifier(name)) throw new SyntaxError(`${name} is not valid`);
+            // 判断是否已经声明
+            if (scope.hasOwnProperty(name)) throw new SyntaxError(`${name} has already been declared`);
+            // 判断是否已经初始化
+            let initialized = false;
+
+            Object.defineProperty(scope, name, {
+                configurable: true,
+                enumerable: true,
+                get() {
+                    if (!initialized) throw new ReferenceError(`Cannot access '${name}' before initialization`);
+                    return value;
+                },
+                set(val) {
+                    value = val;
+                    initialized = true;
+                },
+            });
+
+            scope[name] = value;
+        }
+
+        // 模拟 const
+        function __const__(scope, name, value) {
+            // 判断是否是合法的标识符
+            if (!isValidIdentifier(name)) throw new SyntaxError(`${name} is not valid`);
+            // 判断是否已经声明
+            if (scope.hasOwnProperty(name)) throw new SyntaxError(`${name} has already been declared`);
+            // 判断是否已经初始化
+            let initialized = false;
+
+            Object.defineProperty(scope, name, {
+                configurable: false,
+                enumerable: true,
+                get() {
+                    if (!initialized) throw new ReferenceError(`Cannot access '${name}' before initialization`);
+                    return value;
+                },
+                set(val) {
+                    if (initialized) throw new TypeError(`Assignment to constant variable '${name}'`);
+                    value = val;
+                    initialized = true;
+                },
+            });
+
+            scope[name] = value;
+        }
+
+        // ========== 使用示例 ==========
+        var globalScope = createScope(null);
+
+        (function () {
+            var scope = createScope(globalScope);
+
+            __let__(scope, 'a', 10);
+            console.log(scope.a); // 10
+
+            scope.a = 20;
+            console.log(scope.a); // 20
+
+            __const__(scope, 'b', 100);
+            console.log(scope.b); // 100
+
+            try { scope.b = 200 } catch (e) { console.log(e.message) }
+            // Assignment to constant variable 'b'
+
+            try { console.log(scope.c) } catch (e) { console.log(e.message) }
+            // Cannot access 'c' before initialization
+
+            __let__(scope, 'c', 50);
+            console.log(scope.c); // 50
+        })();
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function mySeal(obj) {
+            if (typeof obj !== 'object' || obj === null) return obj;
+
+            // 遍历对象属性，锁定属性的可配置性
+            Object.keys(obj).forEach(key => {
+                const desc = Object.getOwnPropertyDescriptor(obj, key);
+                Object.defineProperty(obj, key, {
+                    configurable: false,     // 锁定属性，不能删除或重新配置
+                    writable: desc.writable, // 保持原来的可写性
+                    enumerable: desc.enumerable
+                });
+
+                if (typeof value === 'object' && value !== null) {
+                    mySeal(value);
+                }
+            });
+
+            // 阻止新增属性
+            return new Proxy(obj, {
+                set(target, prop, value) {
+                    if (!(prop in target)) {
+                        console.warn(`Cannot add new property "${prop}" to sealed object`);
+                    }
+                    target[prop] = value; // 已有属性允许修改
+                    return true;
+                },
+                deleteProperty(target, prop) {
+                    console.warn(`Cannot delete property "${prop}" from sealed object`);
+                }
+            });
+        }
+
+        // 测试
+        const obj = { a: 1, b: 2 };
+        const sealedObj = mySeal(obj);
+
+        sealedObj.a = 10;       // 可以修改
+        sealedObj.c = 30;       // 警告，不允许新增
+        delete sealedObj.b;      // 警告，不允许删除
+
+        console.log(sealedObj); // { a: 10, b: 2 }
+
+    </script>
+</body>
+
+</html>
