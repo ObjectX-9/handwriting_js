@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+
+        var Node = function (val, next = null) {
+            this.val = val;
+            this.next = next;
+        }
+
+        var MyLinkedList = function () {
+            this.head = null;
+            this.tail = null;
+            this.length = 0;
+        };
+
+        MyLinkedList.prototype.buildListByArray = function (arr) {
+            for (let i = 0; i < arr.length; i++) {
+                this.addAtTail(arr[i]);
+            }
+        }
+
+        /** 
+         * 获取链表中指定位置的节点值
+         * @param {number} index
+         * @return {number}
+         */
+        MyLinkedList.prototype.get = function (index) {
+            if (index < 0 || index >= this.length) {
+                return -1;
+            }
+            let current = this.head;
+            for (let i = 0; i < index; i++) {
+                current = current.next;
+            }
+            return current.val;
+        };
+
+        MyLinkedList.prototype.printList = function () {
+            let current = this.head;
+            let str = '';
+            while (current) {
+                str += current.val + ' ';
+                current = current.next;
+            }
+            console.log('当前链表', str);
+        }
+
+        /** 
+         * 将新节点添加到链表头部
+         * @param {number} val
+         * @return {void}
+         */
+        MyLinkedList.prototype.addAtHead = function (val) {
+            const newNode = new Node(val);
+            // 如果链表不为空，则将新节点添加到链表头部
+            if (this.head) {
+                newNode.next = this.head;
+            } else {
+                // 如果链表为空，则将新节点添加到链表尾部
+                this.tail = newNode;
+            }
+            // 更新链表头部
+            this.head = newNode;
+            // 链表长度加1
+            this.length++;
+        };
+
+        /** 
+         * 将新节点添加到链表末尾
+         * @param {number} val
+         * @return {void}
+         */
+        MyLinkedList.prototype.addAtTail = function (val) {
+            const newNode = new Node(val);
+            // 如果链表不为空，则将新节点添加到链表末尾
+            if (this.tail) {
+                this.tail.next = newNode;
+            } else {
+                // 如果链表为空，则将新节点添加到链表头部
+                this.head = newNode;
+            }
+            // 更新链表尾部
+            this.tail = newNode;
+            // 链表长度加1
+            this.length++;
+        };
+
+        /** 
+         * 将新节点添加到链表指定位置
+         * @param {number} index 
+         * @param {number} val
+         * @return {void}
+         */
+        MyLinkedList.prototype.addAtIndex = function (index, val) {
+            // 如果索引小于0或大于链表长度，则不添加
+            if (index < 0 || index > this.length) {
+                return;
+            }
+            // 如果索引为0，则将新节点添加到链表头部
+            if (index === 0) {
+                this.addAtHead(val);
+            } else if (index === this.length) {
+                // 如果索引为链表长度，则将新节点添加到链表末尾
+                this.addAtTail(val);
+            } else {
+                // 如果索引为链表中间，则将新节点添加到链表中间
+                const newNode = new Node(val);
+                const current = this.head;
+                // 找到索引位置的前一个节点
+                for (let i = 0; i < index - 1; i++) {
+                    current = current.next;
+                }
+                // 将新节点添加到链表中间
+                newNode.next = current.next;
+                current.next = newNode;
+                this.length++;
+            }
+        };
+
+        /** 
+         * @param {number} index
+         * @return {void}
+         */
+        MyLinkedList.prototype.deleteAtIndex = function (index) {
+            // 如果索引小于0或大于链表长度，则不删除
+            if (index < 0 || index >= this.length) {
+                return;
+            }
+
+            // 如果索引为0，则删除链表头部
+            if (index === 0) {
+                this.head = this.head.next;
+                // 如果删除后链表为空，tail也要设为null
+                if (this.length === 1) {
+                    this.tail = null;
+                }
+                this.length--; // ❗️ 重要：必须减少长度
+            } else if (index === this.length - 1) {
+                // 如果索引为链表末尾，需要找到倒数第二个节点
+                let current = this.head;
+                // 找到倒数第二个节点
+                for (let i = 0; i < index - 1; i++) {
+                    current = current.next;
+                }
+                // 删除尾部节点
+                current.next = null;
+                this.tail = current; // ❗️ 重要：tail指向倒数第二个节点
+                this.length--; // ❗️ 重要：必须减少长度
+            } else {
+                // 如果索引为链表中间，则删除链表中间
+                let current = this.head;
+                // 找到索引位置的前一个节点
+                for (let i = 0; i < index - 1; i++) {
+                    current = current.next;
+                }
+                // 删除中间节点
+                current.next = current.next.next;
+                this.length--; // ❗️ 这个是对的
+            }
+        };
+
+        const myLinkedList = new MyLinkedList();
+
+        // addAtHead
+        myLinkedList.addAtHead(1);
+        myLinkedList.printList();
+        // 测试addAtTail
+        myLinkedList.addAtTail(3);
+        myLinkedList.printList();
+        // 测试addAtIndex
+        myLinkedList.addAtIndex(1, 2);
+        myLinkedList.printList();
+        // 测试get
+        console.log('myLinkedList.get(1)', myLinkedList.get(1));
+
+        // 测试deleteAtIndex
+        console.log('=== 删除测试 ===');
+        console.log('删除前长度:', myLinkedList.length);
+        myLinkedList.deleteAtIndex(1);
+        myLinkedList.printList();
+        console.log('删除后长度:', myLinkedList.length);
+        console.log('myLinkedList.get(1)', myLinkedList.get(1));
+
+    </script>
+</body>
+
+</html>

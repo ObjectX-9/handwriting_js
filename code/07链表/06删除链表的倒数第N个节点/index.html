@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../00实现单链表结构/index.js"></script>
+    <script>
+        const myLinkedList = new LinkedList();
+        const newHead = myLinkedList.buildLinkedListByArr([1, 2, 3, 4]);
+
+        myLinkedList.head = newHead
+        myLinkedList.printDetailedList();
+
+        function removeNthFromEnd(head, n) {
+            const dummyHead = new Node(0);
+            dummyHead.next = head
+            let fast = dummyHead
+            let slow = dummyHead
+            while (n--) {
+                fast = fast.next;
+            }
+            while (fast.next) {
+                fast = fast.next
+                slow = slow.next
+            }
+            slow.next = slow.next.next
+            return dummyHead.next
+        }
+
+        const newHead2 = removeNthFromEnd(myLinkedList.head, 2);
+        myLinkedList.head = newHead2;
+        myLinkedList.printDetailedList();
+
+
+    </script>
+</body>
+
+</html>

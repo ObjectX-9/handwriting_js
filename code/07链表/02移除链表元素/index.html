@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../00实现单链表结构/index.js"></script>
+    <script>
+
+        const list = new LinkedList();
+        list.buildLinkedListByArr([1, 2, 6, 3, 4, 5, 6]);
+
+        // 带头结点的
+        function removeElem(root, val) {
+            const data = new Node(0, root);
+            let pre = data;
+            let cur = pre.next;
+            while (cur) {
+                if (cur.elem === val) {
+                    pre.next = cur.next;
+                    cur = cur.next;
+                } else {
+                    pre = cur;
+                    cur = cur.next;
+                }
+            }
+            return data.next;
+        }
+
+        // 测试修正后的版本
+        const newList = removeElem(list.head, 6)
+        console.log("newList删除6后的结果[1, 2, 6, 3, 4, 5, 6]:", list.printList(newList));
+
+        // 测试连续头结点删除的情况
+        const list2 = new LinkedList();
+        list2.buildLinkedListByArr([6, 6, 6, 1, 2, 3, 6]);
+        const newList2 = removeElem(list2.head, 6);
+        console.log("newList2删除连续头结点6后的结果[6, 6, 6, 1, 2, 3, 6]:", list2.printList(newList2));
+
+
+        // 不带头结点的
+        function removeElemNoHead(root, val) {
+            // 先处理头结点，删除所有连续的匹配头结点
+            while (root && root.elem === val) {
+                root = root.next;
+            }
+
+            // 处理剩余节点 - 使用pre指针
+            let pre = null;
+            let current = root;
+            while (current) {
+                // 删除节点
+                if (current.elem === val && pre) {
+                    pre.next = current.next;
+                } else {
+                    // 不删除，继续向前
+                    pre = current;
+                }
+                current = current.next;
+            }
+            return root;
+        }
+
+        const list3 = new LinkedList();
+        list3.buildLinkedListByArr([6, 6, 6, 1, 2, 3, 6]);
+
+        const newList3 = removeElemNoHead(list3.head, 6);
+        console.log("newList3删除6后的结果[6, 6, 6, 1, 2, 3, 6]:", list.printList(newList3));
+    </script>
+</body>
+
+</html>

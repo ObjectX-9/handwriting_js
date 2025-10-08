@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../00实现单链表结构/index.js"></script>
+    <script>
+        const myLinkedList = new LinkedList();
+        const newHead = myLinkedList.buildLinkedListByArr([1, 2, 3, 4, 5]);
+
+        myLinkedList.head = newHead;
+        myLinkedList.printDetailedList();
+
+        function reverseList(head) {
+            let current = head;
+            let prev = null;
+            while (current) {
+                // 保存当前节点的下一个节点
+                const temp = current.next;
+                // 反转当前节点
+                current.next = prev;
+                // 更新prev和current
+                prev = current;
+                current = temp;
+            }
+            myLinkedList.head = prev;
+            return prev;
+        }
+
+        const newHead2 = reverseList(newHead);
+        myLinkedList.head = newHead2;
+        myLinkedList.printDetailedList();
+
+    </script>
+</body>
+
+</html>

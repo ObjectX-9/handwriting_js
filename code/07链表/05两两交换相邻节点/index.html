@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../00实现单链表结构/index.js"></script>
+    <script>
+        const myLinkedList = new LinkedList();
+        const newHead = myLinkedList.buildLinkedListByArr([1, 2, 3, 4]);
+
+        myLinkedList.head = newHead
+        myLinkedList.printDetailedList();
+
+        function swapPairs(head) {
+            const dummyHead = new Node(0);
+            dummyHead.next = head;
+
+            let current = dummyHead;
+
+            while (current.next && current.next.next) {
+                const temp = current.next;
+                const temp1 = current.next.next.next;
+
+                current.next = current.next.next;
+                current.next.next = temp;
+                current.next.next.next = temp1;
+
+                current = current.next.next;
+            }
+
+
+            return dummyHead.next;
+        }
+
+        const newHead2 = swapPairs(myLinkedList.head);
+        myLinkedList.head = newHead2;
+        myLinkedList.printDetailedList();
+
+    </script>
+</body>
+
+</html>

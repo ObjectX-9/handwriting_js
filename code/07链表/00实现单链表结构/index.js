@@ -2,6 +2,56 @@ class LinkedList {
   head = null;
   length = 0;
 
+  // 通过数组创建链表（重置后构建）
+  buildLinkedListByArr(arr) {
+    // ✅ 重要：先重置链表
+    this.head = null;
+    this.length = 0;
+
+    console.log("✅ ~ arr:", arr);
+    arr.forEach((item) => {
+      this.append(item);
+    });
+    return this.head;
+  }
+
+  // 通过数组追加到现有链表（保留原有功能）
+  appendFromArray(arr) {
+    arr.forEach((item) => {
+      this.append(item);
+    });
+    return this.head;
+  }
+
+  printList(root) {
+    let current = root;
+    let listString = "";
+    while (current) {
+      listString += "," + current.elem;
+      current = current.next;
+    }
+    return listString.slice(1);
+  }
+
+  // 详细打印链表结构（用于调试）
+  printDetailedList() {
+    console.log("=== 详细链表结构 ===");
+    console.log("head:", this.head);
+    console.log("length:", this.length);
+
+    let current = this.head;
+    let index = 0;
+    while (current) {
+      console.log(`节点${index}:`, {
+        elem: current.elem,
+        next: current.next ? `Node(elem: ${current.next.elem})` : null,
+      });
+      current = current.next;
+      index++;
+    }
+    console.log("=== 结构结束 ===");
+  }
+
   // 队尾增加方法
   append(elem) {
     // 新建节点
@@ -110,47 +160,71 @@ class LinkedList {
 class Node {
   elem;
   next;
-  constructor(elem) {
+  constructor(elem, next = null) {
     this.elem = elem;
-    this.next = null;
+    this.next = next;
   }
 }
 
-// 测试链表
-// 1.创建链表
-const list = new LinkedList();
+// // 测试修正后的 buildLinkedListByArr 方法
+// console.log("=== 测试 buildLinkedListByArr 修正 ===");
+// const testList = new LinkedList();
 
-// 2.追加元素
-list.append(15);
-list.append(10);
-list.append(20);
-console.log(list.toString());
+// // 先添加一些数据
+// testList.append(100);
+// testList.append(200);
+// console.log("初始链表:", testList.toString());
 
-list.insert(0, 100);
-list.insert(4, 200);
-list.insert(2, 300);
+// // 使用 buildLinkedListByArr（应该重置）
+// testList.buildLinkedListByArr([1, 2, 3]);
+// console.log("buildLinkedListByArr后:", testList.toString()); // 期望：1,2,3
 
-// 3.打印链表的结果
-console.log(list.toString());
+// // 使用 appendFromArray（应该追加）
+// testList.appendFromArray([4, 5]);
+// console.log("appendFromArray后:", testList.toString()); // 期望：1,2,3,4,5
 
-// 5.测试removeAt方法
-list.removeAt(0);
-list.removeAt(1);
-list.removeAt(3);
+// // 🔍 详细查看链表结构
+// testList.printDetailedList();
 
-// 3.打印链表的结果
-console.log(list.toString());
+// // 🔍 直接暴露head供控制台查看
+// window.debugHead = testList.head;
+// console.log("已将head暴露为 window.debugHead，可在控制台输入 debugHead 查看");
 
-// 6.测试indexOf方法
-console.log("✅ ~ list.indexOf(15):", list.indexOf(15)); // 0
-console.log("✅ ~ list.indexOf(10) :", list.indexOf(10)); // 1
-console.log("✅ ~ list.indexOf(20):", list.indexOf(20)); // 2
-console.log("✅ ~ list.indexOf(100):", list.indexOf(100)); // -1
+// // 测试链表
+// // 1.创建链表
+// const list = new LinkedList();
 
-list.remove(15);
-// 3.打印链表的结果
-console.log(list.toString());
+// // 2.追加元素
+// list.append(15);
+// list.append(10);
+// list.append(20);
+// console.log(list.toString());
 
-console.log("✅ ~ list.isEmpty():", list.isEmpty());
-console.log("✅ ~ list.size():", list.size());
-console.log("✅ ~ list.getFirst():", list.getFirst());
+// list.insert(0, 100);
+// list.insert(4, 200);
+// list.insert(2, 300);
+
+// // 3.打印链表的结果
+// console.log(list.toString());
+
+// // 5.测试removeAt方法
+// list.removeAt(0);
+// list.removeAt(1);
+// list.removeAt(3);
+
+// // 3.打印链表的结果
+// console.log(list.toString());
+
+// // 6.测试indexOf方法
+// console.log("✅ ~ list.indexOf(15):", list.indexOf(15)); // 0
+// console.log("✅ ~ list.indexOf(10) :", list.indexOf(10)); // 1
+// console.log("✅ ~ list.indexOf(20):", list.indexOf(20)); // 2
+// console.log("✅ ~ list.indexOf(100):", list.indexOf(100)); // -1
+
+// list.remove(15);
+// // 3.打印链表的结果
+// console.log(list.toString());
+
+// console.log("✅ ~ list.isEmpty():", list.isEmpty());
+// console.log("✅ ~ list.size():", list.size());
+// console.log("✅ ~ list.getFirst():", list.getFirst());

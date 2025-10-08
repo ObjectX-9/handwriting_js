@@ -48,8 +48,8 @@ function mySplice(array, startIndex, removeElemNum, ...values) {
   }
 
   array.length = joinPart.length;
-
-  return removedElements;
+  console.log("✅ ~ removedElements:", removedElements);
+  // 无返回值
 }
 
 logHelper("splice", [1, 2, 3, 4, 5], (array) => mySplice(array, 1, 3));

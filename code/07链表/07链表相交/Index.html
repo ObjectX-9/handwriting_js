@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="../00实现单链表结构/index.js"></script>
+    <script>
+
+        function getListLength(head) {
+            let length = 0
+            let cur = head
+            while (cur) {
+                length++
+                cur = cur.next
+            }
+            return length
+        }
+
+        function getIntersectionNode(headA, headB) {
+            let curA = headA
+            let curB = headB
+            // 计算链表长度
+            let lenA = getListLength(headA)
+            let lenB = getListLength(headB)
+
+            if (lenA < lenB) {
+                [curA, curB] = [curB, curA];
+                [lenA, lenB] = [lenB, lenA];
+            }
+            // 求长度差
+            let gap = lenA - lenB
+            // 让curA和curB在同一起点上（末尾位置对齐）
+            while (gap-- > 0) {
+                curA = curA.next
+            }
+
+            // 遍历curA和curB，遇到相同则返回
+            while (curA && curA !== curB) {
+                curA = curA.next
+                curB = curB.next
+            }
+
+            return curA
+        }
+
+        console.log("\n💡 === 创建真正相交的链表 ===");
+        // 创建真正相交的链表
+        const listA = new LinkedList();
+        const listB = new LinkedList();
+
+        // 链表A: 4 -> 1 -> 共享部分
+        const node4 = new Node(4);
+        const node1 = new Node(1);
+        const sharedNode8 = new Node(8);  // 共享节点
+        const sharedNode4 = new Node(4);  // 共享节点
+        const sharedNode5 = new Node(5);  // 共享节点
+
+        // 构建链表A
+        node4.next = node1;
+        node1.next = sharedNode8;
+        sharedNode8.next = sharedNode4;
+        sharedNode4.next = sharedNode5;
+
+        // 链表B: 5 -> 0 -> 1 -> 共享部分
+        const nodeB5 = new Node(5);
+        const nodeB0 = new Node(0);
+        const nodeB1 = new Node(1);
+
+        // 构建链表B，让它指向相同的共享节点
+        nodeB5.next = nodeB0;
+        nodeB0.next = nodeB1;
+        nodeB1.next = sharedNode8; // 指向同一个共享节点
+
+        console.log("🔗 真正相交的链表测试:");
+        const realIntersection = getIntersectionNode(node4, nodeB5);
+        console.log("✅ ~ 真正的相交节点:", realIntersection);
+        console.log("✅ ~ 相交节点值:", realIntersection ? realIntersection.elem : "null");
+
+    </script>
+</body>
+
+</html>
