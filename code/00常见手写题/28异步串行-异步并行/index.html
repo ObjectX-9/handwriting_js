@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function asyncAdd(a, b, callback) {
+            setTimeout(function () {
+                callback(null, a + b);
+            }, 500);
+        }
+
+        // 解决方案
+        // 1. promisify
+        const promiseAdd = (a, b) => new Promise((resolve, reject) => {
+            asyncAdd(a, b, (err, res) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(res)
+                }
+            })
+        })
+
+        // 2. 串行处理
+        async function serialSum(...args) {
+            // 首次accTask = Promise， res是0
+            return args.reduce((accTask, now) => {
+                const dealTask = accTask.then(res => {
+                    console.log('res ===>', res)
+                    console.log('now ===>', now)
+                    return promiseAdd(res, now)
+                })
+                return dealTask;
+            }, Promise.resolve(0))
+        }
+
+        // 3. 并行处理
+        async function parallelSum(...args) {
+            // 递归终止条件
+            if (args.length === 1) return args[0]
+            const tasks = []
+            // 两个两个的传入，i += 2
+            for (let i = 0; i < args.length; i += 2) {
+                tasks.push(promiseAdd(args[i], args[i + 1] || 0))
+            }
+            const results = await Promise.all(tasks)
+            // 递归继续将得出的结果相加
+            return parallelSum(...results)
+        }
+
+        // 测试
+        (async () => {
+            console.log('Running...');
+            const res1 = await serialSum(1, 2, 3, 4, 5, 8, 9, 10, 11, 12)
+            console.log('res1', res1)
+            // const res2 = await parallelSum(1, 2, 3, 4, 5, 8, 9, 10, 11, 12)
+            // console.log('res2', res2);
+            // console.log('Done');
+        })()
+    </script>
+</body>
+
+</html>

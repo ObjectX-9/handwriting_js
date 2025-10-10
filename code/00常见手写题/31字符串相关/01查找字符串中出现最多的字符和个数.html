@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function getMaxNumChar(str) {
+            let count = new Map();
+
+            // 统计每个字符出现的次数
+            for (let char of str) {
+                count.set(char, (count.get(char) || 0) + 1);
+            }
+
+            // 找出现次数最多的字符
+            let maxChar = '';
+            let maxCount = 0;
+            for (let [char, num] of count.entries()) {
+                if (num > maxCount) {
+                    maxChar = char;
+                    maxCount = num;
+                }
+            }
+
+            return { maxChar, maxCount };
+        }
+
+        // 测试
+        const str = "abbcccddddd";
+        const result = getMaxNumChar(str);
+        console.log(`字符最多的是 '${result.maxChar}'，出现了 ${result.maxCount} 次`);
+
+    </script>
+</body>
+
+</html>

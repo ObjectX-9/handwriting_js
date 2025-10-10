@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function curry(fn) {
+            const curried = (...args) => {
+                if (args.length >= fn.length) {
+                    return fn(...args.slice(0, fn.length));
+                } else {
+                    // 返回新函数，避免多次调用报错
+                    return (...nextArgs) => curried(...args, ...nextArgs); // ← 返回新函数
+                }
+            }
+            return curried;
+        }
+
+        function sum(a, b, c) {
+            return a + b + c;
+        }
+
+        const curriedSum = curry(sum);
+
+        console.log(curriedSum(1)(2)(3));    // 6
+        console.log(curriedSum(1, 2)(3));    // 6
+        console.log(curriedSum(1)(2, 3));    // 6
+        console.log(curriedSum(1, 2, 3));    // 6
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>图片懒加载示例</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        img {
+            display: block;
+            width: 300px;
+            height: 200px;
+            margin: 40px auto;
+            background: #f0f0f0;
+            object-fit: cover;
+            transition: opacity 0.5s;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align:center;">图片懒加载（scroll + throttle）</h1>
+
+    <!-- 模拟很多图片 -->
+    <img src="default.png" data-src="https://picsum.photos/id/1011/300/200" alt="lazy image">
+    <img src="default.png" data-src="https://picsum.photos/id/1012/300/200" alt="lazy image">
+    <img src="default.png" data-src="https://picsum.photos/id/1015/300/200" alt="lazy image">
+    <img src="default.png" data-src="https://picsum.photos/id/1016/300/200" alt="lazy image">
+    <img src="default.png" data-src="https://picsum.photos/id/1020/300/200" alt="lazy image">
+    <img src="default.png" data-src="https://picsum.photos/id/1024/300/200" alt="lazy image">
+
+    <script>
+        // 判断图片是否在可视区域内
+        function isVisible(el) {
+            const rect = el.getBoundingClientRect();
+            const viewHeight = window.innerHeight || document.documentElement.clientHeight;
+            return (
+                // 底部往上移动判断top，顶部往下移动判断bottom
+                // 如果图片特别大，top在-200，bottom在300，这种情况
+                (rect.top >= 0 && rect.top < viewHeight) ||
+                (rect.bottom > 0 && rect.bottom < viewHeight)
+            );
+        }
+
+        // 图片懒加载
+        function imageLazyLoad() {
+            const images = document.querySelectorAll('img[data-src]');
+            for (let img of images) {
+                if (isVisible(img)) {
+                    const realSrc = img.dataset.src;
+                    if (realSrc) {
+                        img.src = realSrc;
+                        img.removeAttribute('data-src');
+                        img.onerror = () => (img.src = 'default.png');
+                    }
+                }
+            }
+        }
+
+        // 节流函数
+        function throttle(fn, delay) {
+            let canRun = true;
+            return function (...args) {
+                if (canRun) {
+                    timer = setTimeout(() => {
+                        canRun = false;
+                        fn.apply(this, args);
+                        canRun = true;
+                    }, delay);
+                }
+            };
+        }
+
+        // 初始化与绑定事件
+        const throttledLazyLoad = throttle(imageLazyLoad, 300);
+        window.addEventListener('load', imageLazyLoad);
+        window.addEventListener('scroll', throttledLazyLoad);
+        window.addEventListener('resize', throttledLazyLoad);
+    </script>
+</body>
+
+</html>

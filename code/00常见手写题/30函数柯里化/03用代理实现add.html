@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function add(...args) {
+            const fn = (...newArgs) => add(...args, ...newArgs);
+
+            return new Proxy(fn, {
+                get(target, prop) {
+                    if (prop === 'valueOf' || prop === 'toString') {
+                        return () => args.reduce((a, b) => a + b, 0);
+                    }
+                    return target[prop];
+                }
+            });
+        }
+
+        // 测试
+        console.log(add(1)(2)(3));       // 6
+        console.log(add(1)(2, 3));       // 6
+        console.log(add(1, 2)(3));       // 6
+        console.log(add(1, 2, 3));       // 6
+    </script>
+</body>
+
+</html>

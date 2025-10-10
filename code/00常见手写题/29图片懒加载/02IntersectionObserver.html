@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>图片懒加载 IntersectionObserver</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        img {
+            display: block;
+            width: 300px;
+            height: 200px;
+            margin: 40px auto;
+            background: #f0f0f0;
+            object-fit: cover;
+            transition: opacity 0.5s;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align:center;">图片懒加载（IntersectionObserver）</h1>
+
+    <img src="default.png" data-src="https://picsum.photos/id/1003/300/200" alt="lazy image">
+    <img src="default.png" data-src="https://picsum.photos/id/1005/300/200" alt="lazy image">
+    <img src="default.png" data-src="https://picsum.photos/id/1006/300/200" alt="lazy image">
+    <img src="default.png" data-src="https://picsum.photos/id/1010/300/200" alt="lazy image">
+    <img src="default.png" data-src="https://picsum.photos/id/1013/300/200" alt="lazy image">
+    <img src="default.png" data-src="https://picsum.photos/id/1021/300/200" alt="lazy image">
+
+    <script>
+        const imgs = document.querySelectorAll('img[data-src]');
+
+        // 如果浏览器支持 IntersectionObserver
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        obs.unobserve(img);
+                    }
+                });
+            });
+
+            imgs.forEach(img => observer.observe(img));
+        } else {
+            // 向下兼容（回退到 scroll 方式）
+            window.addEventListener('load', imageLazyLoad);
+            window.addEventListener('scroll', imageLazyLoad);
+            function imageLazyLoad() {
+                const images = document.querySelectorAll('img[data-src]');
+                for (let img of images) {
+                    const rect = img.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

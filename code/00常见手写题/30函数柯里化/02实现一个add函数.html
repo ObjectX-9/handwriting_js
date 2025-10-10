@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function add(...args) {
+            const fn = (...newArgs) => {
+                return add.call(null, ...args.concat(newArgs))
+            }
+
+            fn.toString = () => {
+                const total = args.reduce((total, cur) => total + cur);
+                return total
+            }
+
+            return fn;
+        }
+        console.log(+add(1));
+        add(1).toString(); 			// 1
+        add(1)(2).toString();  	// 3
+        add(1)(2)(3).toString();// 6
+        add(1)(2, 3).toString(); // 6
+        add(1, 2)(3).toString(); // 6
+        add(1, 2, 3).toString(); // 6
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        async function limit(count, array, iterateFunc) {
+            const tasks = []
+            const doingTasks = []
+
+            for (const item of array) {
+                const task = Promise.resolve()
+                    .then(() => iterateFunc(item))
+                    .finally(() => {
+                        doingTasks.splice(doingTasks.indexOf(task), 1)
+                    })
+
+                tasks.push(task)
+
+                // 把当前任务加入正在执行的队列
+                doingTasks.push(task)
+
+                // 达到并发上限时，等待最先完成的任务
+                if (doingTasks.length >= count) {
+                    // 等待某一个执行完毕，走了finally，for循环继续push
+                    await Promise.race(doingTasks)
+                }
+            }
+
+            // 等所有任务都完成
+            return Promise.all(tasks)
+        }
+
+        const timeout = i => new Promise(resolve => setTimeout(() => {
+            resolve(i)
+            console.log('i', i)
+        }, i))
+
+        limit(2, [1000, 1000, 1000, 1000], timeout).then((res) => {
+            console.log(res)
+        })
+
+    </script>
+</body>
+
+</html>

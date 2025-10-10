@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 扩展 Number.prototype
+        Number.prototype.add = function (n) {
+            return new Number(this.valueOf() + n);
+        };
+
+        Number.prototype.minus = function (n) {
+            return new Number(this.valueOf() - n);
+        };
+
+        // 让 Number 对象自动转换为原生数字
+        Number.prototype[Symbol.toPrimitive] = function (hint) {
+            return this.valueOf();
+        };
+
+        console.log((5).add(3).minus(2)); // 6
+        console.log((5).add(3).minus(2) + 10); // 16
+        console.log((5).add(3).minus(2) === 6); // true
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        class Scheduler {
+            constructor(max) {
+                this.max = max;     // 最大并发数
+                this.count = 0;     // 当前正在执行的任务数
+                this.queue = [];    // 等待被调度执行的任务 resolve 队列（控制阻塞）
+                this.taskQueue = []; // 存放还未开始执行的任务（addTask 里放进去）
+                this.isStarted = false; // 是否已经调用过 start()
+            }
+
+            async add(promiseCreator) {
+                if (this.count >= this.max) {
+                    await new Promise((resolve) => {
+                        this.queue.push(resolve);
+                    });
+                }
+
+                this.count++;
+
+                let res = await promiseCreator();
+
+                // 当前任务执行完成，唤醒下一个被阻塞的任务
+                if (this.queue.length) {
+                    const next = this.queue.shift();
+                    next();
+                }
+
+                this.count--;
+
+                return res;
+            }
+
+            // 添加任务（但不立即执行）
+            addTask(time, order) {
+                // 这里只保存一个闭包任务
+                const promiseCreator = () => new Promise(resolve => {
+                    setTimeout(() => {
+                        console.log(order);
+                        resolve(order);
+                    }, time);
+                });
+                this.taskQueue.push(promiseCreator);
+            }
+
+            // 启动任务调度
+            async start() {
+                if (this.isStarted) return; // 防止重复启动
+                this.isStarted = true;
+
+                const runNext = async () => {
+                    // 如果没有任务了，直接返回
+                    if (this.taskQueue.length === 0) return;
+
+                    const task = this.taskQueue.shift();
+                    await this.add(task); // 用已有的并发控制逻辑执行
+
+                    // 当前任务执行完后，递归执行下一个
+                    await runNext();
+                };
+
+                // 同时启动 this.max 个任务
+                const runners = [];
+                for (let i = 0; i < this.max; i++) {
+                    runners.push(runNext());
+                }
+
+                // 等所有任务执行完成
+                await Promise.all(runners);
+            }
+        }
+
+        // ==========================
+        // 测试代码
+        // ==========================
+        const scheduler = new Scheduler(2);
+
+        scheduler.addTask(1000, '1'); // 1s 后输出 '1'
+        scheduler.addTask(500, '2');  // 0.5s 后输出 '2'
+        scheduler.addTask(300, '3');  // 0.3s 后输出 '3'
+        scheduler.addTask(400, '4');  // 0.4s 后输出 '4'
+
+        scheduler.start(); // 开始执行
+
+    </script>
+
+</body>
+
+</html>
